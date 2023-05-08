@@ -36,6 +36,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 });
 */
 
+/*
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     console.log("hoge");
 
@@ -54,7 +55,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         });
     }
 });
-/*
 chrome.tabs.query({ url: "*://booth.pm/ja/search/*" }, function (tabs) {
     console.log("hoge");
     tabs.forEach(function (tab) {
