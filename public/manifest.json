@@ -12,7 +12,8 @@
     },
     "permissions": [
         "storage",
-        "contextMenus"
+        "contextMenus",
+        "tabs"
     ],
     "options_ui": {
         "page": "index.html",

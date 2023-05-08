@@ -35,3 +35,41 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 });
 */
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    console.log("hoge");
+
+    if (tab.url.match("^https?:\/\/booth\.pm\/ja\/search\/.*")) {
+        let url = new URL(tab.url);
+        let age = "all"; // デフォルトの値
+        chrome.storage.sync.get("ages", function (data) {
+            if (data.ages === "r18") {
+                age = "only";
+            }
+            if (data.ages === "none") {
+                age = "include";
+            }
+            url.searchParams.set("adult", age);
+            chrome.tabs.update(tab.id, { url: url.href });
+        });
+    }
+});
+/*
+chrome.tabs.query({ url: "*://booth.pm/ja/search/*" }, function (tabs) {
+    console.log("hoge");
+    tabs.forEach(function (tab) {
+        let url = new URL(tab.url);
+        let age = "all"; // デフォルトの値
+        chrome.storage.sync.get("ages", function (data) {
+            if (data.ages === "r18") {
+                age = "only";
+            }
+            if (data.ages === "none") {
+                age = "include";
+            }
+            url.searchParams.set("adult", age);
+            chrome.tabs.update(tab.id, { url: url.href });
+        });
+    });
+});
+*/
