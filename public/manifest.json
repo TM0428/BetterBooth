@@ -1,0 +1,59 @@
+{
+    "manifest_version": 3,
+    "name": "Better Booth-vue",
+    "version": "0.0.1",
+    "description": "Improve your booth.pm experience with this extension.",
+    "icons": {
+        "128": "icon/icon-128.png"
+    },
+    "background": {
+        "service_worker": "js/background.js",
+        "type": "module"
+    },
+    "permissions": [
+        "storage",
+        "contextMenus"
+    ],
+    "options_ui": {
+        "page": "index.html",
+        "open_in_tab": true
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://booth.pm/ja/browse/*",
+                "https://booth.pm/ja/search/*"
+            ],
+            "js": [
+                "js/filter.js"
+            ],
+            "css": [
+                "css/search.css"
+            ],
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "*://*.booth.pm/*"
+            ],
+            "exclude_matches": [
+                "*://booth.pm/carts/"
+            ],
+            "js": [
+                "js/content.js"
+            ],
+            "css": [
+                "css/content.css"
+            ],
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "*://booth.pm/carts*"
+            ],
+            "js": [
+                "js/carts.js"
+            ]
+        }
+    ]
+}
