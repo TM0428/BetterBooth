@@ -35,7 +35,7 @@ function removeFilter(word) {
 /**
  * Boothのアイテムに対して、リンクがbooth.pm/ja/item/1234であるのを、**.booth.pm/item/1234に変更するための関数
  */
-function reattachURL() {
+function attachShopURL() {
     const liElements = document.querySelectorAll(`li.item-card.l-card`);
     // console.log(liElements);
     liElements.forEach(liElement => {
@@ -53,6 +53,40 @@ function reattachURL() {
             thumb.href = newURL;
         });
     })
+}
+
+function attachOptionURL() {
+    chrome.storage.sync.get("settings", (result) => {
+        const settings = result.settings;
+        // console.log(settings);
+        if (settings) {
+            console.log(settings);
+            const age = settings.age;
+            const sort = settings.sort;
+            const aElements = document.querySelectorAll(`a`);
+            aElements.forEach(aElement => {
+                const regex = new RegExp('https?://booth.pm/.*/(search|browse)/.*');
+
+                if (regex.test(aElement.href)) {
+                    var url = new URL(aElement.href);
+                    // console.log(url.href);
+                    if (age) {
+                        if (age === "r18") {
+                            url.searchParams.set("adult", "only");
+                        }
+                        else if (age === "none") {
+                            url.searchParams.set("adult", "include");
+                        }
+                    }
+                    if (sort) {
+                        url.searchParams.set("sort", sort);
+                    }
+                    aElement.href = url.href;
+                }
+            })
+
+        }
+    });
 }
 
 /**
@@ -148,5 +182,6 @@ document.head.insertAdjacentElement('beforeEnd', link);
 console.log(window.location.origin);
 
 addButton();
-reattachURL();
+attachShopURL();
+window.addEventListener("load", attachOptionURL);
 hideDescription();

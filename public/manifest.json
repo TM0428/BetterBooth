@@ -23,7 +23,8 @@
         {
             "matches": [
                 "https://booth.pm/ja/browse/*",
-                "https://booth.pm/ja/search/*"
+                "https://booth.pm/ja/search/*",
+                "https://booth.pm/ja/items*"
             ],
             "js": [
                 "js/filter.js"

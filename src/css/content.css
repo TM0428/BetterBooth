@@ -24,6 +24,12 @@
 
 .header-image {
     height: 320px;
+    width: 100%;
+    object-fit: cover;
+}
+
+header.invisible-for-mobile-app {
+    width: 100%;
 }
 
 div.booth-description div.u-mb-300 div.description {
