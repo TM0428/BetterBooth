@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Better Booth-vue",
+    "name": "Better Booth",
     "version": "0.0.1",
     "description": "Improve your booth.pm experience with this extension.",
     "icons": {

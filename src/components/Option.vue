@@ -12,9 +12,9 @@
       <li>
         年齢制限
         <select v-model="ageselected" @change="ageHandleChange($event.target.value)">
-          <option value="none">指定なし</option>
-          <option value="all">全年齢のみ</option>
-          <option value="r18">R18のみ</option>
+          <option value="include">指定なし</option>
+          <option value="default">全年齢のみ</option>
+          <option value="only">R18のみ</option>
         </select>
       </li>
       <li>
@@ -67,7 +67,7 @@ export default {
     });
     chrome.storage.sync.get("settings", result => {
       this.settings = result.settings || {};
-      this.ageselected = this.settings.age || "none";
+      this.ageselected = this.settings.age || "";
       this.sortselected = this.settings.sort || "";
     })
   }

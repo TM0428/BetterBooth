@@ -52,3 +52,39 @@ div.booth-description div.u-mb-300 div.description {
     text-align: center;
     cursor: pointer;
 }
+
+div.w-full.shrink div.item-search-box form {
+    display: none;
+}
+
+div.w-full.shrink div.item-search-box div {
+    transition: all 1s ease-out;
+}
+
+div.new-item-search-box {
+    margin-left: 10px;
+    width: 42px;
+    max-width: 600px;
+}
+
+div.new-item-search-box.focus {
+    width: 100%;
+}
+
+#new-input-txtbox {
+    width: 0px;
+    max-width: 600px;
+    padding: 6px 30px 6px 10px;
+    margin-right: 0;
+    transition: all 1s ease-out;
+}
+
+#new-input-txtbox.focus {
+    width: 400px;
+}
+
+
+.icon-search {
+    font-size: 1.25rem;
+    color: #252f3d;
+}
