@@ -71,18 +71,16 @@ div.new-item-search-box.focus {
     width: 100%;
 }
 
+div.item-search-input__container {
+    width: 100%;
+}
+
 #new-input-txtbox {
-    width: 0px;
-    max-width: 600px;
+    width: 100%;
     padding: 6px 30px 6px 10px;
     margin-right: 0;
     transition: all 1s ease-out;
 }
-
-#new-input-txtbox.focus {
-    width: 400px;
-}
-
 
 .icon-search {
     font-size: 1.25rem;

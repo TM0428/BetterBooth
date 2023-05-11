@@ -25,25 +25,6 @@ function filterList() {
     });
 }
 
-function addFilter(word) {
-    chrome.storage.sync.get('filters', (result) => {
-        console.log(result);
-        var filterArray = result.filters;
-        if (filterArray) {
-            filterArray.push(word);
-            chrome.storage.sync.set({ filters: filterArray });
-            console.log("filter add.");
-        }
-        else {
-            filterArray = [word];
-            chrome.storage.sync.set({ filters: filterArray });
-            console.log("filter add.");
-        }
-        filterList();
-        console.log(filterArray);
-    });
-}
-
 function hasParentItemCard(target) {
     let currentElement = target;
     while (currentElement) {

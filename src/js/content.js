@@ -61,6 +61,8 @@ function attachOptionURL() {
         if (settings) {
             const age = settings.age;
             const sort = settings.sort;
+            const in_stock = settings.in_stock;
+            const new_arrival = settings.new_arrival;
             const aElements = document.querySelectorAll(`a`);
             aElements.forEach(aElement => {
                 // console.log(aElement.href);
@@ -75,6 +77,12 @@ function attachOptionURL() {
                     if (sort) {
                         url.searchParams.set("sort", sort);
                     }
+                    if (in_stock) {
+                        url.searchParams.set("in_stock", "true");
+                    }
+                    if (new_arrival) {
+                        url.searchParams.set("new_arrival", "true");
+                    }
                     aElement.href = url.href;
                 }
             })
@@ -83,6 +91,9 @@ function attachOptionURL() {
     });
 }
 
+/**
+ * 入力されたクエリから、検索URLを出力する関数
+ */
 function setSearchOption() {
 
     chrome.storage.sync.get("settings", (result) => {
@@ -96,12 +107,20 @@ function setSearchOption() {
             console.log(settings);
             const age = settings.age;
             const sort = settings.sort;
+            const in_stock = settings.in_stock;
+            const new_arrival = settings.new_arrival;
 
             if (age) {
                 url.searchParams.set("adult", age);
             }
             if (sort) {
                 url.searchParams.set("sort", sort);
+            }
+            if (in_stock) {
+                url.searchParams.set("in_stock", "true");
+            }
+            if (new_arrival) {
+                url.searchParams.set("new_arrival", "true");
             }
         }
         document.location.href = url.href;
@@ -132,6 +151,11 @@ function makeNewSearchTab() {
         if (event.keyCode === 13 && event.target.value) {
             setSearchOption();
         }
+        if (event.keyCode === 27 && inputElement.classList.contains("focus")) {
+            inputElement.classList.remove("focus");
+            divElement.classList.remove("focus");
+            inputElement.blur();
+        }
     });
 
     // react-autowhatever-1要素を作成
@@ -143,10 +167,6 @@ function makeNewSearchTab() {
     // div要素にinput要素とreact-autowhatever-1要素を追加
     const inputContainerElement = document.createElement("div");
     inputContainerElement.classList.add("item-search-input__container", "relative");
-    inputContainerElement.setAttribute("role", "combobox");
-    inputContainerElement.setAttribute("aria-haspopup", "listbox");
-    inputContainerElement.setAttribute("aria-owns", "react-autowhatever-1");
-    inputContainerElement.setAttribute("aria-expanded", "false");
     inputContainerElement.appendChild(inputElement);
     inputContainerElement.appendChild(reactAutowhatever1Element);
 
@@ -200,24 +220,6 @@ function makeNewSearchTab() {
         }
     }, 1000);
 
-    /*
-    // 新しいdiv要素を作成する
-    const div = document.createElement("div");
-    div.className = "flex justify-between box-border items-center cursor-pointer rounded-r-[5px] border-y border-r h-[32px] px-12 border-border500 font-normal bg-white hover:opacity-80 disabled:opacity-[0.34] disabled:hover:opacity-[0.34]";
-
-    // 新しいpixiv-icon要素を作成する
-    const icon = document.createElement("pixiv-icon");
-    icon.className = "text-text-gray100";
-    icon.setAttribute("name", "24/OptionsAlt");
-    icon.setAttribute("unsafe-non-guideline-scale", "0.8333333333333334");
-
-    // div要素にpixiv-icon要素を追加する
-    div.appendChild(icon);
-
-    // body要素の末尾にdiv要素を追加する
-    divElement.appendChild(div);
-    */
-
 }
 
 /**
@@ -256,7 +258,6 @@ function addButton() {
             button.appendChild(text);
             button.addEventListener('click', () => {
                 const url = window.location.origin + "/";
-                // console.log(button.classList);
                 if (button.classList.contains(NOW_BLOCK)) {
                     button.classList.remove(NOW_BLOCK);
                     button.classList.add(NOT_BLOCK);
@@ -271,6 +272,7 @@ function addButton() {
                     var contents = document.querySelector("main.modules");
                     contents.style.display = "none";
                     text.textContent = "\u30d6\u30ed\u30c3\u30af\u4e2d";
+                    addFilter(url);
                 }
             });
             parentDiv.appendChild(button);
