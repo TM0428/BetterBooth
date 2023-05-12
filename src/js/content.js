@@ -239,7 +239,7 @@ function addButton() {
             if (!parentDiv) return;
             const button = document.createElement('button');
             var icon = document.createElement('i');
-            icon.className = 'fas fa-exclamation';
+            icon.className = 'icon-attention s-1x';
             var text = document.createElement('span');
             text.classList.add("u-align-middle");
             if (filterArray && filterArray.includes(window.location.origin + "/")) {
@@ -293,7 +293,7 @@ function hideDescription() {
         const showMore = document.createElement("div");
         showMore.className = "show-more";
         const icon = document.createElement("i");
-        icon.className = "icon-arrow-open-down s-3x";
+        icon.className = "icon-arrow-open-down s-2x";
         showMore.appendChild(icon);
         description.appendChild(showMore);
         toggleFade(content);
@@ -302,11 +302,11 @@ function hideDescription() {
             if (content.clientHeight <= 400) {
                 var height = content.scrollHeight + "px";
                 content.style.height = height;
-                icon.className = "icon-arrow-open-up s-3x";
+                icon.className = "icon-arrow-open-up s-2x";
             }
             else {
                 content.style.height = '400px';
-                icon.className = "icon-arrow-open-down s-3x";
+                icon.className = "icon-arrow-open-down s-2x";
             }
         });
 
@@ -320,11 +320,6 @@ async function findTitle(event) {
     const title = text.match(/<title>(.*?)<\/title>/i)[1];
     console.log(title);
 }
-
-let link = document.createElement('link');
-link.rel = 'stylesheet';
-link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
-document.head.insertAdjacentElement('beforeEnd', link);
 
 addButton();
 attachShopURL();
