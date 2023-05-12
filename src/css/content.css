@@ -36,6 +36,7 @@ div.booth-description div.u-mb-300 div.description {
     height: 400px;
     position: relative;
     overflow: hidden;
+    transition: height 1s ease-out;
 }
 
 .fade::after {

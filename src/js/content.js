@@ -289,24 +289,24 @@ function hideDescription() {
     if (description && description.clientHeight > 400) {
         const content = description.children[0];
         content.className = "description";
-        console.log(description);
+        // console.log(description);
         const showMore = document.createElement("div");
         showMore.className = "show-more";
         const icon = document.createElement("i");
-        icon.className = "fas fa-chevron-down";
+        icon.className = "icon-arrow-open-down s-3x";
         showMore.appendChild(icon);
         description.appendChild(showMore);
         toggleFade(content);
-
         showMore.addEventListener("click", () => {
             toggleFade(content);
             if (content.clientHeight <= 400) {
-                content.style.height = 'auto';
-                icon.className = "fas fa-chevron-up";
+                var height = content.scrollHeight + "px";
+                content.style.height = height;
+                icon.className = "icon-arrow-open-up s-3x";
             }
             else {
                 content.style.height = '400px';
-                icon.className = "fas fa-chevron-down";
+                icon.className = "icon-arrow-open-down s-3x";
             }
         });
 
