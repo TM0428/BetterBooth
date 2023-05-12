@@ -1,25 +1,24 @@
 # BetterBooth
 
-This template should help get you started developing with Vue 3 in Vite.
+[booth.pm](https://booth.pm)の若干不便に感じる部分を改変する拡張機能です。
+![](public/icon/icon-128.png)
 
-## Recommended IDE Setup
+## 実装項目
+### shop filter
+見たくないコンテンツを売っているショップを、検索欄から表示しないように設定します。<br>
+また、ショップの商品一覧も表示されないように設定されます。
+### search settings
+Boothの検索では、毎回検索条件がクリアされてしまうため、何度も絞り込み検索をする必要があります。そこで、オプションから設定を保存することで、毎回同じ絞り込み検索をしてくれます。
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+対応項目は、年齢制限、ソート条件、在庫なし・販売終了を含む、最近公開された商品のみになります。
 
-## Customize configuration
+また、検索バーに"s"キーでアクセスできるようになります。同様に、"esc"キーで入力状態から抜けられるようになります。
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Project Setup
 
 ```sh
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
 ```
 
 ### Compile and Minify for Production
