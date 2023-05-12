@@ -288,7 +288,7 @@ function hideDescription() {
     const description = document.querySelector("div.booth-description div.u-mb-300");
     if (description && description.clientHeight > 400) {
         const content = description.children[0];
-        content.className = "description";
+        content.className = "description-contents";
         // console.log(description);
         const showMore = document.createElement("div");
         showMore.className = "show-more";

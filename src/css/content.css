@@ -32,7 +32,7 @@ header.invisible-for-mobile-app {
     width: 100%;
 }
 
-div.booth-description div.u-mb-300 div.description {
+div.booth-description div.u-mb-300 div.description-contents {
     height: 400px;
     position: relative;
     overflow: hidden;
