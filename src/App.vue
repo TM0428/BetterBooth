@@ -5,7 +5,7 @@ import Option from './components/Option.vue'
 <template>
 
   <main>
-    <Option />
+    <Option></Option>
   </main>
 </template>
 
@@ -13,6 +13,7 @@ import Option from './components/Option.vue'
 main {
     margin-left: auto;
     margin-right: auto;
-    width: 400px;
+    min-width: 300px;
+    width: 450px;
 }
 </style>

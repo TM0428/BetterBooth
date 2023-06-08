@@ -3,7 +3,9 @@
     <h1>Filters:</h1>
     <ul class="filter-list">
       <li v-for="(filter, index) in filters" :key="filter" class="filter-item">
-        {{ filter }}
+        <a :href="filter" target="_blank">
+          {{ filter }}
+        </a>
         <button @click="removeFilter(index)" class="filter-item right-side">Remove</button>
       </li>
     </ul>
@@ -87,13 +89,18 @@ export default {
 </script>
 <style scoped>
 .filter-list {
+  min-width: 350px;
   width: 400px;
+  max-height: 200px;
+  overflow: scroll;
 }
 .right-side {
   float: right;
 }
 .search-setting {
+  min-width: 350px;
   width: 400px;
+  max-height: 200px;
 }
 ul {
   box-shadow :0px 0px 3px silver;
