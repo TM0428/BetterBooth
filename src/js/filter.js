@@ -39,6 +39,7 @@ function hasParentItemCard(target) {
 /**
  * ページ上でコンテストメニューを表示した時に発生するイベント
  */
+/*
 document.addEventListener("contextmenu", function (event) {
     // イベント発生時の要素を保存
     clickedEl = event.target;
@@ -50,10 +51,12 @@ document.addEventListener("contextmenu", function (event) {
         chrome.runtime.sendMessage({ type: "unvisibleContextMenu" });
     }
 }, true);
+*/
+
 /**
  * Background Scriptからのメッセージを受け取るためのリスナー
  */
-
+/*
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     console.log(message);
     if (message.type === "contextMenuClick") {
@@ -72,7 +75,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     }
 });
 
-
+*/
 
 
 filterList();

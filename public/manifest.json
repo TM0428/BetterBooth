@@ -1,19 +1,13 @@
 {
     "manifest_version": 3,
     "name": "Better Booth",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Improve your booth.pm experience with this extension.",
     "icons": {
         "128": "icon/icon-128.png"
     },
-    "background": {
-        "service_worker": "js/background.js",
-        "type": "module"
-    },
     "permissions": [
-        "storage",
-        "contextMenus",
-        "tabs"
+        "storage"
     ],
     "options_ui": {
         "page": "index.html",

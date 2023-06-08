@@ -1,17 +1,20 @@
 
 
 // コンテキストメニューの作成
+/*
 chrome.contextMenus.create({
     id: "block-shop",
     title: "このショップをブロック",
     contexts: ["link"],
     documentUrlPatterns: ["*://booth.pm/*"],
 });
+*/
 
 /**
   * メニューが選択されたときの処理
   * 選択されたアイテムはこちらの関数の引数に入ってくる(今回は item)
   */
+/*
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
     if (info.menuItemId === "block-shop") {
         chrome.tabs.sendMessage(tab.id, {
@@ -21,6 +24,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
         });
     }
 });
+*/
 /*
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.type === "unvisibleContextMenu") {

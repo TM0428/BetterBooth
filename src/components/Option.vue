@@ -48,7 +48,7 @@ export default {
     return {
       filters: [],
       settings: {
-        age: "",
+        age: "include",
         sort: "",
         in_stock: false,
         new_arrival: false
@@ -76,7 +76,8 @@ export default {
       this.filters = result.filters || [];
     });
     chrome.storage.sync.get("settings", result => {
-      if(result){
+      console.log(result.settings);
+      if(result.settings !== undefined){
         this.settings = result.settings;
         this.in_stock = this.settings.in_stock || true;
       }
