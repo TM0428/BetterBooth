@@ -58,18 +58,11 @@ div.w-full.shrink div.item-search-box form {
     display: none;
 }
 
-div.w-full.shrink div.item-search-box div {
-    transition: all 1s ease-out;
-}
 
 div.new-item-search-box {
     margin-left: 10px;
-    width: 42px;
-    max-width: 600px;
-}
-
-div.new-item-search-box.focus {
     width: 100%;
+    max-width: 600px;
 }
 
 div.item-search-input__container {

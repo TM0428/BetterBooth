@@ -57,6 +57,10 @@ function attachShopURL() {
 function attachOptionURL() {
     chrome.storage.sync.get("settings", (result) => {
         const settings = result.settings;
+        // 設定から条件を指定しない場合は以下の処理を無視
+        if (result.settings.disable === true) {
+            return;
+        }
         // console.log(settings);
         if (settings) {
             const age = settings.age;
@@ -65,6 +69,8 @@ function attachOptionURL() {
             const new_arrival = settings.new_arrival;
             const aElements = document.querySelectorAll(`a`);
             aElements.forEach(aElement => {
+                // 下のナビゲーションに含まれる場合は、ソート条件を維持させる
+                if (aElement.classList.contains("nav-item")) return;
                 // console.log(aElement.href);
                 const regex = new RegExp('https?://booth.pm/.*/(search|browse)/.*');
 
@@ -102,6 +108,11 @@ function setSearchOption() {
         if (value === "") return;
         var url = new URL("https://booth.pm/ja/search/" + value);
         const settings = result.settings;
+        // 設定から条件を指定しない場合は以下の処理を無視
+        if (result.settings.disable === true) {
+            document.location.href = url.href;
+            return;
+        }
         // console.log(settings);
         if (settings) {
             console.log(settings);
@@ -195,12 +206,7 @@ function makeNewSearchTab() {
     iElement.classList.add("icon-search", "s-1x");
     buttonElement.appendChild(iElement);
     buttonElement.addEventListener("click", () => {
-        if (!inputElement.classList.contains("focus")) {
-            inputElement.classList.add("focus");
-            inputElement.focus();
-            divElement.classList.add("focus");
-        }
-        else if (inputElement) {
+        if (inputElement.value !== "") {
             setSearchOption();
         }
     })
