@@ -1,3 +1,7 @@
 .l-market-grid {
     visibility: hidden;
 }
+
+div.item-card__shop-info {
+    display: flex !important;
+}

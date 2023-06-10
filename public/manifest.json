@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Better Booth",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Improve your booth.pm experience with this extension.",
     "icons": {
         "128": "icon/icon-128.png"

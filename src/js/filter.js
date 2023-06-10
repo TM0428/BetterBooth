@@ -1,3 +1,19 @@
+function addFilter(word) {
+    chrome.storage.sync.get('filters', (result) => {
+        var filterArray = result.filters;
+        if (filterArray && !filterArray.includes(word)) {
+            filterArray.push(word);
+            chrome.storage.sync.set({ filters: filterArray });
+            console.log("filter add.");
+        }
+        else {
+            filterArray = [word];
+            chrome.storage.sync.set({ filters: filterArray });
+            console.log("filter add.");
+        }
+    });
+}
+
 function filterList() {
     const marketGrid = document.querySelector("div.l-row.l-market-grid");
     const liElements = document.querySelectorAll(`li.item-card.l-card`);
@@ -17,11 +33,44 @@ function filterList() {
                         liElement.style.display = "none";
                     }
                     else {
+                        // ユーザーの横に!マークを設置し、そこからブロックも可にする
+                        var icon = document.createElement('i');
+                        icon.className = 'icon-attention s-1x';
+                        icon.display = "inline";
+                        icon.style.cursor = "pointer";
+                        icon.classList.add("block-btn_margin");
+
+                        const shopName = aElement.querySelector('div.item-card__shop-name').textContent;
+                        icon.addEventListener('click', () => {
+                            var confirm = window.confirm("ショップ「" + shopName + "」をブロックしますか？");
+                            if (confirm) {
+                                addFilter(aElement.href);
+                                filterReload(aElement.href);
+                            }
+                        });
+
+                        liElement.querySelector('div.item-card__shop-info').appendChild(icon);
+                        liElement.querySelector('div.item-card__shop-info').classList.add("u-justify-content-between");
+                        liElement.querySelector('a.item-card__shop-name-anchor').display = "inline";
                     }
                 }
             });
         }
         marketGrid.style.visibility = "visible";
+    });
+}
+
+function filterReload(url) {
+    const liElements = document.querySelectorAll(`li.item-card.l-card`);
+    // li要素の中から、指定された条件に一致する要素を取得する
+    liElements.forEach(liElement => {
+        const itemCardSummaryElement = liElement.querySelector('div.item-card__summary');
+        const itemCardShopInfoElement = itemCardSummaryElement.querySelector('div.item-card__shop-info');
+        const aElement = itemCardShopInfoElement.querySelector('a');
+
+        if (aElement && aElement.href === url) {
+            liElement.style.display = "none";
+        }
     });
 }
 

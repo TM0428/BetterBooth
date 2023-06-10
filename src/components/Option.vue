@@ -137,6 +137,8 @@ export default {
   width: 400px;
   max-height: 200px;
   overflow: scroll;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 .right-side {
   float: right;
