@@ -249,14 +249,14 @@ function addButton() {
             var text = document.createElement('span');
             text.classList.add("u-align-middle");
             if (filterArray && filterArray.includes(window.location.origin + "/")) {
-                button.classList.add("btn", "small-dense", NOW_BLOCK, "block-button");
+                button.classList.add("btn", "small-dense", NOW_BLOCK, "block-button", "shop__background--contents", "shop__text--price");
                 // ブロック中
                 text.textContent = "\u30d6\u30ed\u30c3\u30af\u4e2d";
                 var contents = document.querySelector("main.modules");
                 contents.style.display = "none";
             }
             else {
-                button.classList.add("btn", "small-dense", NOT_BLOCK, "block-button");
+                button.classList.add("btn", "small-dense", NOT_BLOCK, "block-button", "shop__text--contents");
                 // ブロック
                 text.textContent = "\u30d6\u30ed\u30c3\u30af";
             }
@@ -265,16 +265,16 @@ function addButton() {
             button.addEventListener('click', () => {
                 const url = window.location.origin + "/";
                 if (button.classList.contains(NOW_BLOCK)) {
-                    button.classList.remove(NOW_BLOCK);
-                    button.classList.add(NOT_BLOCK);
+                    button.classList.remove(NOW_BLOCK, "shop__background--contents", "shop__text--price");
+                    button.classList.add(NOT_BLOCK, "shop__text--contents");
                     var contents = document.querySelector("main.modules");
                     contents.style.display = "block";
                     text.textContent = "\u30d6\u30ed\u30c3\u30af";
                     removeFilter(url);
                 }
                 else {
-                    button.classList.remove(NOT_BLOCK);
-                    button.classList.add(NOW_BLOCK);
+                    button.classList.remove(NOT_BLOCK, "shop__text--contents");
+                    button.classList.add(NOW_BLOCK, "shop__background--contents", "shop__text--price");
                     var contents = document.querySelector("main.modules");
                     contents.style.display = "none";
                     text.textContent = "\u30d6\u30ed\u30c3\u30af\u4e2d";

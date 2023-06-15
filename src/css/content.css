@@ -39,6 +39,10 @@ div.booth-description div.u-mb-300 div.description-contents {
     transition: height 1s ease-out;
 }
 
+.shop-global-nav__follow-button {
+    height: 33px;
+}
+
 .fade::after {
     content: "";
     position: absolute;
@@ -46,7 +50,7 @@ div.booth-description div.u-mb-300 div.description-contents {
     left: 0;
     width: 100%;
     height: 50px;
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--shop-theme-contents-color));
 }
 
 .show-more {
