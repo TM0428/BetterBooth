@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Filters:</h1>
+    <h1>{{ $i18n("filtersHeader") }}</h1>
     <ul class="filter-list">
       <li v-for="(filter, index) in filters" :key="filter" class="filter-item">
         <a :href="filter" target="_blank">
@@ -106,6 +106,8 @@ export default {
 
   },
   created() {
+    // 言語ファイルが正しく読み込まれることを確認してください
+    console.log(this.$i18n('filtersHeader'));
     chrome.storage.sync.get("filters", result => {
       this.filters = result.filters || [];
     });

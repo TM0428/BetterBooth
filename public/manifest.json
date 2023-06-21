@@ -1,10 +1,12 @@
 {
     "manifest_version": 3,
     "name": "Better Booth",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "description": "Improve your booth.pm experience with this extension.",
+    "default_locale": "en",
     "icons": {
-        "128": "icon/icon-128.png"
+        "128": "icon/icon-128.png",
+        "400": "icon/icon-400.png"
     },
     "permissions": [
         "storage"
