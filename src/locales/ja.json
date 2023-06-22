@@ -15,5 +15,7 @@
     "newArrivalLabel": "最近公開された商品のみ",
     "saveButton": "Save",
     "disableButton": "Disable",
-    "disableButtonEnable": "Enable"
+    "disableButtonEnable": "Enable",
+    "BlockText": "ブロック",
+    "BlockingText": "ブロック中"
 }

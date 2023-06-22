@@ -15,5 +15,7 @@
     "newArrivalLabel": "New Arrivals Only",
     "saveButton": "Save",
     "disableButton": "Disable",
-    "disableButtonEnable": "Enable"
+    "disableButtonEnable": "Enable",
+    "BlockText": "Block",
+    "BlockingText": "Blocking"
 }
