@@ -1,48 +1,48 @@
 <template>
   <div>
-    <h1>{{ $i18n("filtersHeader") }}</h1>
+    <h1>{{ lang.filtersHeader }}</h1>
     <ul class="filter-list">
       <li v-for="(filter, index) in filters" :key="filter" class="filter-item">
         <a :href="filter" target="_blank">
           {{ filter }}
         </a>
-        <button @click="removeFilter(index)" class="filter-item right-side">Remove</button>
+        <button @click="removeFilter(index)" class="filter-item right-side">{{ lang.removeButton }}</button>
       </li>
     </ul>
     <h1>Settings:</h1>
     <ul class="search-setting">
       <div>
-        <fieldset v-bind:disabled="disable_data">
+        <fieldset :disabled="disable_data">
           <li>
-            年齢制限
+            {{ lang.ageLabel }}
             <select class="right-side" v-model="settings.age">
-              <option value="include">指定なし</option>
-              <option value="default">全年齢のみ</option>
-              <option value="only">R18のみ</option>
+              <option value="include">{{ lang.includeOption }}</option>
+              <option value="default">{{ lang.defaultOption }}</option>
+              <option value="only">{{ lang.onlyOption }}</option>
             </select>
           </li>
           <li>
-            ソート条件
+            {{ lang.sortLabel }}
             <select class="right-side" v-model="settings.sort">
-              <option value="">人気順</option>
-              <option value="new">新着順</option>
-              <option value="wish_list">スキ順</option>
-              <option value="price_desc">価格が高い順</option>
-              <option value="price_asc">価格が低い順</option>
+              <option value="">{{ lang.popularOption }}</option>
+              <option value="new">{{ lang.newOption }}</option>
+              <option value="wish_list">{{ lang.wishListOption }}</option>
+              <option value="price_desc">{{ lang.priceDescOption }}</option>
+              <option value="price_asc">{{ lang.priceAscOption }}</option>
             </select>
           </li>
           <li>
-            在庫なし・販売終了を含む
+            {{ lang.stockLabel }}
             <input class="right-side" type="checkbox" v-model="in_stock">
           </li>
           <li>
-            最近公開された商品のみ
+            {{ lang.newArrivalLabel }}
             <input class="right-side" type="checkbox" v-model="settings.new_arrival">
           </li>
         </fieldset>
       </div>
       <li>
-        <button @click="saveData()">Save</button>
+        <button @click="saveData()">{{ lang.saveButton }}</button>
         <button class="right-side" @click="toggleDisable()"> {{ disable_text }}</button>
       </li>
       <div>
@@ -51,8 +51,15 @@
     </ul>
   </div>
 </template>
+
   
 <script>
+import ja from '../locales/ja.json'
+import en from '../locales/en.json'
+import ko from '../locales/ko.json'
+import zh_cn from '../locales/zh-CN.json'
+import zh_tw from '../locales/zh-TW.json'
+
 export default {
   data() {
     return {
@@ -66,7 +73,9 @@ export default {
       },
       in_stock: true,
       disable_text: "Disable",
-      notifText: ""
+      notificationTimer: null,
+      notifText: "",
+      lang: ja
     };
   },
   methods: {
@@ -97,17 +106,41 @@ export default {
     },
     showNotificationText(txt) {
       this.notifText = txt;
-      setTimeout( () => {
+      
+      if (this.notificationTimer) {
+        clearTimeout(this.notificationTimer); // 前回のタイマーをキャンセル
+      }
+      
+      this.notificationTimer = setTimeout(() => {
         this.notifText = "";
-      }, 2000
-      );
+        this.notificationTimer = null; // タイマーをクリア
+      }, 2000);
     }
 
 
   },
   created() {
     // 言語ファイルが正しく読み込まれることを確認してください
-    console.log(this.$i18n('filtersHeader'));
+    const userLocale = window.navigator.language;
+    console.log(userLocale);
+    switch(userLocale){
+      case "en":
+        this.lang = en;
+        break;
+      case "ko":
+        this.lang = ko;
+        break;
+      case "zh-CN":
+        this.lang = zh_cn;
+        break;
+      case "zh-TW":
+        this.lang = zh_tw;
+      case "zh":
+        this.lang = zh_cn;
+        break;
+      default:
+        this.lang = ja;
+    }
     chrome.storage.sync.get("filters", result => {
       this.filters = result.filters || [];
     });
