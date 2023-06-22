@@ -1,0 +1,19 @@
+{
+    "filtersHeader": "Filters:",
+    "removeButton": "Remove",
+    "ageLabel": "Age Restriction",
+    "sortLabel": "Sorting",
+    "includeOption": "All",
+    "defaultOption": "All-Age",
+    "onlyOption": "Adult Only",
+    "popularOption": "Popularity",
+    "newOption": "New",
+    "wishListOption": "Sort by Loves",
+    "priceDescOption": "Price: High to Low",
+    "priceAscOption": "Price: Low to High",
+    "stockLabel": "Include out of stock",
+    "newArrivalLabel": "New Arrivals Only",
+    "saveButton": "Save",
+    "disableButton": "Disable",
+    "disableButtonEnable": "Enable"
+}

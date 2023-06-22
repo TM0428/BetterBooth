@@ -1,0 +1,19 @@
+{
+    "filtersHeader": "Filter:",
+    "removeButton": "Remove",
+    "ageLabel": "年齢制限",
+    "sortLabel": "ソート条件",
+    "includeOption": "指定なし",
+    "defaultOption": "全年齢のみ",
+    "onlyOption": "R18のみ",
+    "popularOption": "人気順",
+    "newOption": "新着順",
+    "wishListOption": "スキ順",
+    "priceDescOption": "価格が高い順",
+    "priceAscOption": "価格が低い順",
+    "stockLabel": "在庫なし・販売終了を含む",
+    "newArrivalLabel": "最近公開された商品のみ",
+    "saveButton": "Save",
+    "disableButton": "Disable",
+    "disableButtonEnable": "Enable"
+}

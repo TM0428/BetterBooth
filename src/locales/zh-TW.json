@@ -1,0 +1,19 @@
+{
+    "filtersHeader": "Filter:",
+    "removeButton": "移除",
+    "ageLabel": "Age Restriction",
+    "sortLabel": "排序",
+    "includeOption": "無指定",
+    "defaultOption": "全年齡限定",
+    "onlyOption": "R18限定",
+    "popularOption": "人氣順序",
+    "newOption": "新商品",
+    "wishListOption": "喜歡",
+    "priceDescOption": "價格從高到低",
+    "priceAscOption": "價格從低到高",
+    "stockLabel": "顯示已售完及販售結束的商品",
+    "newArrivalLabel": "最近公開的商品限定",
+    "saveButton": "保存",
+    "disableButton": "Disable",
+    "disableButtonEnable": "Enable"
+}

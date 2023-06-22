@@ -1,0 +1,19 @@
+{
+    "filtersHeader": "Filter:",
+    "removeButton": "제거",
+    "ageLabel": "Age Restriction",
+    "sortLabel": "정렬",
+    "includeOption": "지정 안 함",
+    "defaultOption": "전체연령만",
+    "onlyOption": "R18 상품만",
+    "popularOption": "인기순",
+    "newOption": "최신순",
+    "wishListOption": "좋아요",
+    "priceDescOption": "높은 가격순",
+    "priceAscOption": "낮은 가격순",
+    "stockLabel": "품절 포함",
+    "newArrivalLabel": "최신 상품만",
+    "saveButton": "저장",
+    "disableButton": "Disable",
+    "disableButtonEnable": "Enable"
+}
