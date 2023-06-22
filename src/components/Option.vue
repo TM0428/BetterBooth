@@ -135,6 +135,7 @@ export default {
         break;
       case "zh-TW":
         this.lang = zh_tw;
+        break;
       case "zh":
         this.lang = zh_cn;
         break;
