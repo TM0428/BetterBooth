@@ -1,6 +1,7 @@
 const NOW_BLOCK = "shop__border--price";
 const NOT_BLOCK = "shop__background--price";
 
+
 function addFilter(word) {
     chrome.storage.sync.get('filters', (result) => {
         var filterArray = result.filters;
@@ -69,6 +70,7 @@ function attachOptionURL() {
             const new_arrival = settings.new_arrival;
             const aElements = document.querySelectorAll(`a`);
             aElements.forEach(aElement => {
+                // console.log(aElement);
                 // 下のナビゲーションに含まれる場合は、ソート条件を維持させる
                 if (aElement.classList.contains("nav-item")) return;
                 // console.log(aElement.href);
@@ -248,17 +250,28 @@ function addButton() {
             icon.className = 'icon-attention s-1x';
             var text = document.createElement('span');
             text.classList.add("u-align-middle");
+            const htmlLang = document.documentElement.lang;
+            var block = "";
+            var blocking = "";
+            if (htmlLang == "ja") {
+                block = "ブロック";
+                blocking = "ブロック中";
+            }
+            else {
+                block = "block";
+                blocking = "blocking";
+            }
             if (filterArray && filterArray.includes(window.location.origin + "/")) {
                 button.classList.add("btn", "small-dense", NOW_BLOCK, "block-button", "shop__background--contents", "shop__text--price");
                 // ブロック中
-                text.textContent = "\u30d6\u30ed\u30c3\u30af\u4e2d";
+                text.textContent = blocking;
                 var contents = document.querySelector("main.modules");
                 contents.style.display = "none";
             }
             else {
                 button.classList.add("btn", "small-dense", NOT_BLOCK, "block-button", "shop__text--contents");
                 // ブロック
-                text.textContent = "\u30d6\u30ed\u30c3\u30af";
+                text.textContent = block;
             }
             button.appendChild(icon);
             button.appendChild(text);
@@ -269,7 +282,7 @@ function addButton() {
                     button.classList.add(NOT_BLOCK, "shop__text--contents");
                     var contents = document.querySelector("main.modules");
                     contents.style.display = "block";
-                    text.textContent = "\u30d6\u30ed\u30c3\u30af";
+                    text.textContent = block;
                     removeFilter(url);
                 }
                 else {
@@ -277,7 +290,7 @@ function addButton() {
                     button.classList.add(NOW_BLOCK, "shop__background--contents", "shop__text--price");
                     var contents = document.querySelector("main.modules");
                     contents.style.display = "none";
-                    text.textContent = "\u30d6\u30ed\u30c3\u30af\u4e2d";
+                    text.textContent = blocking;
                     addFilter(url);
                 }
             });
