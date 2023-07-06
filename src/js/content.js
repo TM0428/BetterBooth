@@ -140,7 +140,19 @@ function setSearchOption() {
     });
 }
 
+/**
+ * 検索ボックスを再生成するための部分
+ */
 function makeNewSearchTab() {
+
+    const url = window.location.href;
+    const regex = new RegExp('https?://(?!manage|checkout|accounts).*.booth.pm.*');
+
+    // 管理のページでは、検索バーの処理を行わない
+    if (!regex.test(url)) {
+        return;
+    }
+
     // div要素を作成
     const divElement = document.createElement("div");
     divElement.classList.add("new-item-search-box", "flex", "w-full", "max-w-[600px]", "box-border");
