@@ -146,10 +146,11 @@ function setSearchOption() {
 function makeNewSearchTab() {
 
     const url = window.location.href;
-    const regex = new RegExp('https?://(?!manage|checkout|accounts).*.booth.pm.*');
+    const regex = new RegExp('https?://(manage|checkout|accounts).*.booth.pm.*');
 
     // 管理のページでは、検索バーの処理を行わない
-    if (!regex.test(url)) {
+    if (regex.test(url)) {
+        console.log("disabled.");
         return;
     }
 
