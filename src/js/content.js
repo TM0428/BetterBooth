@@ -426,8 +426,7 @@ function notReload() {
 addButton();
 attachShopURL();
 window.addEventListener("load", attachOptionURL);
-// window.addEventListener("load", notReload);
-// notReload();
+notReload();
 hideDescription();
 
 // findTitle();

@@ -12,11 +12,11 @@
         "storage"
     ],
     "options_ui": {
-        "page": "index.html",
+        "page": "src/option/option.html",
         "open_in_tab": true
     },
     "action": {
-        "default_popup": "index.html"
+        "default_popup": "src/popup/popup.html"
     },
     "content_scripts": [
         {
