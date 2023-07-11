@@ -9,7 +9,7 @@
         <button @click="removeFilter(index)" class="filter-item right-side">{{ lang.removeButton }}</button>
       </li>
     </ul>
-    <h1>Settings:</h1>
+    <h1>Search Settings:</h1>
     <ul class="search-setting">
       <div>
         <fieldset :disabled="disable_data">
@@ -49,6 +49,13 @@
         {{ notifText }}
       </div>
     </ul>
+    <h1> Extension Setting:</h1>
+    <ul>
+      <li>
+        購入物の情報を保存する(実験的機能)
+        <input class="right-side" type="checkbox" v-model="save_item">
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -75,7 +82,8 @@ export default {
       disable_text: "Disable",
       notificationTimer: null,
       notifText: "",
-      lang: ja
+      lang: ja,
+      save_item: false
     };
   },
   methods: {
