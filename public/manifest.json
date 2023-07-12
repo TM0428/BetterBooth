@@ -12,7 +12,7 @@
         "storage"
     ],
     "options_ui": {
-        "page": "src/option/option.html",
+        "page": "/src/option/option.html",
         "open_in_tab": true
     },
     "action": {
@@ -21,9 +21,9 @@
     "content_scripts": [
         {
             "matches": [
-                "https://booth.pm/*/browse/*",
-                "https://booth.pm/*/search/*",
-                "https://booth.pm/*/items*"
+                "*://booth.pm/*/browse/*",
+                "*://booth.pm/*/search/*",
+                "*://booth.pm/*/items*"
             ],
             "js": [
                 "js/filter.js"
@@ -35,10 +35,29 @@
         },
         {
             "matches": [
+                "*://*.booth.pm/items/*"
+            ],
+            "exclude_matches": [
+                "*://accounts.booth.pm/*",
+                "*://manage.booth.pm/*",
+                "*://checkout.booth.pm/*",
+                "*://*.booth.pm/items/*.json"
+            ],
+            "js": [
+                "js/item_get.js"
+            ],
+            "css": [],
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
                 "*://*.booth.pm/*"
             ],
             "exclude_matches": [
-                "*://booth.pm/carts/"
+                "*://booth.pm/carts/",
+                "*://accounts.booth.pm/*",
+                "*://manage.booth.pm/*",
+                "*://checkout.booth.pm/*"
             ],
             "js": [
                 "js/content.js"

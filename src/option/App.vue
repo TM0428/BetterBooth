@@ -5,9 +5,7 @@
 <template>
 
   <main>
-    <div>
-        Hello, Vue!!
-    </div>
+    <router-view />
   </main>
 </template>
 
@@ -15,7 +13,5 @@
 main {
     margin-left: auto;
     margin-right: auto;
-    min-width: 300px;
-    width: 450px;
 }
 </style>
