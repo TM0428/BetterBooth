@@ -54,7 +54,38 @@
             v-if="data.additionalDescription"
             v-html="formatDescription(data.additionalDescription)"
         ></p>
-        <router-link :to="{ name: 'Top' }">Top</router-link>
+        <div class="button-wrapper">
+            <router-link :to="{ name: 'Top' }" class="shop-button">
+                <img
+                    src="@/assets/redo.svg"
+                    alt="Link"
+                    width="24"
+                    height="24"
+                    class="button-icon"
+                />
+                <span class="button-text">アイテム一覧に戻る</span>
+            </router-link>
+            <a :href="data.shop.url" target="_blank" class="shop-button">
+                <img
+                    src="@/assets/link.svg"
+                    alt="Link"
+                    width="24"
+                    height="24"
+                    class="button-icon"
+                />
+                <span class="button-text">ショップへ行く</span>
+            </a>
+            <button class="delete-button" @click="deleteItem">
+                <img
+                    src="@/assets/delete.svg"
+                    alt="Delete"
+                    width="24"
+                    height="24"
+                    class="button-icon"
+                />
+                <span class="button-text">このアイテムを削除する</span>
+            </button>
+        </div>
         <div class="popup" v-if="popupImage">
             <span class="popup-close" @click="closePopup">&times;</span>
             <img :src="popupImage" alt="Popup Image" class="popup-image" />
@@ -63,6 +94,8 @@
 </template>
 
 <script>
+import router from "@/option/router"; // Vue Router インスタンスのインポート
+
 export default {
     props: ["itemId"],
     data() {
@@ -72,6 +105,9 @@ export default {
                 images: [""],
                 description: "",
                 additionalDescription: "",
+                shop: {
+                    url: "",
+                },
             },
             currentImageIndex: 0,
             popupImage: null,
@@ -107,6 +143,29 @@ export default {
         changeImage(index) {
             if (index >= 0 && index < this.data.images.length) {
                 this.currentImageIndex = index;
+            }
+        },
+        deleteItem() {
+            if (confirm("データを削除しますか？")) {
+                chrome.storage.local.get("items", (result) => {
+                    const items = result.items || [];
+                    const updatedItems = items.filter(
+                        (item) => item.id !== "items_" + this.itemId
+                    );
+                    chrome.storage.local.set({ items: updatedItems }, () => {
+                        chrome.storage.local.remove(
+                            `items_${this.itemId}`,
+                            () => {
+                                console.log(
+                                    `Item with ID ${this.itemId} deleted successfully.`
+                                );
+                                // 削除が完了した後の処理をここに記述する
+                                window.alert("削除が完了しました。");
+                                router.push({ name: "Top" }); // Topページにリダイレクト
+                            }
+                        );
+                    });
+                });
             }
         },
     },
@@ -231,6 +290,49 @@ export default {
     cursor: pointer;
 }
 
+.button-wrapper {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.delete-button,
+.shop-button {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: 1px solid rgba(128, 128, 128, 0.24);
+    height: 48px;
+    padding: 0 24px 0 16px;
+    margin-right: 16px;
+    letter-spacing: 0.25px;
+    border-radius: 24px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover,
+.shop-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.button-icon {
+    fill: red; /* 削除ボタンの色 */
+    margin-right: 8px;
+}
+
+.shop-button .button-icon {
+    fill: green; /* ショップへ行くボタンの色 */
+}
+
+.button-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+}
+
 body {
     overflow: auto;
 }
@@ -239,5 +341,9 @@ body {
     pointer-events: none;
     user-select: none;
     filter: brightness(40%);
+}
+
+p {
+    font-size: 15px;
 }
 </style>
