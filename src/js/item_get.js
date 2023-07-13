@@ -11,10 +11,21 @@ async function addData() {
         shop: raw_data.shop,
         id: raw_data.id,
         price: raw_data.price,
-        url: raw_data.url
+        url: raw_data.url,
+    };
+    // 追加のデータを取得して保存
+    const additionalDescriptionElement = document.querySelector(
+        ".description.empty\\:hidden"
+    );
+    if (
+        additionalDescriptionElement &&
+        additionalDescriptionElement.children.length > 0
+    ) {
+        const additionalDescription = additionalDescriptionElement.innerHTML;
+        data.additionalDescription = additionalDescription;
     }
 
-    chrome.storage.local.get('items', (result) => {
+    chrome.storage.local.get("items", (result) => {
         var items = result.items;
         if (items && !items.includes(itemId)) {
             // 新たに登録
@@ -41,25 +52,28 @@ function addSaveButton() {
     // div要素を作成
     const divElement = document.createElement("div");
     const buttonElement = document.createElement("button");
-    buttonElement.classList.add("btn", "small-dense", "shop__background--price", "block-button", "shop__text--contents");
-    var icon = document.createElement('i');
-    icon.className = 'icon-plus-circle s-1x';
-    var text = document.createElement('span');
+    buttonElement.classList.add(
+        "btn",
+        "small-dense",
+        "shop__background--price",
+        "block-button",
+        "shop__text--contents"
+    );
+    var icon = document.createElement("i");
+    icon.className = "icon-plus-circle s-1x";
+    var text = document.createElement("span");
     text.classList.add("u-align-middle");
     text.textContent = "データを保存";
     buttonElement.appendChild(icon);
     buttonElement.appendChild(text);
-    buttonElement.addEventListener('click', () => {
+    buttonElement.addEventListener("click", () => {
         addData();
-    })
+    });
 
     divElement.appendChild(buttonElement);
 
     share_btn.appendChild(divElement);
-
 }
-
-
 
 async function findTitle() {
     const url = window.location.href + ".json";

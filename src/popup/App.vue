@@ -1,12 +1,11 @@
 <script setup>
-import Option from './components/Option.vue'
+import Option from "./components/Option.vue";
 </script>
 
 <template>
-
-  <main>
-    <Option></Option>
-  </main>
+    <main>
+        <Option></Option>
+    </main>
 </template>
 
 <style scoped>
