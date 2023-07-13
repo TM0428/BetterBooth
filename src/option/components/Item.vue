@@ -172,7 +172,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .image-container {
     position: relative;
     width: 500px;

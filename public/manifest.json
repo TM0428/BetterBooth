@@ -23,7 +23,13 @@
             "matches": [
                 "*://booth.pm/*/browse/*",
                 "*://booth.pm/*/search/*",
-                "*://booth.pm/*/items*"
+                "*://booth.pm/*/items*",
+                "*://accounts.booth.pm/wish_lists*",
+                "*://booth.pm/ja",
+                "*://booth.pm/en",
+                "*://booth.pm/ko",
+                "*://booth.pm/zh-cn",
+                "*://booth.pm/zh-tw"
             ],
             "js": [
                 "js/filter.js"

@@ -1,6 +1,11 @@
 <template>
     <div>
         <h1 class="page-title">保存したアイテム一覧</h1>
+        <div class="help-link">
+            <router-link :to="{ name: 'Howto' }" class="help-link-text"
+                >使い方について</router-link
+            >
+        </div>
         <div class="card-list">
             <router-link
                 v-for="item in itemList"
@@ -26,6 +31,16 @@
 <style>
 .page-title {
     text-align: center;
+}
+
+.help-link {
+    text-align: right;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.help-link-text {
+    text-decoration: none;
 }
 
 .card-list {
