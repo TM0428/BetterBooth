@@ -88,6 +88,11 @@
                     v-model="extended_settings.save_item"
                 />
             </li>
+            <li>
+                <a target="_blank" href="/src/option/option.html#/howto"
+                    >購入物の保存とは？</a
+                >
+            </li>
             <li class="save-button">
                 <button class="right-side" @click="saveExtendedData()">
                     {{ lang.saveButton }}
