@@ -79,11 +79,23 @@
             </div>
         </ul>
         <h1>Extension Setting:</h1>
-        <ul>
+        <ul class="extended-setting">
             <li>
                 購入物の情報を保存する(実験的機能)
-                <input class="right-side" type="checkbox" v-model="save_item" />
+                <input
+                    class="right-side"
+                    type="checkbox"
+                    v-model="extended_settings.save_item"
+                />
             </li>
+            <li class="save-button">
+                <button class="right-side" @click="saveExtendedData()">
+                    {{ lang.saveButton }}
+                </button>
+            </li>
+            <div>
+                {{ exnotifText }}
+            </div>
         </ul>
     </div>
 </template>
@@ -106,12 +118,15 @@ export default {
                 new_arrival: false,
                 disable: true,
             },
+            extended_settings: {
+                save_item: false,
+            },
             in_stock: true,
             disable_text: "Disable",
             notificationTimer: null,
             notifText: "",
+            exnotifText: "",
             lang: ja,
-            save_item: false,
         };
     },
     methods: {
@@ -128,6 +143,13 @@ export default {
             chrome.storage.sync.set({ settings: this.settings });
             console.log(this.settings);
             this.showNotificationText("Saved!  Please reload.");
+        },
+        saveExtendedData() {
+            console.log(this.extended_settings);
+            chrome.storage.sync.set({
+                extended_settings: this.extended_settings,
+            });
+            this.showExNotificationText("Saved!");
         },
         toggleDisable() {
             this.settings.disable = !this.settings.disable;
@@ -148,6 +170,18 @@ export default {
 
             this.notificationTimer = setTimeout(() => {
                 this.notifText = "";
+                this.notificationTimer = null; // タイマーをクリア
+            }, 2000);
+        },
+        showExNotificationText(txt) {
+            this.exnotifText = txt;
+
+            if (this.notificationTimer) {
+                clearTimeout(this.notificationTimer); // 前回のタイマーをキャンセル
+            }
+
+            this.notificationTimer = setTimeout(() => {
+                this.exnotifText = "";
                 this.notificationTimer = null; // タイマーをクリア
             }, 2000);
         },
@@ -197,6 +231,12 @@ export default {
                 this.disable_text = "Enable";
             }
         });
+        chrome.storage.sync.get("extended_settings", (result) => {
+            console.log(result.extended_settings);
+            if (result.extended_settings) {
+                this.extended_settings = result.extended_settings;
+            }
+        });
     },
     computed: {
         disable_data() {
@@ -223,6 +263,9 @@ export default {
     min-width: 350px;
     width: 400px;
     max-height: 200px;
+}
+.save-button {
+    overflow: auto;
 }
 
 ul {

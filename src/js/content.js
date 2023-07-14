@@ -37,12 +37,12 @@ function removeFilter(word) {
 function attachOptionURL() {
     chrome.storage.sync.get("settings", (result) => {
         const settings = result.settings;
-        // 設定から条件を指定しない場合は以下の処理を無視
-        if (result.settings.disable === true) {
-            return;
-        }
         // console.log(settings);
         if (settings) {
+            // 設定から条件を指定しない場合は以下の処理を無視
+            if (result.settings.disable === true) {
+                return;
+            }
             const age = settings.age;
             const sort = settings.sort;
             const in_stock = settings.in_stock;
@@ -92,13 +92,13 @@ function setSearchOption(search_input) {
         if (value === "") return;
         var url = new URL("https://booth.pm/ja/search/" + value);
         const settings = result.settings;
-        // 設定から条件を指定しない場合は以下の処理を無視
-        if (result.settings.disable === true) {
-            document.location.href = url.href;
-            return;
-        }
         // console.log(settings);
         if (settings) {
+            // 設定から条件を指定しない場合は以下の処理を無視
+            if (result.settings.disable === true) {
+                document.location.href = url.href;
+                return;
+            }
             console.log(settings);
             const age = settings.age;
             const sort = settings.sort;
@@ -217,8 +217,6 @@ function makeNewSearchTab() {
 }
 
 function makeNewSPSearchTab() {
-    // 検索バーの要素を取得
-    const searchBar = document.querySelector('.sp-item-search.item-search');
     
     // 新しい検索タブの要素を作成
     const newSearchTab = document.createElement('div');
@@ -276,11 +274,21 @@ function makeNewSPSearchTab() {
       }
     });
   
-    // 元の検索バーの要素を非表示にする
-    searchBar.style.display = 'none';
-  
-    // 新しい検索タブを挿入
-    searchBar.parentNode.insertBefore(newSearchTab, searchBar.nextSibling);
+    // div要素を既存の要素に追加
+    var intervalId = setInterval(() => {
+
+        // 検索バーの要素を取得
+        const searchBar = document.querySelector('.sp-item-search.item-search');
+        if (searchBar) {
+            clearInterval(intervalId);
+            // 元の検索バーの要素を非表示にする
+            searchBar.style.display = 'none';
+          
+            // 新しい検索タブを挿入
+            searchBar.parentNode.insertBefore(newSearchTab, searchBar.nextSibling);
+        }
+    }, 1000);
+
   }
 
 /**

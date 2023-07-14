@@ -73,8 +73,18 @@
                     height="24"
                     class="button-icon"
                 />
-                <span class="button-text">ショップへ行く</span>
-            </a>
+                <span class="button-text">ショップへ行く</span> </a
+            ><!-- データエクスポートボタン -->
+            <button class="export-button" @click="exportData">
+                <img
+                    src="@/assets/export.svg"
+                    alt="Export"
+                    width="24"
+                    height="24"
+                    class="button-icon"
+                />
+                <span class="button-text">データをエクスポート</span>
+            </button>
             <button class="delete-button" @click="deleteItem">
                 <img
                     src="@/assets/delete.svg"
@@ -145,13 +155,29 @@ export default {
                 this.currentImageIndex = index;
             }
         },
+        exportData() {
+            const dataToExport = JSON.stringify(this.data);
+            const filename = `${this.itemId}.json`;
+
+            const blob = new Blob([dataToExport], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = filename;
+            link.click();
+
+            URL.revokeObjectURL(url);
+        },
         deleteItem() {
             if (confirm("データを削除しますか？")) {
                 chrome.storage.local.get("items", (result) => {
                     const items = result.items || [];
                     const updatedItems = items.filter(
-                        (item) => item.id !== "items_" + this.itemId
+                        (item) => item !== "items_" + String(this.itemId)
                     );
+                    console.log(updatedItems);
+
                     chrome.storage.local.set({ items: updatedItems }, () => {
                         chrome.storage.local.remove(
                             `items_${this.itemId}`,
@@ -297,6 +323,7 @@ export default {
 }
 
 .delete-button,
+.export-button,
 .shop-button {
     display: flex;
     align-items: center;
@@ -313,17 +340,15 @@ export default {
 }
 
 .delete-button:hover,
+.export-button:hover,
 .shop-button:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.button-icon {
-    fill: red; /* 削除ボタンの色 */
-    margin-right: 8px;
-}
-
-.shop-button .button-icon {
-    fill: green; /* ショップへ行くボタンの色 */
+.delete-button:active,
+.export-button:active,
+.shop-button:active {
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .button-text {

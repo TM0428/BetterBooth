@@ -68,6 +68,7 @@ function addSaveButton() {
     buttonElement.appendChild(text);
     buttonElement.addEventListener("click", () => {
         addData();
+        window.alert("データを保存しました。");
     });
 
     divElement.appendChild(buttonElement);
@@ -84,4 +85,10 @@ async function findTitle() {
 }
 
 // findTitle();
-addSaveButton();
+chrome.storage.sync.get("extended_settings", (result) => {
+    const setting = result.extended_settings;
+    if(setting && setting.save_item){
+        addSaveButton();
+    }
+
+})

@@ -25,6 +25,7 @@
                 </div>
             </router-link>
         </div>
+        <a class="page-title" href="/src/popup/popup.html">設定ページへ</a>
     </div>
 </template>
 
@@ -101,6 +102,7 @@ export default {
     created() {
         chrome.storage.local.get("items", (result) => {
             const itemIdList = result.items || [];
+            console.log(itemIdList);
             itemIdList.forEach((itemId) => {
                 chrome.storage.local.get(`${itemId}`, (itemResult) => {
                     const itemData = itemResult[itemId];

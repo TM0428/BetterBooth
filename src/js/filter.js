@@ -39,27 +39,6 @@ function filterList() {
                         // console.log(liElement);
                         liElement.style.display = "none";
                     }
-                    else {
-                        // ユーザーの横に!マークを設置し、そこからブロックも可にする
-                        var icon = document.createElement('i');
-                        icon.className = 'icon-attention s-1x';
-                        icon.display = "inline";
-                        icon.style.cursor = "pointer";
-                        icon.classList.add("block-btn_margin");
-
-                        const shopName = aElement.querySelector('div.item-card__shop-name').textContent;
-                        icon.addEventListener('click', () => {
-                            var confirm = window.confirm("ショップ「" + shopName + "」をブロックしますか？");
-                            if (confirm) {
-                                addFilter(aElement.href);
-                                filterReload(aElement.href);
-                            }
-                        });
-
-                        liElement.querySelector('div.item-card__shop-info').appendChild(icon);
-                        liElement.querySelector('div.item-card__shop-info').classList.add("u-justify-content-between");
-                        liElement.querySelector('a.item-card__shop-name-anchor').display = "inline";
-                    }
                 }
             });
         }
@@ -68,6 +47,7 @@ function filterList() {
     // li要素の中から、指定された条件に一致する要素を取得する
     liElements.forEach(liElement => {
         attachShopURL(liElement);
+        attachBlockButton(liElement);
     });
 }
 
@@ -84,6 +64,7 @@ function filterReload(url) {
         }
     });
 }
+
 /**
  * カード表示されたアイテムについて、
  * *://booth.pm/items/*のurlを*://*.booth.pm/items/*に変更する関数
@@ -105,6 +86,30 @@ function attachShopURL(liElement) {
     });
 }
 
+function attachBlockButton(liElement) {
+    const itemCardSummaryElement = liElement.querySelector('div.item-card__summary');
+    const itemCardShopInfoElement = itemCardSummaryElement.querySelector('div.item-card__shop-info');
+    const aElement = itemCardShopInfoElement.querySelector('a');
+    // ユーザーの横に!マークを設置し、そこからブロックも可にする
+    var icon = document.createElement('i');
+    icon.className = 'icon-attention s-1x';
+    icon.display = "inline";
+    icon.style.cursor = "pointer";
+    icon.classList.add("block-btn_margin");
+
+    const shopName = aElement.querySelector('div.item-card__shop-name').textContent;
+    icon.addEventListener('click', () => {
+        var confirm = window.confirm("ショップ「" + shopName + "」をブロックしますか？");
+        if (confirm) {
+            addFilter(aElement.href);
+            filterReload(aElement.href);
+        }
+    });
+
+    liElement.querySelector('div.item-card__shop-info').appendChild(icon);
+    liElement.querySelector('div.item-card__shop-info').classList.add("u-justify-content-between");
+    liElement.querySelector('a.item-card__shop-name-anchor').display = "inline";
+}
 /*
 function hasParentItemCard(target) {
     let currentElement = target;
