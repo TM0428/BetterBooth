@@ -81,11 +81,14 @@ function attachOptionURL() {
 /**
  * 入力されたクエリから、検索URLを出力する関数
  */
-function setSearchOption() {
+function setSearchOption(search_input) {
 
     chrome.storage.sync.get("settings", (result) => {
-        const input = document.getElementById("new-input-txtbox");
-        const value = input.value;
+        var value = search_input;
+        if(search_input === ""){
+            const input = document.getElementById("new-input-txtbox");
+            value = input.value;
+        }
         if (value === "") return;
         var url = new URL("https://booth.pm/ja/search/" + value);
         const settings = result.settings;
@@ -145,7 +148,7 @@ function makeNewSearchTab() {
     });
     inputElement.addEventListener("keydown", function (event) {
         if (event.keyCode === 13 && event.target.value) {
-            setSearchOption();
+            setSearchOption("");
         }
         if (event.keyCode === 27 && inputElement.classList.contains("focus")) {
             inputElement.classList.remove("focus");
@@ -192,7 +195,7 @@ function makeNewSearchTab() {
     buttonElement.appendChild(iElement);
     buttonElement.addEventListener("click", () => {
         if (inputElement.value !== "") {
-            setSearchOption();
+            setSearchOption("");
         }
     })
 
@@ -212,6 +215,73 @@ function makeNewSearchTab() {
     }, 1000);
 
 }
+
+function makeNewSPSearchTab() {
+    // 検索バーの要素を取得
+    const searchBar = document.querySelector('.sp-item-search.item-search');
+    
+    // 新しい検索タブの要素を作成
+    const newSearchTab = document.createElement('div');
+    newSearchTab.classList.add('sp-item-search', 'item-search');
+    newSearchTab.setAttribute('data-url', 'https://booth.pm/ja');
+    newSearchTab.setAttribute('data-search-params', '{"portal_domain":"ja"}');
+    newSearchTab.setAttribute('data-product-list', 'from market_top via global_nav to search_index');
+    newSearchTab.setAttribute('data-tracking', 'submit');
+    newSearchTab.style.display = 'inline-block';
+    newSearchTab.style.width = '100%';
+  
+    // 検索アイコンの要素を作成
+    const searchIcon = document.createElement('i');
+    searchIcon.classList.add('icon-search', 's-1x', 'u-text-label');
+    newSearchTab.appendChild(searchIcon);
+  
+    // テキスト入力フィールドの要素を作成
+    const searchInput = document.createElement('input');
+    searchInput.type = 'search';
+    searchInput.name = 'query';
+    searchInput.id = 'query';
+    searchInput.placeholder = 'ジャンル、商品名など';
+    searchInput.classList.add('ac-tags', 'item-search-input', 'full-length', 'tt-input');
+    searchInput.autocomplete = 'off';
+    searchInput.spellcheck = 'false';
+    searchInput.dir = 'auto';
+    searchInput.style.backgroundColor = 'transparent';
+    newSearchTab.appendChild(searchInput);
+  
+    // 入力文字列を消すアイコンの要素を作成
+    const clearIcon = document.createElement('i');
+    clearIcon.classList.add('icon-cancel-circle-fill', 'search-clear', 'js-search-clear', 'u-text-gray-500', 'u-pt-400');
+    clearIcon.style.display = 'none';
+    newSearchTab.appendChild(clearIcon);
+  
+    // テキスト入力完了時のイベントハンドラを設定
+    searchInput.addEventListener('input', function() {
+      if (this.value) {
+        clearIcon.style.display = 'flex';
+      } else {
+        clearIcon.style.display = 'none';
+      }
+    });
+  
+    // 入力文字列を消すアイコンのクリックイベントハンドラを設定
+    clearIcon.addEventListener('click', function() {
+      searchInput.value = '';
+      clearIcon.style.display = 'none';
+    });
+  
+    // テキスト入力完了時のイベントハンドラを設定
+    searchInput.addEventListener('keydown', function(event) {
+      if (event.keyCode === 13 && this.value) {
+        setSearchOption(this.value);
+      }
+    });
+  
+    // 元の検索バーの要素を非表示にする
+    searchBar.style.display = 'none';
+  
+    // 新しい検索タブを挿入
+    searchBar.parentNode.insertBefore(newSearchTab, searchBar.nextSibling);
+  }
 
 /**
  * ブロック機能用のボタンを作成する関数
@@ -383,4 +453,5 @@ hideDescription();
 // findTitle();
 
 makeNewSearchTab();
+makeNewSPSearchTab();
 // testInit();
