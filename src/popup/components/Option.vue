@@ -25,12 +25,12 @@
                     <li>
                         {{ lang.ageLabel }}
                         <select class="right-side" v-model="settings.age">
-                            <option value="include">{{
-                                lang.includeOption
-                            }}</option>
-                            <option value="default">{{
-                                lang.defaultOption
-                            }}</option>
+                            <option value="include">
+                                {{ lang.includeOption }}
+                            </option>
+                            <option value="default">
+                                {{ lang.defaultOption }}
+                            </option>
                             <option value="only">{{ lang.onlyOption }}</option>
                         </select>
                     </li>
@@ -39,15 +39,15 @@
                         <select class="right-side" v-model="settings.sort">
                             <option value="">{{ lang.popularOption }}</option>
                             <option value="new">{{ lang.newOption }}</option>
-                            <option value="wish_list">{{
-                                lang.wishListOption
-                            }}</option>
-                            <option value="price_desc">{{
-                                lang.priceDescOption
-                            }}</option>
-                            <option value="price_asc">{{
-                                lang.priceAscOption
-                            }}</option>
+                            <option value="wish_list">
+                                {{ lang.wishListOption }}
+                            </option>
+                            <option value="price_desc">
+                                {{ lang.priceDescOption }}
+                            </option>
+                            <option value="price_asc">
+                                {{ lang.priceAscOption }}
+                            </option>
                         </select>
                     </li>
                     <li>
@@ -78,10 +78,10 @@
                 {{ notifText }}
             </div>
         </ul>
-        <h1>Extension Setting:</h1>
+        <h1>Extension Settings:</h1>
         <ul class="extended-setting">
             <li>
-                購入物の情報を保存する(実験的機能)
+                商品の情報を保存する(実験的機能)
                 <input
                     class="right-side"
                     type="checkbox"
