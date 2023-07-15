@@ -26,7 +26,7 @@
         </p>
         <br />
         <a href="https://github.com/TM0428/BetterBooth/tree/ver-0.3.0/docs">
-            さらに詳しい説明はこちら
+            さらに詳しい使い方の説明はこちら
         </a>
         <br />
         <router-link :to="{ name: 'Top' }" class="shop-button">
