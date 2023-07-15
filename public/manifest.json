@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "__MSG_Name__",
     "default_locale": "ja",
-    "version": "0.2.4",
+    "version": "0.3.0",
     "description": "__MSG_Description__",
     "icons": {
         "128": "icon/icon-128.png",
@@ -12,18 +12,24 @@
         "storage"
     ],
     "options_ui": {
-        "page": "index.html",
+        "page": "/src/option/option.html",
         "open_in_tab": true
     },
     "action": {
-        "default_popup": "index.html"
+        "default_popup": "src/popup/popup.html"
     },
     "content_scripts": [
         {
             "matches": [
-                "https://booth.pm/*/browse/*",
-                "https://booth.pm/*/search/*",
-                "https://booth.pm/*/items*"
+                "*://booth.pm/*/browse/*",
+                "*://booth.pm/*/search/*",
+                "*://booth.pm/*/items*",
+                "*://accounts.booth.pm/wish_lists*",
+                "*://booth.pm/ja",
+                "*://booth.pm/en",
+                "*://booth.pm/ko",
+                "*://booth.pm/zh-cn",
+                "*://booth.pm/zh-tw"
             ],
             "js": [
                 "js/filter.js"
@@ -35,10 +41,29 @@
         },
         {
             "matches": [
+                "*://*.booth.pm/items/*"
+            ],
+            "exclude_matches": [
+                "*://accounts.booth.pm/*",
+                "*://manage.booth.pm/*",
+                "*://checkout.booth.pm/*",
+                "*://*.booth.pm/items/*.json"
+            ],
+            "js": [
+                "js/item_get.js"
+            ],
+            "css": [],
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
                 "*://*.booth.pm/*"
             ],
             "exclude_matches": [
-                "*://booth.pm/carts/"
+                "*://booth.pm/carts/",
+                "*://accounts.booth.pm/*",
+                "*://manage.booth.pm/*",
+                "*://checkout.booth.pm/*"
             ],
             "js": [
                 "js/content.js"

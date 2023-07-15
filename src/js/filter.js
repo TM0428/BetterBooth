@@ -1,3 +1,7 @@
+/**
+ * フィルターを追加する関数
+ * @param {string} word 
+ */
 function addFilter(word) {
     chrome.storage.sync.get('filters', (result) => {
         var filterArray = result.filters;
@@ -14,6 +18,9 @@ function addFilter(word) {
     });
 }
 
+/**
+ * フィルター情報を用いて、リストからブロックされているショップのアイテムを表示しないようにする関数
+ */
 function filterList() {
     const marketGrid = document.querySelector("div.l-row.l-market-grid");
     const liElements = document.querySelectorAll(`li.item-card.l-card`);
@@ -32,31 +39,15 @@ function filterList() {
                         // console.log(liElement);
                         liElement.style.display = "none";
                     }
-                    else {
-                        // ユーザーの横に!マークを設置し、そこからブロックも可にする
-                        var icon = document.createElement('i');
-                        icon.className = 'icon-attention s-1x';
-                        icon.display = "inline";
-                        icon.style.cursor = "pointer";
-                        icon.classList.add("block-btn_margin");
-
-                        const shopName = aElement.querySelector('div.item-card__shop-name').textContent;
-                        icon.addEventListener('click', () => {
-                            var confirm = window.confirm("ショップ「" + shopName + "」をブロックしますか？");
-                            if (confirm) {
-                                addFilter(aElement.href);
-                                filterReload(aElement.href);
-                            }
-                        });
-
-                        liElement.querySelector('div.item-card__shop-info').appendChild(icon);
-                        liElement.querySelector('div.item-card__shop-info').classList.add("u-justify-content-between");
-                        liElement.querySelector('a.item-card__shop-name-anchor').display = "inline";
-                    }
                 }
             });
         }
-        marketGrid.style.visibility = "visible";
+        if(marketGrid) marketGrid.style.visibility = "visible";
+    });
+    // li要素の中から、指定された条件に一致する要素を取得する
+    liElements.forEach(liElement => {
+        attachShopURL(liElement);
+        attachBlockButton(liElement);
     });
 }
 
@@ -74,6 +65,52 @@ function filterReload(url) {
     });
 }
 
+/**
+ * カード表示されたアイテムについて、
+ * *://booth.pm/items/*のurlを*://*.booth.pm/items/*に変更する関数
+ * @param {*} liElement 
+ */
+function attachShopURL(liElement) {
+    // リンクをbooth.pmから*.booth.pmに変更する
+    const aElement = liElement.querySelector('div.item-card__shop-info a');
+    const base_url = aElement.href;
+    // console.log(base_url);
+    const item = liElement.querySelector("div.item-card__title a");
+    const itemURL = new URL(item.getAttribute("href"));
+    const lang_URL = itemURL.pathname.substring(itemURL.pathname.indexOf('/') + 1);
+    const newURL = base_url + lang_URL.substring(lang_URL.indexOf('/') + 1);
+    item.setAttribute("href", newURL);
+    const thumbs = liElement.querySelectorAll("a.js-thumbnail-image");
+    thumbs.forEach(thumb => {
+        thumb.href = newURL;
+    });
+}
+
+function attachBlockButton(liElement) {
+    const itemCardSummaryElement = liElement.querySelector('div.item-card__summary');
+    const itemCardShopInfoElement = itemCardSummaryElement.querySelector('div.item-card__shop-info');
+    const aElement = itemCardShopInfoElement.querySelector('a');
+    // ユーザーの横に!マークを設置し、そこからブロックも可にする
+    var icon = document.createElement('i');
+    icon.className = 'icon-attention s-1x';
+    icon.display = "inline";
+    icon.style.cursor = "pointer";
+    icon.classList.add("block-btn_margin");
+
+    const shopName = aElement.querySelector('div.item-card__shop-name').textContent;
+    icon.addEventListener('click', () => {
+        var confirm = window.confirm("ショップ「" + shopName + "」をブロックしますか？");
+        if (confirm) {
+            addFilter(aElement.href);
+            filterReload(aElement.href);
+        }
+    });
+
+    liElement.querySelector('div.item-card__shop-info').appendChild(icon);
+    liElement.querySelector('div.item-card__shop-info').classList.add("u-justify-content-between");
+    liElement.querySelector('a.item-card__shop-name-anchor').display = "inline";
+}
+/*
 function hasParentItemCard(target) {
     let currentElement = target;
     while (currentElement) {
@@ -84,6 +121,8 @@ function hasParentItemCard(target) {
     }
     return false;
 }
+
+*/
 
 /**
  * ページ上でコンテストメニューを表示した時に発生するイベント
@@ -125,6 +164,5 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 });
 
 */
-
 
 filterList();

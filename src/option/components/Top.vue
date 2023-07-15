@@ -1,0 +1,121 @@
+<template>
+    <div>
+        <h1 class="page-title">保存したアイテム一覧</h1>
+        <div class="help-link">
+            <router-link :to="{ name: 'Howto' }" class="help-link-text"
+                >使い方について</router-link
+            >
+        </div>
+        <div class="card-list">
+            <router-link
+                v-for="item in itemList"
+                :key="item.id"
+                :to="{ name: 'Item', params: { itemId: item.id } }"
+                class="card"
+            >
+                <div class="card-image-container">
+                    <img
+                        :src="item.image"
+                        class="card-image"
+                        alt="Item Image"
+                    />
+                </div>
+                <div class="card-content">
+                    <p class="card-name">{{ item.name }}</p>
+                </div>
+            </router-link>
+        </div>
+        <a class="page-title" href="/src/popup/popup.html">設定ページへ</a>
+    </div>
+</template>
+
+<style>
+.page-title {
+    text-align: center;
+}
+
+.help-link {
+    text-align: right;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.help-link-text {
+    text-decoration: none;
+}
+
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    width: 250px;
+    height: 300px;
+    text-decoration: none;
+}
+
+.card:hover {
+    border-color: #999;
+}
+
+.card-image-container {
+    width: 250px;
+    height: 200px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.card-content {
+    text-align: center;
+}
+
+.card-name {
+    font-size: 15px;
+}
+</style>
+
+<script>
+export default {
+    data() {
+        return {
+            itemList: [],
+        };
+    },
+    created() {
+        chrome.storage.local.get("items", (result) => {
+            const itemIdList = result.items || [];
+            console.log(itemIdList);
+            itemIdList.forEach((itemId) => {
+                chrome.storage.local.get(`${itemId}`, (itemResult) => {
+                    const itemData = itemResult[itemId];
+                    if (itemData && itemData.name) {
+                        this.itemList.push({
+                            id: itemId.replace("items_", ""),
+                            name: itemData.name,
+                            image: itemData.images[0].original,
+                        });
+                    }
+                });
+            });
+        });
+    },
+};
+</script>
