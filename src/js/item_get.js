@@ -76,15 +76,6 @@ function addSaveButton() {
     share_btn.appendChild(divElement);
 }
 
-async function findTitle() {
-    const url = window.location.href + ".json";
-    const response = await fetch(url);
-    const text = await response.text();
-    console.log(text);
-    return JSON.parse(text);
-}
-
-// findTitle();
 chrome.storage.sync.get("extended_settings", (result) => {
     const setting = result.extended_settings;
     if(setting && setting.save_item){

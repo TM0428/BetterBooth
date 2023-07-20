@@ -96,7 +96,7 @@
                 <span class="button-text">このアイテムを削除する</span>
             </button>
         </div>
-        <div class="popup" v-if="popupImage">
+        <div class="popup" v-if="popupImage" @click="closePopup">
             <span class="popup-close" @click="closePopup">&times;</span>
             <img :src="popupImage" alt="Popup Image" class="popup-image" />
         </div>

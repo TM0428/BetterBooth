@@ -25,7 +25,9 @@
             アイテムの削除は、このページから行ってください。
         </p>
         <br />
-        <a href="https://github.com/TM0428/BetterBooth/tree/ver-0.3.0/docs">
+        <a
+            href="https://github.com/TM0428/BetterBooth/blob/master/docs/README.md"
+        >
             さらに詳しい使い方の説明はこちら
         </a>
         <br />
