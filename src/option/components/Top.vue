@@ -110,6 +110,10 @@
     width: 100%;
 }
 
+.search-input:focus {
+    border: 1px solid #999;
+}
+
 .card-list {
     display: flex;
     flex-wrap: wrap;
@@ -179,8 +183,10 @@ export default {
                 return this.itemList;
             } else {
                 const keyword = this.searchText.toLowerCase();
-                return this.itemList.filter((item) =>
-                    item.name.toLowerCase().includes(keyword)
+                return this.itemList.filter(
+                    (item) =>
+                        item.name.toLowerCase().includes(keyword) ||
+                        item.shopName.toLowerCase().includes(keyword)
                 );
             }
         },
@@ -290,11 +296,13 @@ export default {
                             this.itemList.push({
                                 id: itemId.replace("items_", ""),
                                 name: itemData.name,
+                                shopName: itemData.shop.name,
                                 image: itemData.images[0].original,
                             });
                         }
                     });
                 });
+                console.log(this.itemList);
             });
         },
     },
@@ -315,6 +323,7 @@ export default {
                         this.itemList.push({
                             id: itemId.replace("items_", ""),
                             name: itemData.name,
+                            shopName: itemData.shop.name,
                             image: itemData.images[0].original,
                         });
                     }

@@ -17,5 +17,7 @@
     "disableButton": "Disable",
     "disableButtonEnable": "Enable",
     "BlockText": "Block",
-    "BlockingText": "Blocking"
+    "BlockingText": "Blocking",
+    "saveItemOption": "Save item data(experimental features)",
+    "linkToHelp": "What is \"Save item\"?"
 }

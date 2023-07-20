@@ -15,5 +15,7 @@
     "newArrivalLabel": "최신 상품만",
     "saveButton": "저장",
     "disableButton": "Disable",
-    "disableButtonEnable": "Enable"
+    "disableButtonEnable": "Enable",
+    "saveItemOption": "Save item data(experimental features)",
+    "linkToHelp": "What is \"Save item\"?"
 }

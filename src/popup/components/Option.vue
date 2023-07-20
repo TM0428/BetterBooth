@@ -81,7 +81,31 @@
         <h1>Extension Settings:</h1>
         <ul class="extended-setting">
             <li>
-                商品の情報を保存する(実験的機能)
+                Language
+                <select
+                    class="right-side"
+                    v-model="extended_settings.language"
+                    v-on:change="changeLanguage"
+                >
+                    <option value="ja">
+                        日本語
+                    </option>
+                    <option value="en">
+                        English
+                    </option>
+                    <option value="ko">
+                        한국어
+                    </option>
+                    <option value="zh-CN">
+                        中文（简体）
+                    </option>
+                    <option value="zh-TW">
+                        中文（繁體）
+                    </option>
+                </select>
+            </li>
+            <li>
+                {{ lang.saveItemOption }}
                 <input
                     class="right-side"
                     type="checkbox"
@@ -89,9 +113,9 @@
                 />
             </li>
             <li>
-                <a target="_blank" href="/src/option/option.html#/howto"
-                    >購入物の保存とは？</a
-                >
+                <a target="_blank" href="/src/option/option.html#/howto">{{
+                    lang.linkToHelp
+                }}</a>
             </li>
             <li class="save-button">
                 <button class="right-side" @click="saveExtendedData()">
@@ -124,6 +148,7 @@ export default {
                 disable: true,
             },
             extended_settings: {
+                language: "ja",
                 save_item: false,
             },
             in_stock: true,
@@ -166,6 +191,27 @@ export default {
             this.saveData();
             this.showNotificationText(this.disable_text + "d!  Please reload.");
         },
+        changeLanguage() {
+            switch (this.extended_settings.language) {
+                case "en":
+                    this.lang = en;
+                    break;
+                case "ko":
+                    this.lang = ko;
+                    break;
+                case "zh-CN":
+                    this.lang = zh_cn;
+                    break;
+                case "zh-TW":
+                    this.lang = zh_tw;
+                    break;
+                case "zh":
+                    this.lang = zh_cn;
+                    break;
+                default:
+                    this.lang = ja;
+            }
+        },
         showNotificationText(txt) {
             this.notifText = txt;
 
@@ -195,6 +241,7 @@ export default {
         // 言語ファイルが正しく読み込まれることを確認してください
         const userLocale = window.navigator.language;
         console.log(userLocale);
+        this.selLanguage = userLocale;
         switch (userLocale) {
             case "en":
                 this.lang = en;
@@ -213,6 +260,7 @@ export default {
                 break;
             default:
                 this.lang = ja;
+                this.selLanguage = "ja";
         }
         chrome.storage.sync.get("filters", (result) => {
             this.filters = result.filters || [];
@@ -238,8 +286,14 @@ export default {
         });
         chrome.storage.sync.get("extended_settings", (result) => {
             console.log(result.extended_settings);
-            if (result.extended_settings) {
-                this.extended_settings = result.extended_settings;
+            const extended_settings = result.extended_settings;
+            if (extended_settings) {
+                this.extended_settings = extended_settings;
+                if (this.extended_settings.language) {
+                    this.changeLanguage();
+                } else {
+                    this.extended_settings.language = userLocale;
+                }
             }
         });
     },

@@ -15,5 +15,7 @@
     "newArrivalLabel": "最近公開的商品限定",
     "saveButton": "保存",
     "disableButton": "Disable",
-    "disableButtonEnable": "Enable"
+    "disableButtonEnable": "Enable",
+    "saveItemOption": "Save item data(experimental features)",
+    "linkToHelp": "What is \"Save item\"?"
 }
