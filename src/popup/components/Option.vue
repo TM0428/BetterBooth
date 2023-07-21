@@ -294,6 +294,8 @@ export default {
                 } else {
                     this.extended_settings.language = userLocale;
                 }
+            } else {
+                this.extended_settings.language = userLocale;
             }
         });
     },

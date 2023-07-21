@@ -210,6 +210,7 @@ export default {
                             data.additionalDescription || null,
                         description: data.description,
                         id: data.id,
+                        price: data.price || "",
                         images: data.images || [],
                         name: data.name,
                         price: data.price || null,
