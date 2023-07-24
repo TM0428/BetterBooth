@@ -1,11 +1,11 @@
 <template>
     <div>
-        <h1 class="page-title">保存したアイテム一覧</h1>
+        <h1 class="page-title">{{ lang.topTitle }}</h1>
         <div class="help-and-search">
             <div class="help-link">
-                <router-link :to="{ name: 'Howto' }" class="help-link-text"
-                    >使い方について</router-link
-                >
+                <router-link :to="{ name: 'Howto' }" class="help-link-text">{{
+                    lang.topHowto
+                }}</router-link>
             </div>
             <div class="search-bar">
                 <div class="search-icon">
@@ -14,7 +14,7 @@
                 <input
                     v-model="searchText"
                     type="text"
-                    placeholder="アイテムを検索..."
+                    :placeholder="lang.topSearchText"
                     class="search-input"
                 />
             </div>
@@ -46,11 +46,13 @@
                     />
                 </div>
                 <div class="card-content">
-                    <p class="card-name">データをインポート...</p>
+                    <p class="card-name">{{ lang.topImport }}</p>
                 </div>
             </div>
         </div>
-        <a class="page-title" href="/src/popup/popup.html">設定ページへ</a>
+        <a class="page-title" href="/src/popup/popup.html">{{
+            lang.topSetttings
+        }}</a>
         <input
             ref="uploadInput"
             type="file"
@@ -169,12 +171,18 @@
 </style>
 
 <script>
+import ja from "../locales/ja.json";
+import en from "../locales/en.json";
+import ko from "../locales/ko.json";
+import zh_cn from "../locales/zh-CN.json";
+import zh_tw from "../locales/zh-TW.json";
 export default {
     data() {
         return {
             itemList: [],
             searchText: "",
             inputKey: 0,
+            lang: ja,
         };
     },
     computed: {
@@ -221,8 +229,7 @@ export default {
                     this.addStorage(sanitizedData);
                     // Perform any further operations with the sanitizedData
                 } else {
-                    console.log("Invalid data format.");
-                    window.alert("無効な入力データです。");
+                    window.alert(this.lang.topInvalid);
                 }
             };
             reader.readAsText(file);
@@ -282,7 +289,7 @@ export default {
                     chrome.storage.local.set({ [`${itemId}`]: data });
                 }
 
-                window.alert("データを追加しました。");
+                window.alert(this.lang.topDataAdd);
                 this.reloadList();
             });
         },
@@ -308,11 +315,54 @@ export default {
         },
     },
     created() {
+        // 言語ファイルが正しく読み込まれることを確認してください
+        const userLocale = window.navigator.language;
+        console.log(userLocale);
+        switch (userLocale) {
+            case "en":
+                this.lang = en;
+                break;
+            case "ko":
+                this.lang = ko;
+                break;
+            case "zh-CN":
+                this.lang = zh_cn;
+                break;
+            case "zh-TW":
+                this.lang = zh_tw;
+                break;
+            case "zh":
+                this.lang = zh_cn;
+                break;
+            default:
+                this.lang = ja;
+        }
         chrome.storage.sync.get("extended_settings", (result) => {
-            const setting = result.extended_settings;
-            if (!(setting && setting.save_item)) {
+            const extended_settings = result.extended_settings;
+            if (!(extended_settings && extended_settings.save_item)) {
                 window.location.href = "/src/popup/popup.html";
                 return;
+            }
+            if (extended_settings && extended_settings.language) {
+                switch (extended_settings.language) {
+                    case "ko":
+                        this.lang = ko;
+                        break;
+                    case "zh-CN":
+                        this.lang = zh_cn;
+                        break;
+                    case "zh-TW":
+                        this.lang = zh_tw;
+                        break;
+                    case "zh":
+                        this.lang = zh_cn;
+                        break;
+                    case "en":
+                        this.lang = en;
+                        break;
+                    default:
+                        this.lang = ja;
+                }
             }
         });
         chrome.storage.local.get("items", (result) => {

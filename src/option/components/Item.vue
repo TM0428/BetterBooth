@@ -63,7 +63,7 @@
                     height="24"
                     class="button-icon"
                 />
-                <span class="button-text">アイテム一覧に戻る</span>
+                <span class="button-text">{{ lang.itemBackToList }}</span>
             </router-link>
             <a :href="data.shop.url" target="_blank" class="shop-button">
                 <img
@@ -73,7 +73,7 @@
                     height="24"
                     class="button-icon"
                 />
-                <span class="button-text">ショップへ行く</span> </a
+                <span class="button-text">{{ lang.itemGotoShop }}</span> </a
             ><!-- データエクスポートボタン -->
             <button class="export-button" @click="exportData">
                 <img
@@ -83,7 +83,7 @@
                     height="24"
                     class="button-icon"
                 />
-                <span class="button-text">データをエクスポート</span>
+                <span class="button-text">{{ lang.itemExport }}</span>
             </button>
             <button class="delete-button" @click="deleteItem">
                 <img
@@ -93,7 +93,7 @@
                     height="24"
                     class="button-icon"
                 />
-                <span class="button-text">このアイテムを削除する</span>
+                <span class="button-text">{{ lang.itemDelete }}</span>
             </button>
         </div>
         <div class="popup" v-if="popupImage" @click="closePopup">
@@ -105,6 +105,11 @@
 
 <script>
 import router from "@/option/router"; // Vue Router インスタンスのインポート
+import ja from "../locales/ja.json";
+import en from "../locales/en.json";
+import ko from "../locales/ko.json";
+import zh_cn from "../locales/zh-CN.json";
+import zh_tw from "../locales/zh-TW.json";
 
 export default {
     props: ["itemId"],
@@ -121,10 +126,57 @@ export default {
             },
             currentImageIndex: 0,
             popupImage: null,
+            lang: ja,
         };
     },
 
     created() {
+        // 言語ファイルが正しく読み込まれることを確認してください
+        const userLocale = window.navigator.language;
+        console.log(userLocale);
+        switch (userLocale) {
+            case "en":
+                this.lang = en;
+                break;
+            case "ko":
+                this.lang = ko;
+                break;
+            case "zh-CN":
+                this.lang = zh_cn;
+                break;
+            case "zh-TW":
+                this.lang = zh_tw;
+                break;
+            case "zh":
+                this.lang = zh_cn;
+                break;
+            default:
+                this.lang = ja;
+        }
+        chrome.storage.sync.get("extended_settings", (result) => {
+            const extended_settings = result.extended_settings;
+            if (extended_settings && extended_settings.language) {
+                switch (extended_settings.language) {
+                    case "ko":
+                        this.lang = ko;
+                        break;
+                    case "zh-CN":
+                        this.lang = zh_cn;
+                        break;
+                    case "zh-TW":
+                        this.lang = zh_tw;
+                        break;
+                    case "zh":
+                        this.lang = zh_cn;
+                        break;
+                    case "en":
+                        this.lang = en;
+                        break;
+                    default:
+                        this.lang = ja;
+                }
+            }
+        });
         chrome.storage.local.get(`items_${this.itemId}`, (result) => {
             this.data = result[`items_${this.itemId}`];
             console.log(this.data);
@@ -370,5 +422,9 @@ body {
 
 p {
     font-size: 15px;
+}
+
+.button-icon {
+    margin-right: 10px;
 }
 </style>

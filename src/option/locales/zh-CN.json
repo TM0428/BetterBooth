@@ -1,0 +1,13 @@
+{
+    "topTitle": "保存的物品清单",
+    "topHowto": "使用说明",
+    "topSearchText": "搜索物品...",
+    "topImport": "导入数据...",
+    "topSetttings": "前往设置页面",
+    "topInvalid": "无效的输入数据。",
+    "topDataAdd": "已添加数据。",
+    "itemBackToList": "返回物品列表",
+    "itemGotoShop": "前往商店",
+    "itemExport": "导出数据",
+    "itemDelete": "删除此物品"
+}

@@ -1,0 +1,13 @@
+{
+    "topTitle": "Saved Item List",
+    "topHowto": "How to Use",
+    "topSearchText": "Search for Items...",
+    "topImport": "Import Data...",
+    "topSetttings": "Go to Settings Page",
+    "topInvalid": "Invalid input data.",
+    "topDataAdd": "Data has been added.",
+    "itemBackToList": "Back to Item List",
+    "itemGotoShop": "Go to Shop",
+    "itemExport": "Export Data",
+    "itemDelete": "Delete This Item"
+}

@@ -1,0 +1,13 @@
+{
+    "topTitle": "保存したアイテム一覧",
+    "topHowto": "使い方について",
+    "topSearchText": "アイテムを検索...",
+    "topImport": "データをインポート...",
+    "topSetttings": "設定ページへ",
+    "topInvalid": "無効な入力データです。",
+    "topDataAdd": "データを追加しました。",
+    "itemBackToList": "アイテム一覧に戻る",
+    "itemGotoShop": "ショップへ行く",
+    "itemExport": "データをエクスポート",
+    "itemDelete": "このアイテムを削除する"
+}

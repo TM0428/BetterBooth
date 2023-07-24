@@ -1,0 +1,13 @@
+{
+    "topTitle": "保存的物品清單",
+    "topHowto": "使用說明",
+    "topSearchText": "搜尋物品...",
+    "topImport": "匯入數據...",
+    "topSetttings": "前往設置頁面",
+    "topInvalid": "無效的輸入數據。",
+    "topDataAdd": "已新增數據。",
+    "itemBackToList": "返回物品列表",
+    "itemGotoShop": "前往商店",
+    "itemExport": "匯出數據",
+    "itemDelete": "刪除此物品"
+}

@@ -1,0 +1,13 @@
+{
+    "topTitle": "저장된 아이템 목록",
+    "topHowto": "사용 방법",
+    "topSearchText": "아이템 검색...",
+    "topImport": "데이터를 가져오기...",
+    "topSetttings": "설정 페이지로 이동",
+    "topInvalid": "유효하지 않은 입력 데이터입니다.",
+    "topDataAdd": "데이터를 추가했습니다.",
+    "itemBackToList": "아이템 목록으로 돌아가기",
+    "itemGotoShop": "상점으로 이동",
+    "itemExport": "데이터를 내보내기",
+    "itemDelete": "이 아이템 삭제"
+}

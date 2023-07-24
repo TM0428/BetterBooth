@@ -269,14 +269,56 @@ function makeNewSPSearchTab() {
   
     // テキスト入力完了時のイベントハンドラを設定
     searchInput.addEventListener('keydown', function(event) {
-      if (event.keyCode === 13 && this.value) {
-        setSearchOption(this.value);
-      }
+        if (event.keyCode === 13 && this.value) {
+            setSearchOption(this.value);
+        }
     });
-  
+
+    // 検索履歴の部分のURLを変換する
+    const historyUl = document.querySelector('div.search-history ul');
+    if(historyUl){
+        const historyList = historyUl.childNodes;
+        chrome.storage.sync.get("settings", (result) => {
+
+            const settings = result.settings;
+            // console.log(settings);
+            if (settings) {
+                // 設定から条件を指定しない場合は以下の処理を無視
+                if (result.settings.disable === true) {
+                    return;
+                }
+                const age = settings.age;
+                const sort = settings.sort;
+                const in_stock = settings.in_stock;
+                const new_arrival = settings.new_arrival;
+
+                historyList.forEach(ul => {
+                    var url = new URL(ul.firstChild.href);
+                    if (age) {
+                        url.searchParams.set("adult", age);
+                    }
+                    if (sort) {
+                        url.searchParams.set("sort", sort);
+                    }
+                    if (in_stock) {
+                        url.searchParams.set("in_stock", "true");
+                    }
+                    if (new_arrival) {
+                        url.searchParams.set("new_arrival", "true");
+                    }
+                    ul.firstChild.href = url.href;
+                    console.log(url.href);
+                })
+            }
+
+        });
+    }
+
+
+
+
     // div要素を既存の要素に追加
     var intervalId = setInterval(() => {
-
         // 検索バーの要素を取得
         const searchBar = document.querySelector('.sp-item-search.item-search');
         if (searchBar) {
@@ -289,7 +331,7 @@ function makeNewSPSearchTab() {
         }
     }, 1000);
 
-  }
+}
 
 /**
  * ブロック機能用のボタンを作成する関数
@@ -388,6 +430,35 @@ function hideDescription() {
     }
 }
 
+function insertLinkIntoNav() {
+    // nav要素を取得
+    const pElement = document.querySelector('div.absolute.bg-white');
+    if(!pElement) return;
+    // console.log(navElement);
+    const navElement = pElement.firstChild;
+    // 新しい<a>タグを作成
+    const newLink = document.createElement('a');
+    newLink.className = 'no-underline text-text-default visited:text-text-default';
+    newLink.href = 'chrome-extension://ncbkofnnehldkacfhlodemjdcicdfopf/src/popup/popup.html';
+
+    // <a>タグの中に<div>要素を作成し、その中にテキストを挿入
+    const divElement = document.createElement('div');
+    divElement.className = 'px-24 py-[10px]';
+    divElement.textContent = '拡張機能のページへ';
+    newLink.appendChild(divElement);
+
+    // navの子要素として新しいリンクを挿入
+    const existingChildren = navElement.children;
+    if (existingChildren.length >= 2) {
+        navElement.insertBefore(newLink, existingChildren[1]);
+    } else {
+        navElement.appendChild(newLink);
+    }
+}
+  
+  
+
+
 
 function addDeletedItem() {
     // ここに実行したいコードを記述する
@@ -463,3 +534,5 @@ hideDescription();
 makeNewSearchTab();
 makeNewSPSearchTab();
 // testInit();
+// リンクをnav要素の子要素の2番目に挿入
+window.addEventListener("load", insertLinkIntoNav);

@@ -56,6 +56,7 @@
                             class="right-side"
                             type="checkbox"
                             v-model="in_stock"
+                            name="checkbox01"
                         />
                     </li>
                     <li>
@@ -320,7 +321,8 @@ export default {
     float: right;
 }
 
-.search-setting {
+.search-setting,
+.extended-setting {
     min-width: 350px;
     width: 400px;
     max-height: 200px;
@@ -347,5 +349,13 @@ ul li {
 
 fieldset {
     border: none;
+    padding: 0px;
+}
+select {
+    padding: 2px 0px;
+}
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
 }
 </style>
