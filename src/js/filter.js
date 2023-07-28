@@ -1,3 +1,16 @@
+const filterJa = {
+    "confirmBlockFront": "ショップ「",
+    "confirmBlockBack": "」をブロックしますか？"
+};
+const filterEn = {
+    "confirmBlockFront": "Will you block the shop \"",
+    "confirmBlockBack": "\"?"
+};
+var filterLang = filterJa;
+if(window.navigator.language !== "ja"){
+    filterLang = filterEn;
+}
+
 /**
  * フィルターを追加する関数
  * @param {string} word 
@@ -99,7 +112,7 @@ function attachBlockButton(liElement) {
 
     const shopName = aElement.querySelector('div.item-card__shop-name').textContent;
     icon.addEventListener('click', () => {
-        var confirm = window.confirm("ショップ「" + shopName + "」をブロックしますか？");
+        var confirm = window.confirm(filterLang.confirmBlockFront + shopName + filterLang.confirmBlockBack);
         if (confirm) {
             addFilter(aElement.href);
             filterReload(aElement.href);

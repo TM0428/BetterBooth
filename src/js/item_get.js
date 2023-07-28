@@ -1,3 +1,16 @@
+const itemGetJa = {
+    "saveItem": "データの保存",
+    "clicksaveItem": "データを保存しました。"
+};
+const itemGetEn = {
+    "saveItem": "Save Item",
+    "clicksaveItem": "Saved."
+};
+var itemGetLang = itemGetJa;
+if(window.navigator.language !== "ja"){
+    itemGetLang = itemGetEn;
+}
+
 async function addData() {
     const itemId = "items_" + window.location.href.match(/\/items\/(\d+)/)[1];
     const url = window.location.href + ".json";
@@ -63,12 +76,12 @@ function addSaveButton() {
     icon.className = "icon-plus-circle s-1x";
     var text = document.createElement("span");
     text.classList.add("u-align-middle");
-    text.textContent = "データを保存";
+    text.textContent = itemGetLang.saveItem;
     buttonElement.appendChild(icon);
     buttonElement.appendChild(text);
     buttonElement.addEventListener("click", () => {
         addData();
-        window.alert("データを保存しました。");
+        window.alert(itemGetLang.clicksaveItem);
     });
 
     divElement.appendChild(buttonElement);
@@ -78,6 +91,9 @@ function addSaveButton() {
 
 chrome.storage.sync.get("extended_settings", (result) => {
     const setting = result.extended_settings;
+    if(setting && setting.language !== "ja") {
+        itemGetLang = en;
+    }
     if(setting && setting.save_item){
         addSaveButton();
     }

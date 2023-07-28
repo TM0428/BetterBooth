@@ -1,5 +1,23 @@
 const NOW_BLOCK = "shop__border--price";
 const NOT_BLOCK = "shop__background--price";
+const contentJa = {
+    "keyword": "キーワードを入力",
+    "genre": "ジャンル、商品名など",
+    "block": "ブロック",
+    "blocking": "ブロック中",
+    "gotoExtension": "拡張機能のページへ"
+};
+const contentEn = {
+    "keyword": "Search",
+    "genre": "Genre, Item Name, etc.",
+    "block": "block",
+    "blocking": "blocking",
+    "gotoExtension": "Go to Extension Page"
+};
+var contentLang = contentJa;
+if(window.navigator.language !== "ja"){
+    contentLang = contentEn;
+}
 
 
 function addFilter(word) {
@@ -139,7 +157,7 @@ function makeNewSearchTab() {
     inputElement.ariaAutocomplete = "list";
     inputElement.ariaControls = "react-autowhatever-1";
     inputElement.classList.add("!rounded-l-[5px]", "!h-[32px]", "box-border", "m-none", "!bg-ui-background400", "focus:!bg-white", "!border", "border-border500", "placeholder-shown:text-ellipsis");
-    inputElement.placeholder = "キーワードを入力";
+    inputElement.placeholder = contentLang.keyword;
     inputElement.addEventListener("focus", () => {
         inputElement.classList.add("focus");
     });
@@ -238,7 +256,7 @@ function makeNewSPSearchTab() {
     searchInput.type = 'search';
     searchInput.name = 'query';
     searchInput.id = 'query';
-    searchInput.placeholder = 'ジャンル、商品名など';
+    searchInput.placeholder = contentLang.genre;
     searchInput.classList.add('ac-tags', 'item-search-input', 'full-length', 'tt-input');
     searchInput.autocomplete = 'off';
     searchInput.spellcheck = 'false';
@@ -307,7 +325,7 @@ function makeNewSPSearchTab() {
                         url.searchParams.set("new_arrival", "true");
                     }
                     ul.firstChild.href = url.href;
-                    console.log(url.href);
+                    // console.log(url.href);
                 })
             }
 
@@ -350,16 +368,8 @@ function addButton() {
         var text = document.createElement('span');
         text.classList.add("u-align-middle");
         const htmlLang = document.documentElement.lang;
-        var block = "";
-        var blocking = "";
-        if (htmlLang == "ja") {
-            block = "ブロック";
-            blocking = "ブロック中";
-        }
-        else {
-            block = "block";
-            blocking = "blocking";
-        }
+        var block = contentLang.block;
+        var blocking = contentLang.blocking;
         if (filterArray && filterArray.includes(window.location.origin + "/")) {
             button.classList.add("btn", "small-dense", NOW_BLOCK, "block-button", "shop__background--contents", "shop__text--price");
             // ブロック中
@@ -444,7 +454,7 @@ function insertLinkIntoNav() {
     // <a>タグの中に<div>要素を作成し、その中にテキストを挿入
     const divElement = document.createElement('div');
     divElement.className = 'px-24 py-[10px]';
-    divElement.textContent = '拡張機能のページへ';
+    divElement.textContent = contentLang.gotoExtension;
     newLink.appendChild(divElement);
 
     // navの子要素として新しいリンクを挿入
