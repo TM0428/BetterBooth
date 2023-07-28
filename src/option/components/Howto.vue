@@ -25,20 +25,98 @@
             アイテムの削除は、このページから行ってください。
         </p>
         <br />
-        <a
-            href="https://github.com/TM0428/BetterBooth/blob/master/docs/README.md"
-        >
-            さらに詳しい使い方の説明はこちら
+        <a v-bind:href="lang.howtoGithubLink">
+            {{ lang.howtoGotoGithub }}
         </a>
-        <br />
+        <br /><br />
         <router-link :to="{ name: 'Top' }" class="shop-button">
-            アイテム一覧に戻る
+            {{ lang.itemBackToList }}
         </router-link>
     </div>
 </template>
 
+<script>
+import ja from "../locales/ja.json";
+import en from "../locales/en.json";
+import ko from "../locales/ko.json";
+import zh_cn from "../locales/zh-CN.json";
+import zh_tw from "../locales/zh-TW.json";
+
+export default {
+    data() {
+        return {
+            lang: ja,
+        };
+    },
+    methods: {
+        changeLanguage() {
+            switch (this.extended_settings.language) {
+                case "en":
+                    this.lang = en;
+                    break;
+                case "ko":
+                    this.lang = ko;
+                    break;
+                case "zh-CN":
+                    this.lang = zh_cn;
+                    break;
+                case "zh-TW":
+                    this.lang = zh_tw;
+                    break;
+                case "zh":
+                    this.lang = zh_cn;
+                    break;
+                default:
+                    this.lang = ja;
+            }
+        },
+    },
+    created() {
+        // 言語ファイルが正しく読み込まれることを確認してください
+        const userLocale = window.navigator.language;
+        console.log(userLocale);
+        this.selLanguage = userLocale;
+        switch (userLocale) {
+            case "en":
+                this.lang = en;
+                break;
+            case "ko":
+                this.lang = ko;
+                break;
+            case "zh-CN":
+                this.lang = zh_cn;
+                break;
+            case "zh-TW":
+                this.lang = zh_tw;
+                break;
+            case "zh":
+                this.lang = zh_cn;
+                break;
+            default:
+                this.lang = ja;
+                this.selLanguage = "ja";
+        }
+        chrome.storage.sync.get("extended_settings", (result) => {
+            console.log(result.extended_settings);
+            const extended_settings = result.extended_settings;
+            if (extended_settings) {
+                this.extended_settings = extended_settings;
+                if (this.extended_settings.language) {
+                    this.changeLanguage();
+                } else {
+                    this.extended_settings.language = userLocale;
+                }
+            } else {
+                this.extended_settings.language = userLocale;
+            }
+        });
+    },
+};
+</script>
+
 <style scoped>
-p {
+p,
+a {
     font-size: 15px;
 }
 </style>

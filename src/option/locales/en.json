@@ -9,5 +9,7 @@
     "itemBackToList": "Back to Item List",
     "itemGotoShop": "Go to Shop",
     "itemExport": "Export Data",
-    "itemDelete": "Delete This Item"
+    "itemDelete": "Delete This Item",
+    "howtoGotoGithub": "Please See English version here.",
+    "howtoGithubLink": "https://github.com/TM0428/BetterBooth/blob/master/docs/README_en.md"
 }

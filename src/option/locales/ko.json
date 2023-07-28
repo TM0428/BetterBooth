@@ -9,5 +9,7 @@
     "itemBackToList": "아이템 목록으로 돌아가기",
     "itemGotoShop": "상점으로 이동",
     "itemExport": "데이터를 내보내기",
-    "itemDelete": "이 아이템 삭제"
+    "itemDelete": "이 아이템 삭제",
+    "howtoGotoGithub": "Please See English version here.",
+    "howtoGithubLink": "https://github.com/TM0428/BetterBooth/blob/master/docs/README_en.md"
 }

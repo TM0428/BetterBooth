@@ -9,5 +9,7 @@
     "itemBackToList": "アイテム一覧に戻る",
     "itemGotoShop": "ショップへ行く",
     "itemExport": "データをエクスポート",
-    "itemDelete": "このアイテムを削除する"
+    "itemDelete": "このアイテムを削除する",
+    "howtoGotoGithub": "さらに詳しい使い方の説明はこちら",
+    "howtoGithubLink": "https://github.com/TM0428/BetterBooth/blob/master/docs/README.md"
 }

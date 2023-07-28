@@ -8,6 +8,11 @@ When you purchase something and the seller deletes that information, you lose ac
 
 To address this issue, we store the data within Chrome, allowing you to access the essential information even if the seller removes it.
 
+## How to use
+To use the feature, you must enable it from the Extension Options page.
+In the Extension Settings section, check the "Save item data (experimental feature)" checkbox and click the "save" button.
+![](extensionsetting.png)
+
 ## How to Add an Item
 A new button will be added to the item details page.<br>
 By clicking this button, the item data will be automatically collected and saved within Chrome.<br>
@@ -23,7 +28,7 @@ Clicking on an item will take you to the detailed page, where you can view the i
 
 ![](itempage.png)
 
-## How to Add an Item (Version 0.3.1 and above)
+## How to Import Data (Version 0.3.1 and above)
 From version 0.3.1 onwards, we have added the feature to import items.<br>
 This is mainly for re-registering data that was accidentally exported, and files created manually may not function as expected. Please keep this in mind.
 
