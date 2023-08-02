@@ -15,7 +15,7 @@ const contentEn = {
     "gotoExtension": "Go to Extension Page"
 };
 var contentLang = contentJa;
-if(window.navigator.language !== "ja"){
+if(window.navigator.language !== "ja" && window.navigator.language !== "ja-JP"){
     contentLang = contentEn;
 }
 
@@ -441,11 +441,6 @@ function hideDescription() {
 }
 
 function insertLinkIntoNav() {
-    // nav要素を取得
-    const pElement = document.querySelector('div.absolute.bg-white');
-    if(!pElement) return;
-    // console.log(navElement);
-    const navElement = pElement.firstChild;
     // 新しい<a>タグを作成
     const newLink = document.createElement('a');
     newLink.className = 'no-underline text-text-default visited:text-text-default';
@@ -457,13 +452,24 @@ function insertLinkIntoNav() {
     divElement.textContent = contentLang.gotoExtension;
     newLink.appendChild(divElement);
 
-    // navの子要素として新しいリンクを挿入
-    const existingChildren = navElement.children;
-    if (existingChildren.length >= 2) {
-        navElement.insertBefore(newLink, existingChildren[1]);
-    } else {
-        navElement.appendChild(newLink);
-    }
+    // div要素を既存の要素に追加
+    var intervalId = setInterval(() => {
+        // nav要素を取得
+        const pElement = document.querySelector('div.absolute.bg-white');
+        if (pElement) {
+            clearInterval(intervalId);
+            const navElement = pElement.firstChild;
+            // navの子要素として新しいリンクを挿入
+            const existingChildren = navElement.children;
+            if (existingChildren.length >= 2) {
+                navElement.insertBefore(newLink, existingChildren[1]);
+            } else {
+                navElement.appendChild(newLink);
+            }
+        }
+    }, 1000);
+
+
 }
   
   
@@ -545,4 +551,4 @@ makeNewSearchTab();
 makeNewSPSearchTab();
 // testInit();
 // リンクをnav要素の子要素の2番目に挿入
-window.addEventListener("load", insertLinkIntoNav);
+insertLinkIntoNav();

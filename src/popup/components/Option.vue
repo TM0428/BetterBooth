@@ -211,6 +211,7 @@ export default {
                     break;
                 default:
                     this.lang = ja;
+                    this.extended_settings.language = "ja";
             }
         },
         showNotificationText(txt) {
@@ -242,7 +243,7 @@ export default {
         // 言語ファイルが正しく読み込まれることを確認してください
         const userLocale = window.navigator.language;
         console.log(userLocale);
-        this.selLanguage = userLocale;
+        this.extended_settings.language = userLocale;
         switch (userLocale) {
             case "en":
                 this.lang = en;
@@ -261,7 +262,7 @@ export default {
                 break;
             default:
                 this.lang = ja;
-                this.selLanguage = "ja";
+                this.extended_settings.language = "ja";
         }
         chrome.storage.sync.get("filters", (result) => {
             this.filters = result.filters || [];
@@ -291,13 +292,13 @@ export default {
             if (extended_settings) {
                 this.extended_settings = extended_settings;
                 if (this.extended_settings.language) {
-                    this.changeLanguage();
                 } else {
                     this.extended_settings.language = userLocale;
                 }
             } else {
                 this.extended_settings.language = userLocale;
             }
+            this.changeLanguage();
         });
     },
     computed: {

@@ -6,8 +6,9 @@ const itemGetEn = {
     "saveItem": "Save Item",
     "clicksaveItem": "Saved."
 };
+console.log(window.navigator.language);
 var itemGetLang = itemGetJa;
-if(window.navigator.language !== "ja"){
+if(window.navigator.language !== "ja" && window.navigator.language !== "ja-JP"){
     itemGetLang = itemGetEn;
 }
 

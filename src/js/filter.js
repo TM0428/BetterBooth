@@ -7,7 +7,7 @@ const filterEn = {
     "confirmBlockBack": "\"?"
 };
 var filterLang = filterJa;
-if(window.navigator.language !== "ja"){
+if(window.navigator.language !== "ja" && window.navigator.language !== "ja-JP"){
     filterLang = filterEn;
 }
 
