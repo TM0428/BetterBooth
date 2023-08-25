@@ -1,9 +1,9 @@
 const itemGetJa = {
-    "saveItem": "データの保存",
+    "saveItem": "Save",
     "clicksaveItem": "データを保存しました。"
 };
 const itemGetEn = {
-    "saveItem": "Save Item",
+    "saveItem": "Save",
     "clicksaveItem": "Saved."
 };
 console.log(window.navigator.language);
@@ -62,19 +62,15 @@ async function addData() {
 }
 
 function addSaveButton() {
-    var share_btn = document.querySelector(`div#js-item-share-buttons`);
+    var share_btn = document.querySelector(`div.flex.items-center.mt-8 div.mr-auto`);
+    share_btn.className = "flex mr-auto"
+    console.log(share_btn);
     // div要素を作成
     const divElement = document.createElement("div");
     const buttonElement = document.createElement("button");
-    buttonElement.classList.add(
-        "btn",
-        "small-dense",
-        "shop__background--price",
-        "block-button",
-        "shop__text--contents"
-    );
+    buttonElement.className = "border-2 border-border500 box-border cursor-pointer flex gap-4 h-[48px] items-center px-12 rounded-8 select-none text-text-gray300 bg-surface1 shop__background--contents shop__border--text40 shop__text ml-8";
     var icon = document.createElement("i");
-    icon.className = "icon-plus-circle s-1x";
+    icon.className = "icon-download s-1x";
     var text = document.createElement("span");
     text.classList.add("u-align-middle");
     text.textContent = itemGetLang.saveItem;
@@ -93,7 +89,7 @@ function addSaveButton() {
 chrome.storage.sync.get("extended_settings", (result) => {
     const setting = result.extended_settings;
     if(setting && setting.language !== "ja") {
-        itemGetLang = en;
+        itemGetLang = itemGetEn;
     }
     if(setting && setting.save_item){
         addSaveButton();
