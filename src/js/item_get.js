@@ -62,9 +62,6 @@ async function addData() {
 }
 
 function addSaveButton() {
-    var share_btn = document.querySelector(`div.flex.items-center.mt-8 div.mr-auto`);
-    share_btn.className = "flex mr-auto"
-    console.log(share_btn);
     // div要素を作成
     const divElement = document.createElement("div");
     const buttonElement = document.createElement("button");
@@ -83,7 +80,20 @@ function addSaveButton() {
 
     divElement.appendChild(buttonElement);
 
-    share_btn.appendChild(divElement);
+    // div要素を既存の要素に追加
+    var intervalId = setInterval(() => {
+        // 検索バーの要素を取得
+        var share_btn = document.querySelector(`div.flex.items-start.mt-8 div.mr-auto`);
+        if (share_btn) {
+            clearInterval(intervalId);
+            share_btn.className = "flex mr-auto"
+            console.log(share_btn);
+            share_btn.appendChild(divElement);
+        }
+    }, 1000);
+
+
+    
 }
 
 chrome.storage.sync.get("extended_settings", (result) => {
