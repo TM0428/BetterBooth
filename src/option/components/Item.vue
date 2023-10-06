@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="content">
         <h1>{{ data.name }}</h1>
         <div class="image-container">
             <div class="image-wrapper">
@@ -251,6 +251,15 @@ export default {
 </script>
 
 <style scoped>
+.content {
+    width: 100%;
+    margin-left: 30px;
+    margin-right: 30px;
+    font-family: -apple-system, BlinkMacSystemFont, Avenir, "Helvetica Neue",
+        "Segoe UI", Arial, "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN",
+        メイリオ, Meiryo, "ＭＳ Ｐゴシック", sans-serif;
+}
+
 .image-container {
     position: relative;
     width: 500px;
@@ -369,6 +378,7 @@ export default {
 }
 
 .button-wrapper {
+    flex-wrap: wrap;
     display: flex;
     align-items: center;
     margin-top: 10px;
@@ -384,6 +394,7 @@ export default {
     height: 48px;
     padding: 0 24px 0 16px;
     margin-right: 16px;
+    margin-bottom: 8px;
     letter-spacing: 0.25px;
     border-radius: 24px;
     cursor: pointer;
@@ -426,5 +437,16 @@ p {
 
 .button-icon {
     margin-right: 10px;
+}
+
+/* スモールデバイス (画面の幅が600px以下の場合) */
+@media (max-width: 600px) {
+    .image-container,
+    .image-wrapper,
+    .image-indicator,
+    .image-inner {
+        width: 100%;
+        height: auto;
+    }
 }
 </style>
