@@ -18,6 +18,8 @@ async function addData() {
     const response = await fetch(url);
     const text = await response.text();
     const raw_data = JSON.parse(text);
+    const statusArray = raw_data.variations.map(item => item.status);
+
     const data = {
         name: raw_data.name,
         images: raw_data.images,
@@ -26,6 +28,7 @@ async function addData() {
         id: raw_data.id,
         price: raw_data.price,
         url: raw_data.url,
+        status: statusArray
     };
     // 追加のデータを取得して保存
     const additionalDescriptionElement = document.querySelector(

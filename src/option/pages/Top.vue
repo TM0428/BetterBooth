@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="card-list">
-            <router-link
+            <!-- <router-link
                 v-for="item in filteredItemList"
                 :key="item.id"
                 :to="{ name: 'Item', params: { itemId: item.id } }"
@@ -36,7 +36,12 @@
                 <div class="card-content">
                     <p class="card-name">{{ item.name }}</p>
                 </div>
-            </router-link>
+            </router-link> -->
+            <ItemCard
+                v-for="item in filteredItemList"
+                :key="item.id"
+                :item="item"
+            />
             <div class="card" @click="uploadDataCardClicked">
                 <div class="card-image-container">
                     <img
@@ -122,52 +127,6 @@
     justify-content: center;
     margin-top: 20px;
 }
-
-.card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px;
-    width: 250px;
-    height: 300px;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.card:hover {
-    border-color: #999;
-}
-
-.card-image-container {
-    width: 250px;
-    height: 200px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.card-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-}
-.card-svg-image {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-}
-
-.card-content {
-    text-align: center;
-}
-
-.card-name {
-    font-size: 15px;
-}
 </style>
 
 <script>
@@ -176,7 +135,12 @@ import en from "../locales/en.json";
 import ko from "../locales/ko.json";
 import zh_cn from "../locales/zh-CN.json";
 import zh_tw from "../locales/zh-TW.json";
+import ItemCard from "../components/ItemCard.vue";
+
 export default {
+    components: {
+        ItemCard,
+    },
     data() {
         return {
             itemList: [],
@@ -317,7 +281,7 @@ export default {
     created() {
         // 言語ファイルが正しく読み込まれることを確認してください
         const userLocale = window.navigator.language;
-        console.log(userLocale);
+        // console.log(userLocale);
         switch (userLocale) {
             case "en":
                 this.lang = en;
