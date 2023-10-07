@@ -18,6 +18,8 @@ async function addData() {
     const response = await fetch(url);
     const text = await response.text();
     const raw_data = JSON.parse(text);
+    console.log(raw_data);
+    const tags = raw_data.tags.map(tag => tag.name);
     const statusArray = raw_data.variations.map(item => item.status);
 
     const data = {
@@ -28,6 +30,8 @@ async function addData() {
         id: raw_data.id,
         price: raw_data.price,
         url: raw_data.url,
+        tags: tags,
+        category: raw_data.category.name,
         status: statusArray
     };
     // 追加のデータを取得して保存

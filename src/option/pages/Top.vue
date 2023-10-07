@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 class="page-title">{{ lang.topTitle }}</h1>
+        <div class="text-h2 page-title">{{ lang.topTitle }}</div>
         <div class="help-and-search">
             <div class="help-link">
                 <router-link :to="{ name: 'Howto' }" class="help-link-text">{{
@@ -19,42 +19,26 @@
                 />
             </div>
         </div>
-        <div class="card-list">
-            <!-- <router-link
-                v-for="item in filteredItemList"
-                :key="item.id"
-                :to="{ name: 'Item', params: { itemId: item.id } }"
-                class="card"
-            >
-                <div class="card-image-container">
-                    <img
-                        :src="item.image"
-                        class="card-image"
-                        alt="Item Image"
-                    />
-                </div>
-                <div class="card-content">
-                    <p class="card-name">{{ item.name }}</p>
-                </div>
-            </router-link> -->
-            <ItemCard
-                v-for="item in filteredItemList"
-                :key="item.id"
-                :item="item"
-            />
-            <div class="card" @click="uploadDataCardClicked">
-                <div class="card-image-container">
-                    <img
-                        src="@/assets/add_circle.svg"
-                        class="card-svg-image"
-                        alt="Add Icon"
-                    />
-                </div>
-                <div class="card-content">
-                    <p class="card-name">{{ lang.topImport }}</p>
-                </div>
-            </div>
-        </div>
+
+        <v-container fluid>
+            <v-row>
+                <!-- アイテムカードを表示 -->
+                <v-col
+                    v-for="item in filteredItemList"
+                    :key="item.id"
+                    cols="12"
+                    sm="6"
+                    md="4"
+                    lg="3"
+                >
+                    <ItemCard :item="item" />
+                </v-col>
+                <v-col cols="12" sm="6" md="4" lg="3">
+                    <ItemImportCard :lang="lang" />
+                </v-col>
+            </v-row>
+        </v-container>
+
         <a class="page-title" href="/src/popup/popup.html">{{
             lang.topSetttings
         }}</a>
@@ -136,10 +120,12 @@ import ko from "../locales/ko.json";
 import zh_cn from "../locales/zh-CN.json";
 import zh_tw from "../locales/zh-TW.json";
 import ItemCard from "../components/ItemCard.vue";
+import ItemImportCard from "../components/ItemImportCard.vue";
 
 export default {
     components: {
         ItemCard,
+        ItemImportCard,
     },
     data() {
         return {
@@ -151,6 +137,7 @@ export default {
     },
     computed: {
         filteredItemList() {
+            console.log(this.itemList);
             if (this.searchText.trim() === "") {
                 return this.itemList;
             } else {
@@ -340,6 +327,7 @@ export default {
                             name: itemData.name,
                             shopName: itemData.shop.name,
                             image: itemData.images[0].original,
+                            tags: itemData.tags ? itemData.tags : [],
                         });
                     }
                 });
