@@ -3,23 +3,25 @@
         <!--title-->
         <div class="text-h4 ma-2">{{ data.name }}</div>
 
-        <!--タグの追加-->
-
-        <v-combobox
-            class="ma-2"
-            v-model="data.tags"
-            :items="data.tags"
-            chips
-            clearable
-            multiple
-            label="tags"
-            variant="solo"
-        >
-        </v-combobox>
-
-        <v-container class="mx-lg-2 mx-sm-4">
+        <v-container class="mx-lg-2 px-2 mx-sm-4">
             <v-row class="mx-sm-4">
-                <v-col cols="12" sm="12" md="6" lg="6">
+                <v-col cols="12" sm="12" md="6" lg="6" xl="4">
+                    <!--タグの追加-->
+                    <v-combobox
+                        class="ma-2"
+                        v-model="data.tags"
+                        :items="data.tags"
+                        chips
+                        clearable
+                        multiple
+                        label="tags"
+                        variant="solo"
+                    >
+                    </v-combobox>
+                </v-col>
+            </v-row>
+            <v-row class="mx-sm-4">
+                <v-col cols="12" sm="12" md="6" lg="6" xl="4">
                     <v-carousel class="bg-grey-lighten-2">
                         <v-carousel-item
                             v-for="image in data.images"
@@ -44,7 +46,7 @@
         <div class="new-buttons">
             <v-container>
                 <v-row>
-                    <v-col cols="12" sm="6" md="4" lg="3">
+                    <v-col cols="12" sm="6" md="4" lg="3" xl="2">
                         <v-btn
                             block
                             :to="{ name: 'Top' }"
@@ -55,18 +57,39 @@
                             {{ lang.itemBackToList }}
                         </v-btn>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4" lg="3">
-                        <v-btn
-                            block
-                            :href="data.shop.url"
-                            :prepend-icon="mdiLinkIcon"
-                            rounded="xl"
-                            size="large"
+                    <v-col cols="12" sm="6" md="4" lg="3" xl="2">
+                        <a
+                            :href="data.url"
+                            target="_blank"
+                            style="text-decoration: none"
                         >
-                            {{ lang.itemGotoShop }}
-                        </v-btn>
+                            <v-btn
+                                block
+                                rounded="xl"
+                                size="large"
+                                :prepend-icon="mdiLinkIcon"
+                            >
+                                {{ lang.itemGotoLink }}
+                            </v-btn>
+                        </a>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4" lg="3">
+                    <v-col cols="12" sm="6" md="4" lg="3" xl="2">
+                        <a
+                            :href="data.shop.url"
+                            target="_blank"
+                            style="text-decoration: none"
+                        >
+                            <v-btn
+                                block
+                                rounded="xl"
+                                size="large"
+                                :prepend-icon="mdiLinkIcon"
+                            >
+                                {{ lang.itemGotoShop }}
+                            </v-btn>
+                        </a>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4" lg="3" xl="2">
                         <v-btn
                             block
                             :prepend-icon="mdiDownloadIcon"
@@ -77,7 +100,7 @@
                             {{ lang.itemExport }}
                         </v-btn>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4" lg="3">
+                    <v-col cols="12" sm="6" md="4" lg="3" xl="2">
                         <v-btn
                             block
                             :prepend-icon="mdiDeleteIcon"

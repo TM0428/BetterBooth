@@ -29,13 +29,13 @@
                         closable
                         @click:close="removeTag(index)"
                         class="ma-1"
-                        style="text-align:right"
+                        style="text-align: right"
                     >
                         {{ stag }}
                     </v-chip>
                 </v-col>
             </v-row>
-            <v-row>
+            <v-row class="mx-auto">
                 <!-- アイテムカードを表示 -->
                 <v-col
                     v-for="item in filteredItemList"
@@ -44,10 +44,11 @@
                     sm="6"
                     md="4"
                     lg="3"
+                    xl="2"
                 >
                     <ItemCard :item="item" @tag-clicked="handleTagClicked" />
                 </v-col>
-                <v-col cols="12" sm="6" md="4" lg="3">
+                <v-col cols="12" sm="6" md="4" lg="3" xl="2">
                     <ItemImportCard :lang="lang" />
                 </v-col>
             </v-row>

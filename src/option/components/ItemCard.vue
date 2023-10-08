@@ -1,7 +1,7 @@
 <template>
     <v-card
         @click="navigateToItem"
-        class="d-flex flex-column ma-2 pa-1"
+        class="d-flex flex-column ma-auto pa-1"
         height="100%"
         max-width="310px"
     >
@@ -18,7 +18,7 @@
         </div>
         <!-- タグの表示部分 -->
         <div class="ma-1">
-            <div style="display: inline-block;">
+            <div style="display: inline-block">
                 <v-chip
                     v-for="tag in item.tags"
                     :key="tag"
