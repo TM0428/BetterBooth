@@ -7,20 +7,34 @@
                     lang.topHowto
                 }}</router-link>
             </div>
-            <div class="search-bar">
-                <div class="search-icon">
-                    <img src="@/assets/search.svg" alt="Search Icon" />
-                </div>
-                <input
-                    v-model="searchText"
-                    type="text"
-                    :placeholder="lang.topSearchText"
-                    class="search-input"
-                />
-            </div>
         </div>
 
         <v-container fluid>
+            <v-row>
+                <v-col cols="12" sm="6" md="4" lg="3">
+                    <v-text-field
+                        v-model="searchText"
+                        :label="lang.topSearchText"
+                        :prepend-icon="mdiMagnifyIcon"
+                        single-line
+                        hide-details
+                    ></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-chip
+                        v-for="(stag, index) in stags"
+                        :key="stag"
+                        closable
+                        @click:close="removeTag(index)"
+                        class="ma-1"
+                        style="text-align:right"
+                    >
+                        {{ stag }}
+                    </v-chip>
+                </v-col>
+            </v-row>
             <v-row>
                 <!-- アイテムカードを表示 -->
                 <v-col
@@ -31,7 +45,7 @@
                     md="4"
                     lg="3"
                 >
-                    <ItemCard :item="item" />
+                    <ItemCard :item="item" @tag-clicked="handleTagClicked" />
                 </v-col>
                 <v-col cols="12" sm="6" md="4" lg="3">
                     <ItemImportCard :lang="lang" />
@@ -82,14 +96,7 @@
 
 .search-icon {
     position: absolute;
-    top: 50%;
-    left: 10px;
-    transform: translateY(-50%);
-}
-
-.search-icon img {
-    width: 16px;
-    height: 16px;
+    left: 30px;
 }
 
 .search-input {
@@ -121,6 +128,7 @@ import zh_cn from "../locales/zh-CN.json";
 import zh_tw from "../locales/zh-TW.json";
 import ItemCard from "../components/ItemCard.vue";
 import ItemImportCard from "../components/ItemImportCard.vue";
+import { mdiMagnify } from "@mdi/js";
 
 export default {
     components: {
@@ -130,24 +138,30 @@ export default {
     data() {
         return {
             itemList: [],
+            stags: [],
             searchText: "",
             inputKey: 0,
             lang: ja,
+            mdiMagnifyIcon: mdiMagnify,
         };
     },
     computed: {
         filteredItemList() {
-            console.log(this.itemList);
-            if (this.searchText.trim() === "") {
-                return this.itemList;
-            } else {
-                const keyword = this.searchText.toLowerCase();
-                return this.itemList.filter(
-                    (item) =>
-                        item.name.toLowerCase().includes(keyword) ||
-                        item.shopName.toLowerCase().includes(keyword)
-                );
-            }
+            const keyword = this.searchText.toLowerCase();
+
+            return this.itemList.filter((item) => {
+                // キーワードによるフィルタリング
+                const keywordMatch =
+                    item.name.toLowerCase().includes(keyword) ||
+                    item.shopName.toLowerCase().includes(keyword);
+
+                // stagsによるフィルタリング
+                const tagsMatch =
+                    this.stags.length === 0 ||
+                    this.stags.some((stag) => item.tags.includes(stag));
+
+                return keywordMatch && tagsMatch;
+            });
         },
     },
     methods: {
@@ -263,6 +277,16 @@ export default {
                 });
                 console.log(this.itemList);
             });
+        },
+        handleTagClicked(tag) {
+            console.log(tag); // ここでクリックされたtagを受け取る
+            // stagsに同じテキストが存在しない場合、配列に追加
+            if (!this.stags.includes(tag)) {
+                this.stags.push(tag);
+            }
+        },
+        removeTag(index) {
+            this.stags.splice(index, 1); // 配列から指定されたインデックスのタグを削除
         },
     },
     created() {

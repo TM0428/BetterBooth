@@ -1,5 +1,10 @@
 <template>
-    <v-card :to="to" class="d-flex flex-column ma-2 pa-1" height="100%">
+    <v-card
+        @click="navigateToItem"
+        class="d-flex flex-column ma-2 pa-1"
+        height="100%"
+        max-width="310px"
+    >
         <v-img
             :src="item.image"
             alt="Item Image"
@@ -11,11 +16,16 @@
                 {{ item.name }}
             </div>
         </div>
-        <!-- <v-card-title class="multi-line-title">{{ item.name }}</v-card-title> -->
         <!-- タグの表示部分 -->
         <div class="ma-1">
             <div style="display: inline-block;">
-                <v-chip v-for="tag in item.tags" small class="ma-1">
+                <v-chip
+                    v-for="tag in item.tags"
+                    :key="tag"
+                    small
+                    class="ma-1"
+                    @click.stop="handleTagClick(tag)"
+                >
                     {{ tag }}
                 </v-chip>
             </div>
@@ -37,6 +47,14 @@ export default {
             return { name: "Item", params: { itemId: this.item.id } };
         },
     },
+    methods: {
+        navigateToItem() {
+            this.$router.push(this.to);
+        },
+        handleTagClick(tag) {
+            this.$emit("tag-clicked", tag);
+        },
+    },
 };
 </script>
 
@@ -54,6 +72,6 @@ export default {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-height: 66px; /* 1.2emの行の高さ x 2行。この値は必要に応じて調整してください */
+    max-height: 66px;
 }
 </style>

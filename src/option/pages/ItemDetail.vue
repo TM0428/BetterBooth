@@ -1,100 +1,95 @@
 <template>
     <div class="content">
-        <h1>{{ data.name }}</h1>
-        <div class="image-container">
-            <div class="image-wrapper">
-                <div
-                    class="arrow-left"
-                    v-if="currentImageIndex > 0"
-                    @click="changeImage(currentImageIndex - 1)"
-                >
-                    <img
-                        src="@/assets/arrow-left.svg"
-                        alt="Previous"
-                        width="24"
-                        height="24"
-                    />
-                </div>
-                <div class="image-frame">
-                    <div class="image-inner">
-                        <img
-                            :src="currentImage"
-                            :key="currentImage"
-                            alt="Item Image"
-                            @click="openPopup(currentImage)"
-                        />
-                    </div>
-                </div>
-                <div
-                    class="arrow-right"
-                    v-if="currentImageIndex < data.images.length - 1"
-                    @click="changeImage(currentImageIndex + 1)"
-                >
-                    <img
-                        src="@/assets/arrow-right.svg"
-                        alt="Next"
-                        width="24"
-                        height="24"
-                    />
-                </div>
-            </div>
-        </div>
-        <div class="image-indicator">
-            <span
-                v-for="(image, index) in data.images"
-                :key="index"
-                class="indicator-dot"
-                :class="{ active: index === currentImageIndex }"
-                @click="changeImage(index)"
-            ></span>
-        </div>
-        <p class="description" v-html="formatDescription(data.description)"></p>
+        <!--title-->
+        <div class="text-h4 ma-2">{{ data.name }}</div>
+
+        <!--タグの追加-->
+
+        <v-combobox
+            class="ma-2"
+            v-model="data.tags"
+            :items="data.tags"
+            chips
+            clearable
+            multiple
+            label="tags"
+            variant="solo"
+        >
+        </v-combobox>
+
+        <v-container class="mx-lg-2 mx-sm-4">
+            <v-row class="mx-sm-4">
+                <v-col cols="12" sm="12" md="6" lg="6">
+                    <v-carousel class="bg-grey-lighten-2">
+                        <v-carousel-item
+                            v-for="image in data.images"
+                            :src="image.original"
+                            @click="openPopup(image.original)"
+                        ></v-carousel-item>
+                    </v-carousel>
+                </v-col>
+            </v-row>
+        </v-container>
+
         <p
-            class="additional-description"
+            class="description text-justify ml-2"
+            v-html="formatDescription(data.description)"
+        ></p>
+        <p
+            class="additional-description text-justify ml-2"
             v-if="data.additionalDescription"
             v-html="formatDescription(data.additionalDescription)"
         ></p>
-        <div class="button-wrapper">
-            <router-link :to="{ name: 'Top' }" class="shop-button">
-                <img
-                    src="@/assets/redo.svg"
-                    alt="Link"
-                    width="24"
-                    height="24"
-                    class="button-icon"
-                />
-                <span class="button-text">{{ lang.itemBackToList }}</span>
-            </router-link>
-            <a :href="data.shop.url" target="_blank" class="shop-button">
-                <img
-                    src="@/assets/link.svg"
-                    alt="Link"
-                    width="24"
-                    height="24"
-                    class="button-icon"
-                />
-                <span class="button-text">{{ lang.itemGotoShop }}</span> </a
-            ><!-- データエクスポートボタン -->
-            <button class="export-button" @click="exportData">
-                <img
-                    src="@/assets/export.svg"
-                    alt="Export"
-                    width="24"
-                    height="24"
-                    class="button-icon"
-                />
-                <span class="button-text">{{ lang.itemExport }}</span>
-            </button>
-            <button class="delete-button" @click="deleteItem">
-                <img
-                    src="@/assets/delete.svg"
-                    alt="Delete"
-                    width="24"
-                    height="24"
-                    class="button-icon"
-                />
-                <span class="button-text">{{ lang.itemDelete }}</span>
-            </button>
+
+        <div class="new-buttons">
+            <v-container>
+                <v-row>
+                    <v-col cols="12" sm="6" md="4" lg="3">
+                        <v-btn
+                            block
+                            :to="{ name: 'Top' }"
+                            :prepend-icon="mdiArrowLeftIcon"
+                            rounded="xl"
+                            size="large"
+                        >
+                            {{ lang.itemBackToList }}
+                        </v-btn>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4" lg="3">
+                        <v-btn
+                            block
+                            :href="data.shop.url"
+                            :prepend-icon="mdiLinkIcon"
+                            rounded="xl"
+                            size="large"
+                        >
+                            {{ lang.itemGotoShop }}
+                        </v-btn>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4" lg="3">
+                        <v-btn
+                            block
+                            :prepend-icon="mdiDownloadIcon"
+                            rounded="xl"
+                            size="large"
+                            @click="exportData"
+                        >
+                            {{ lang.itemExport }}
+                        </v-btn>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4" lg="3">
+                        <v-btn
+                            block
+                            :prepend-icon="mdiDeleteIcon"
+                            rounded="xl"
+                            size="large"
+                            @click="deleteItem"
+                        >
+                            {{ lang.itemDelete }}
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-container>
         </div>
         <div class="popup" v-if="popupImage" @click="closePopup">
             <span class="popup-close" @click="closePopup">&times;</span>
@@ -110,6 +105,7 @@ import en from "../locales/en.json";
 import ko from "../locales/ko.json";
 import zh_cn from "../locales/zh-CN.json";
 import zh_tw from "../locales/zh-TW.json";
+import { mdiArrowLeft, mdiLink, mdiDownload, mdiDelete } from "@mdi/js";
 
 export default {
     props: ["itemId"],
@@ -124,9 +120,12 @@ export default {
                     url: "",
                 },
             },
-            currentImageIndex: 0,
             popupImage: null,
             lang: ja,
+            mdiArrowLeftIcon: mdiArrowLeft,
+            mdiLinkIcon: mdiLink,
+            mdiDownloadIcon: mdiDownload,
+            mdiDeleteIcon: mdiDelete,
         };
     },
 
@@ -183,13 +182,6 @@ export default {
         });
     },
 
-    computed: {
-        currentImage() {
-            const image = this.data.images[this.currentImageIndex];
-            return image && image.original ? image.original : "";
-        },
-    },
-
     methods: {
         formatDescription(description) {
             return description.replace(/\n/g, "<br>");
@@ -201,11 +193,6 @@ export default {
         closePopup() {
             this.popupImage = null;
             document.body.style.overflow = "auto";
-        },
-        changeImage(index) {
-            if (index >= 0 && index < this.data.images.length) {
-                this.currentImageIndex = index;
-            }
         },
         exportData() {
             const dataToExport = JSON.stringify(this.data);
@@ -247,106 +234,28 @@ export default {
             }
         },
     },
+    watch: {
+        "data.tags": {
+            handler(n, old) {
+                const new_data = JSON.parse(JSON.stringify(this.data));
+                chrome.storage.local.set({
+                    [`items_${this.data.id}`]: new_data,
+                });
+                chrome.storage.local.get(`items_${this.itemId}`, (result) => {
+                    console.log(result[`items_${this.itemId}`]);
+                });
+            },
+            deep: true,
+        },
+    },
 };
 </script>
 
 <style scoped>
 .content {
-    width: 100%;
-    margin-left: 30px;
-    margin-right: 30px;
     font-family: -apple-system, BlinkMacSystemFont, Avenir, "Helvetica Neue",
         "Segoe UI", Arial, "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN",
         メイリオ, Meiryo, "ＭＳ Ｐゴシック", sans-serif;
-}
-
-.image-container {
-    position: relative;
-    width: 500px;
-    height: 500px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.image-wrapper {
-    background-color: #f2f2f2;
-}
-
-.arrow-left,
-.arrow-right {
-    position: absolute;
-    top: calc(50% - 12px);
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    z-index: 1;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    padding: 4px;
-    border-radius: 4px;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.arrow-left {
-    left: 10px;
-}
-
-.arrow-right {
-    right: 10px;
-}
-
-.arrow-left img,
-.arrow-right img {
-    width: 24px;
-    height: 24px;
-}
-
-.image-inner {
-    width: 500px;
-    height: 500px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.image-inner img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    cursor: pointer;
-}
-
-.image-indicator {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-    width: 500px;
-    overflow-x: auto;
-    white-space: nowrap;
-}
-
-.indicator-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: gray;
-    margin: 0 5px;
-    cursor: pointer;
-}
-
-.indicator-dot.active {
-    background-color: black;
-}
-
-.description {
-    padding-top: 10px;
-}
-
-.additional-description {
-    padding-top: 10px;
 }
 
 .popup {
@@ -437,16 +346,5 @@ p {
 
 .button-icon {
     margin-right: 10px;
-}
-
-/* スモールデバイス (画面の幅が600px以下の場合) */
-@media (max-width: 600px) {
-    .image-container,
-    .image-wrapper,
-    .image-indicator,
-    .image-inner {
-        width: 100%;
-        height: auto;
-    }
 }
 </style>

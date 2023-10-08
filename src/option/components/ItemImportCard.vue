@@ -4,6 +4,7 @@
             @click="uploadDataCardClicked"
             class="d-flex flex-column ma-2 pa-1"
             height="100%"
+            max-width="310px"
         >
             <img
                 src="@/assets/add_circle.svg"
@@ -13,7 +14,7 @@
             />
             <div class="ma-2 text-h6 text-weight-regular two-line-title">
                 <div class="ellipsis-2-lines" style="inherit;">
-                    {{ lang.topImport }}<v-icon>mdi-home</v-icon>
+                    {{ lang.topImport }}<v-icon :icon="mdiAccountIcon"></v-icon>
                 </div>
             </div>
             <input
@@ -29,6 +30,7 @@
 </template>
 
 <script>
+import { mdiAccount } from "@mdi/js";
 export default {
     name: "ItemCard",
     props: {
@@ -36,6 +38,11 @@ export default {
             type: Object,
             required: true,
         },
+    },
+    data() {
+        return {
+            mdiAccountIcon: mdiAccount,
+        };
     },
     methods: {
         uploadDataCardClicked() {
