@@ -1,11 +1,11 @@
 <template>
     <div class="content">
         <!--title-->
-        <div class="text-h4 ma-2">{{ data.name }}</div>
+        <div class="text-h4 ma-2 py-2">{{ data.name }}</div>
 
         <v-container class="mx-lg-2 px-2 mx-sm-4">
             <v-row class="mx-sm-4">
-                <v-col cols="12" sm="12" md="6" lg="6" xl="4">
+                <v-col cols="12" sm="12" md="8" lg="6" xl="4">
                     <!--タグの追加-->
                     <v-combobox
                         class="ma-2"
@@ -21,7 +21,7 @@
                 </v-col>
             </v-row>
             <v-row class="mx-sm-4">
-                <v-col cols="12" sm="12" md="6" lg="6" xl="4">
+                <v-col cols="12" sm="12" md="8" lg="6" xl="4">
                     <v-carousel class="bg-grey-lighten-2">
                         <v-carousel-item
                             v-for="image in data.images"
@@ -34,11 +34,11 @@
         </v-container>
 
         <p
-            class="description text-justify ml-2"
+            class="description text-body-1 ml-2"
             v-html="formatDescription(data.description)"
         ></p>
         <p
-            class="additional-description text-justify ml-2"
+            class="additional-description text-body-1 ml-2"
             v-if="data.additionalDescription"
             v-html="formatDescription(data.additionalDescription)"
         ></p>
@@ -155,7 +155,6 @@ export default {
     created() {
         // 言語ファイルが正しく読み込まれることを確認してください
         const userLocale = window.navigator.language;
-        console.log(userLocale);
         switch (userLocale) {
             case "en":
                 this.lang = en;
@@ -202,6 +201,13 @@ export default {
         chrome.storage.local.get(`items_${this.itemId}`, (result) => {
             this.data = result[`items_${this.itemId}`];
             console.log(this.data);
+            if (this.data.additionalDescription) {
+                this.data.additionalDescription =
+                    this.data.additionalDescription.replaceAll(
+                        "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
+                        "ma-1 pt-8"
+                    );
+            }
         });
     },
 
@@ -363,11 +369,7 @@ body {
     filter: brightness(40%);
 }
 
-p {
-    font-size: 15px;
-}
-
-.button-icon {
-    margin-right: 10px;
+h2 {
+    margin-top: 6px !important;
 }
 </style>

@@ -8,13 +8,27 @@
         <v-img
             :src="item.image"
             alt="Item Image"
-            class="cover"
+            class="cover bg-grey-lighten-2"
             aspect-ratio="1"
         />
         <div class="ma-2 text-h6 text-weight-regular two-line-title">
             <div class="ellipsis-2-lines" style="inherit;">
                 {{ item.name }}
             </div>
+        </div>
+        <!--ショップ-->
+        <div class="ma-1">
+            <v-chip
+                class="text-blue-darken-3"
+                variant="outlined"
+                @click.stop="handleShopClick(item.shop)"
+            >
+                <v-avatar start>
+                    <v-img :src="item.shop.thumbnail_url"></v-img>
+                </v-avatar>
+
+                {{ item.shop.name }}
+            </v-chip>
         </div>
         <!-- タグの表示部分 -->
         <div class="ma-1">
@@ -53,6 +67,9 @@ export default {
         },
         handleTagClick(tag) {
             this.$emit("tag-clicked", tag);
+        },
+        handleShopClick(shop) {
+            this.$emit("shop-clicked", shop);
         },
     },
 };

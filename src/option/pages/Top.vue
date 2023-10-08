@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="text-h2 page-title">{{ lang.topTitle }}</div>
-        <div class="help-and-search">
+        <div class="text-h2 page-title ma-3">{{ lang.topTitle }}</div>
+        <div class="help-and-search text-body-1 ml-4">
             <div class="help-link">
                 <router-link :to="{ name: 'Howto' }" class="help-link-text">{{
                     lang.topHowto
@@ -23,8 +23,30 @@
             </v-row>
             <v-row>
                 <v-col>
+                    <div v-if="srchShop.name">
+                        <div class="text-caption">shop:</div>
+                        <v-chip
+                            class="text-blue-darken-3"
+                            variant="outlined"
+                            closable
+                            @click:close="removeShop()"
+                        >
+                            <v-avatar start>
+                                <v-img :src="srchShop.thumbnail_url"></v-img>
+                            </v-avatar>
+
+                            {{ srchShop.name }}
+                        </v-chip>
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <div v-if="srchTags.length != 0" class="text-caption">
+                        tags:
+                    </div>
                     <v-chip
-                        v-for="(stag, index) in stags"
+                        v-for="(stag, index) in srchTags"
                         :key="stag"
                         closable
                         @click:close="removeTag(index)"
@@ -46,7 +68,11 @@
                     lg="3"
                     xl="2"
                 >
-                    <ItemCard :item="item" @tag-clicked="handleTagClicked" />
+                    <ItemCard
+                        :item="item"
+                        @tag-clicked="handleTagClicked"
+                        @shop-clicked="handleShopClicked"
+                    />
                 </v-col>
                 <v-col cols="12" sm="6" md="4" lg="3" xl="2">
                     <ItemImportCard :lang="lang" />
@@ -54,7 +80,7 @@
             </v-row>
         </v-container>
 
-        <a class="page-title" href="/src/popup/popup.html">{{
+        <a class="page-title text-body-1 ml-4" href="/src/popup/popup.html">{{
             lang.topSetttings
         }}</a>
         <input
@@ -71,21 +97,6 @@
 <style>
 .page-title {
     text-align: center;
-}
-
-.help-and-search {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    margin-right: 10px;
-}
-
-.help-link {
-    text-align: right;
-}
-
-.help-link-text {
-    text-decoration: none;
 }
 
 .search-bar {
@@ -139,7 +150,8 @@ export default {
     data() {
         return {
             itemList: [],
-            stags: [],
+            srchTags: [],
+            srchShop: {},
             searchText: "",
             inputKey: 0,
             lang: ja,
@@ -154,14 +166,21 @@ export default {
                 // キーワードによるフィルタリング
                 const keywordMatch =
                     item.name.toLowerCase().includes(keyword) ||
-                    item.shopName.toLowerCase().includes(keyword);
+                    item.shop.name.toLowerCase().includes(keyword);
 
-                // stagsによるフィルタリング
-                const tagsMatch =
-                    this.stags.length === 0 ||
-                    this.stags.some((stag) => item.tags.includes(stag));
+                // srchTagsによるフィルタリング
+                // const tagsMatch =
+                //     this.srchTags.length === 0 ||
+                //     this.srchTags.some((stag) => item.tags.includes(stag));
+                const tagsMatch = this.srchTags.every((stag) =>
+                    item.tags.includes(stag)
+                );
 
-                return keywordMatch && tagsMatch;
+                const shopMatch =
+                    this.srchShop.name === undefined ||
+                    this.srchShop.name === item.shop.name;
+
+                return keywordMatch && tagsMatch && shopMatch;
             });
         },
     },
@@ -270,7 +289,7 @@ export default {
                             this.itemList.push({
                                 id: itemId.replace("items_", ""),
                                 name: itemData.name,
-                                shopName: itemData.shop.name,
+                                shop: itemData.shop,
                                 image: itemData.images[0].original,
                             });
                         }
@@ -281,13 +300,20 @@ export default {
         },
         handleTagClicked(tag) {
             console.log(tag); // ここでクリックされたtagを受け取る
-            // stagsに同じテキストが存在しない場合、配列に追加
-            if (!this.stags.includes(tag)) {
-                this.stags.push(tag);
+            // srchTagsに同じテキストが存在しない場合、配列に追加
+            if (!this.srchTags.includes(tag)) {
+                this.srchTags.push(tag);
             }
         },
+        handleShopClicked(shop) {
+            console.log(shop);
+            this.srchShop = shop;
+        },
         removeTag(index) {
-            this.stags.splice(index, 1); // 配列から指定されたインデックスのタグを削除
+            this.srchTags.splice(index, 1); // 配列から指定されたインデックスのタグを削除
+        },
+        removeShop() {
+            this.srchShop = {};
         },
     },
     created() {
@@ -350,7 +376,7 @@ export default {
                         this.itemList.push({
                             id: itemId.replace("items_", ""),
                             name: itemData.name,
-                            shopName: itemData.shop.name,
+                            shop: itemData.shop,
                             image: itemData.images[0].original,
                             tags: itemData.tags ? itemData.tags : [],
                         });

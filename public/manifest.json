@@ -75,10 +75,10 @@
         },
         {
             "matches": [
-                "*://booth.pm/carts*"
+                "*://checkout.booth.pm/orders*"
             ],
             "js": [
-                "js/carts.js"
+                "js/purchase.js"
             ]
         }
     ],
