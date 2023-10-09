@@ -327,6 +327,11 @@
                 </v-card>
             </v-container>
         </div>
+        <div v-if="extended_settings.save_item" class="d-flex justify-end ma-2">
+            <a target="_blank" href="/src/option/option.html#/">
+                <v-btn> 商品一覧ページへ </v-btn>
+            </a>
+        </div>
     </div>
 </template>
 
