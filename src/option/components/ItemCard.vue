@@ -54,7 +54,12 @@
                     class="ma-1"
                     @click.stop="handleTagClick(tag)"
                 >
-                    {{ tag }}
+                    <span
+                        class="d-inline-block text-truncate"
+                        style="max-width: 240px"
+                    >
+                        {{ tag }}
+                    </span>
                 </v-chip>
             </div>
         </div>

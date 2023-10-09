@@ -43,27 +43,6 @@
             </v-container>
         </div>
 
-        <!-- <h1 class="ma-3">{{ lang.filtersHeader }}</h1>
-        <v-list class="filter-list d-flex flex-row justify-center">
-            <v-list-item-group style="width: 100%">
-                <v-list-item v-for="(filter, index) in filters" :key="filter">
-                    <v-list-item-content
-                        class="d-flex align-center justify-space-between"
-                    >
-                        <a :href="filter" target="_blank">{{ filter }}</a>
-
-                        <v-btn
-                            color="red"
-                            @click="removeFilter(index)"
-                            size="small"
-                        >
-                            {{ lang.removeButton }}
-                        </v-btn>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list-item-group>
-        </v-list> -->
-
         <div class="new-search-setting">
             <v-container class="ma-3 pa-0">
                 <h1 class="mb-2">Search Settings:</h1>
@@ -222,68 +201,6 @@
             </v-container>
         </div>
 
-        <!-- <h1 class="ma-3">Search Settings:</h1>
-        <ul class="search-setting">
-            <div>
-                <fieldset :disabled="disable_data">
-                    <li>
-                        {{ lang.ageLabel }}
-                        <select class="right-side" v-model="settings.age">
-                            <option value="include">
-                                {{ lang.includeOption }}
-                            </option>
-                            <option value="default">
-                                {{ lang.defaultOption }}
-                            </option>
-                            <option value="only">{{ lang.onlyOption }}</option>
-                        </select>
-                    </li>
-                    <li>
-                        {{ lang.sortLabel }}
-                        <select class="right-side" v-model="settings.sort">
-                            <option value="">{{ lang.popularOption }}</option>
-                            <option value="new">{{ lang.newOption }}</option>
-                            <option value="wish_list">
-                                {{ lang.wishListOption }}
-                            </option>
-                            <option value="price_desc">
-                                {{ lang.priceDescOption }}
-                            </option>
-                            <option value="price_asc">
-                                {{ lang.priceAscOption }}
-                            </option>
-                        </select>
-                    </li>
-                    <li>
-                        {{ lang.stockLabel }}
-                        <input
-                            class="right-side"
-                            type="checkbox"
-                            v-model="in_stock"
-                            name="checkbox01"
-                        />
-                    </li>
-                    <li>
-                        {{ lang.newArrivalLabel }}
-                        <input
-                            class="right-side"
-                            type="checkbox"
-                            v-model="settings.new_arrival"
-                        />
-                    </li>
-                </fieldset>
-            </div>
-            <li>
-                <button @click="saveData()">{{ lang.saveButton }}</button>
-                <button class="right-side" @click="toggleDisable()">
-                    {{ disable_text }}
-                </button>
-            </li>
-            <div>
-                {{ notifText }}
-            </div>
-        </ul> -->
-
         <div class="new-extension-setting">
             <v-container class="ma-3 pa-0">
                 <h1 class="mb-2">Extension Settings:</h1>
@@ -410,46 +327,6 @@
                 </v-card>
             </v-container>
         </div>
-
-        <!-- <h1>Extension Settings:</h1>
-        <ul class="extended-setting">
-            <li>
-                Language
-                <select
-                    class="right-side"
-                    v-model="extended_settings.language"
-                    v-on:change="changeLanguage"
-                    :menu-icon="mdiMenuDownIcon"
-                >
-                    <option value="ja">日本語</option>
-                    <option value="en">English</option>
-                    <option value="ko">한국어</option>
-                    <option value="zh-CN">中文（简体）</option>
-                    <option value="zh-TW">中文（繁體）</option>
-                </select>
-            </li>
-            <li>
-                {{ lang.saveItemOption }}
-                <input
-                    class="right-side"
-                    type="checkbox"
-                    v-model="extended_settings.save_item"
-                />
-            </li>
-            <li>
-                <a target="_blank" href="/src/option/option.html#/howto">{{
-                    lang.linkToHelp
-                }}</a>
-            </li>
-            <li class="save-button">
-                <button class="right-side" @click="saveExtendedData()">
-                    {{ lang.saveButton }}
-                </button>
-            </li>
-            <div>
-                {{ exnotifText }}
-            </div>
-        </ul> -->
     </div>
 </template>
 
@@ -592,11 +469,6 @@ export default {
                         ? true
                         : !this.settings.in_stock;
             }
-            if (this.settings.disable) {
-                this.disable_text = "Disable";
-            } else {
-                this.disable_text = "Enable";
-            }
         });
         chrome.storage.sync.get("extended_settings", (result) => {
             console.log(result.extended_settings);
@@ -612,11 +484,6 @@ export default {
             }
             this.changeLanguage();
         });
-    },
-    computed: {
-        disable_data() {
-            return this.settings.disable;
-        },
     },
 };
 </script>

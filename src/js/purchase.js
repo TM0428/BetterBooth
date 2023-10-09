@@ -67,7 +67,7 @@ async function getPurchaseData() {
 
 chrome.storage.sync.get("extended_settings", (result) => {
     const setting = result.extended_settings;
-    if(setting && setting.save_purchase){
+    if(setting && setting.save_item && setting.save_purchase){
         getPurchaseData();
     }
 

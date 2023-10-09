@@ -74,7 +74,7 @@
             <v-row class="mx-auto">
                 <!-- アイテムカードを表示 -->
                 <v-col
-                    v-for="item in filteredItemList"
+                    v-for="item in paginatedItems"
                     :key="item.id"
                     cols="12"
                     sm="6"
@@ -89,13 +89,26 @@
                         @cart-clicked="handleCartClicked"
                     />
                 </v-col>
-                <v-col cols="12" sm="6" md="4" lg="3" xl="2">
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                    lg="3"
+                    xl="2"
+                    v-if="paginatedItems.length < 24"
+                >
                     <ItemImportCard
                         :lang="lang"
                         @item-imported="handleItemImported"
                     />
                 </v-col>
             </v-row>
+
+            <v-pagination
+                v-model="page"
+                :length="pageCount"
+                :total-visible="7"
+            ></v-pagination>
         </v-container>
 
         <a class="page-title text-body-1 ml-4" href="/src/popup/popup.html">{{
@@ -168,6 +181,8 @@ export default {
             lang: ja,
             mdiMagnifyIcon: mdiMagnify,
             mdiCartOutlineIcon: mdiCartOutline,
+            page: 1,
+            itemsPerPage: 24,
         };
     },
     computed: {
@@ -205,6 +220,14 @@ export default {
                 return keywordMatch && tagsMatch && shopMatch;
             });
         },
+        paginatedItems() {
+            const start = (this.page - 1) * this.itemsPerPage;
+            const end = this.page * this.itemsPerPage;
+            return this.filteredItemList.slice(start, end);
+        },
+        pageCount() {
+            return Math.ceil(this.filteredItemList.length / this.itemsPerPage);
+        },
     },
     methods: {
         reloadList() {
@@ -228,28 +251,35 @@ export default {
             if (!this.srchTags.includes(tag)) {
                 this.srchTags.push(tag);
             }
+            this.page = 1;
         },
         handleShopClicked(shop) {
             console.log(shop);
             this.srchShop = shop;
+            this.page = 1;
         },
         handleCartClicked(cart) {
             console.log(cart);
             cart ? (this.srchCart = 1) : (this.srchCart = 0);
+            this.page = 1;
         },
         handleItemImported(status) {
             if (!status) {
                 this.reloadList();
             }
+            this.page = 1;
         },
         removeTag(index) {
             this.srchTags.splice(index, 1); // 配列から指定されたインデックスのタグを削除
+            this.page = 1;
         },
         removeShop() {
             this.srchShop = {};
+            this.page = 1;
         },
         removeCart() {
             this.srchCart = -1;
+            this.page = 1;
         },
     },
     created() {
