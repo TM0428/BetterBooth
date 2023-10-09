@@ -238,7 +238,6 @@ export default {
             cart ? (this.srchCart = 1) : (this.srchCart = 0);
         },
         handleItemImported(status) {
-            console.log(status);
             if (!status) {
                 this.reloadList();
             }

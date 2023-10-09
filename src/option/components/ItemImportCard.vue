@@ -71,6 +71,8 @@ export default {
                         name: data.name,
                         price: data.price || null,
                         shop: data.shop || null,
+                        tags: data.tags || [],
+                        purchased: data.purchased || false,
                     };
                     console.log(sanitizedData);
 

@@ -5,10 +5,12 @@ export async function setItemData(data) {
         let items = result.items;
 
         if (items && !items.includes(itemId)) {
+            // アイテムが存在しないとき
             items.push(itemId);
             await setToStorage({ items: items });
             await setToStorage({ [`${itemId}`]: data });
         } else if (items) {
+            // 既にあるため、元のデータとのマージ
             const oldDataResult = await getFromStorage(itemId);
             const oldData = oldDataResult[itemId];
             const mergedData = {
@@ -17,6 +19,7 @@ export async function setItemData(data) {
             };
             await setToStorage({ [`${itemId}`]: mergedData });
         } else {
+            // リストの新規作成
             items = [itemId];
             await setToStorage({ items: items });
             await setToStorage({ [`${itemId}`]: data });
