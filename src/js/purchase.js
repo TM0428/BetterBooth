@@ -46,7 +46,7 @@ async function getPurchaseData() {
                             ...data
                           };
                         chrome.storage.local.set({ [`${itemId}`]: mergedData });
-                    })
+                    });
                     
                 }
                 else {

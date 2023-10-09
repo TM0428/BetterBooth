@@ -32,6 +32,7 @@
 
 <script>
 import { mdiPlusCircleOutline } from "@mdi/js";
+import { setItemData } from "../js/localStorage";
 
 export default {
     name: "ItemCard",
@@ -116,28 +117,14 @@ export default {
                 typeof data.shop.url === "string"
             );
         },
-        addStorage(data) {
-            const itemId = "items_" + String(data.id);
-            chrome.storage.local.get("items", (result) => {
-                var items = result.items;
-                if (items && !items.includes(itemId)) {
-                    // 新たに登録
-                    items.push(itemId);
-                    chrome.storage.local.set({ items: items });
-                    chrome.storage.local.set({ [`${itemId}`]: data });
-                } else if (items) {
-                    // 既に登録されているので更新
-                    chrome.storage.local.set({ [`${itemId}`]: data });
-                } else {
-                    // リスト作成と登録
-                    items = [itemId];
-                    console.log(items);
-                    chrome.storage.local.set({ items: items });
-                    chrome.storage.local.set({ [`${itemId}`]: data });
-                }
-
+        async addStorage(data) {
+            const result = await setItemData(data);
+            if (result != 0) {
+                window.alert("Some error occured!");
+            } else {
                 window.alert(this.lang.topDataAdd);
-            });
+                this.$emit("item-imported", result);
+            }
         },
     },
     computed: {

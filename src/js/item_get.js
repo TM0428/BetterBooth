@@ -57,7 +57,16 @@ async function addData() {
         }
         else if (items) {
             // 既に登録されているので更新
-            chrome.storage.local.set({ [`${itemId}`]: data });
+            
+            chrome.storage.local.get(itemId, (result) => {
+    
+                const oldData = result[itemId];
+                const mergedData = {
+                    ...oldData,
+                    ...data
+                  };
+                chrome.storage.local.set({ [`${itemId}`]: mergedData });
+            });
         }
         else {
             // リスト作成と登録

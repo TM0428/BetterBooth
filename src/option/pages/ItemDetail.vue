@@ -270,9 +270,9 @@ export default {
                 chrome.storage.local.set({
                     [`items_${this.data.id}`]: new_data,
                 });
-                chrome.storage.local.get(`items_${this.itemId}`, (result) => {
-                    console.log(result[`items_${this.itemId}`]);
-                });
+                // chrome.storage.local.get(`items_${this.itemId}`, (result) => {
+                //     console.log(result[`items_${this.itemId}`]);
+                // });
             },
             deep: true,
         },
