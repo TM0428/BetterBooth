@@ -18,6 +18,10 @@ async function addData() {
     const response = await fetch(url);
     const text = await response.text();
     const raw_data = JSON.parse(text);
+    console.log(raw_data);
+    const tags = raw_data.tags.map(tag => tag.name);
+    const statusArray = raw_data.variations.map(item => item.status);
+
     const data = {
         name: raw_data.name,
         images: raw_data.images,
@@ -26,6 +30,10 @@ async function addData() {
         id: raw_data.id,
         price: raw_data.price,
         url: raw_data.url,
+        tags: tags,
+        category: raw_data.category.name,
+        status: statusArray,
+        wished: raw_data.wished,
     };
     // 追加のデータを取得して保存
     const additionalDescriptionElement = document.querySelector(
@@ -49,7 +57,16 @@ async function addData() {
         }
         else if (items) {
             // 既に登録されているので更新
-            chrome.storage.local.set({ [`${itemId}`]: data });
+            
+            chrome.storage.local.get(itemId, (result) => {
+    
+                const oldData = result[itemId];
+                const mergedData = {
+                    ...oldData,
+                    ...data
+                  };
+                chrome.storage.local.set({ [`${itemId}`]: mergedData });
+            });
         }
         else {
             // リスト作成と登録

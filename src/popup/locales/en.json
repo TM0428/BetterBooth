@@ -1,6 +1,7 @@
 {
     "filtersHeader": "Filters:",
     "removeButton": "Remove",
+    "toggleSearchSetting": "Disable search settings",
     "ageLabel": "Age Restriction",
     "sortLabel": "Sorting",
     "includeOption": "All",
@@ -19,5 +20,6 @@
     "BlockText": "Block",
     "BlockingText": "Blocking",
     "saveItemOption": "Save item data(experimental feature)",
-    "linkToHelp": "What is \"Save item\"?"
+    "linkToHelp": "What is \"Save item\"?",
+    "savePurchaseItem": "Save information on purchased products automatically"
 }
