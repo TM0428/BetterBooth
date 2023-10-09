@@ -28,3 +28,4 @@ test_html
 *.sln
 *.sw?
 .vscode/extensions.json
+*.zip
