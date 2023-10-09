@@ -1,6 +1,7 @@
 {
     "filtersHeader": "Filter:",
     "removeButton": "제거",
+    "toggleSearchSetting": "Disable search settings",
     "ageLabel": "Age Restriction",
     "sortLabel": "정렬",
     "includeOption": "지정 안 함",
@@ -17,5 +18,6 @@
     "disableButton": "Disable",
     "disableButtonEnable": "Enable",
     "saveItemOption": "Save item data(experimental feature)",
-    "linkToHelp": "What is \"Save item\"?"
+    "linkToHelp": "What is \"Save item\"?",
+    "savePurchaseItem": "Save information on purchased products automatically"
 }

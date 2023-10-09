@@ -1,6 +1,7 @@
 {
     "filtersHeader": "Filter:",
     "removeButton": "Remove",
+    "toggleSearchSetting": "検索設定を無効化する",
     "ageLabel": "年齢制限",
     "sortLabel": "ソート条件",
     "includeOption": "指定なし",
@@ -19,5 +20,6 @@
     "BlockText": "ブロック",
     "BlockingText": "ブロック中",
     "saveItemOption": "商品の情報を保存する(実験的機能)",
-    "linkToHelp": "商品の保存とは？"
+    "linkToHelp": "商品の保存とは？",
+    "savePurchaseItem": "購入した商品の情報を自動で保存する"
 }
