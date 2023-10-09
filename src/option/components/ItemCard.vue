@@ -6,7 +6,7 @@
         max-width="310px"
     >
         <v-img
-            :src="item.image"
+            :src="imageUrl"
             alt="Item Image"
             class="cover bg-grey-lighten-2"
             aspect-ratio="1"
@@ -17,7 +17,7 @@
             </div>
         </div>
         <!--ショップ-->
-        <div class="ma-1">
+        <div class="ma-1 d-flex flex-row">
             <v-chip
                 class="text-blue-darken-3"
                 variant="outlined"
@@ -26,9 +26,23 @@
                 <v-avatar start>
                     <v-img :src="item.shop.thumbnail_url"></v-img>
                 </v-avatar>
-
-                {{ item.shop.name }}
+                <span
+                    class="d-inline-block text-truncate"
+                    style="max-width: 170px"
+                >
+                    {{ item.shop.name }}
+                </span>
             </v-chip>
+            <v-spacer></v-spacer>
+            <!--購入したか-->
+            <div class="mx-1">
+                <v-chip
+                    :color="item.purchased ? 'blue' : 'grey lighten-2'"
+                    @click.stop="handleCartClick()"
+                >
+                    <v-icon :icon="mdiCartOutlineIcon"></v-icon>
+                </v-chip>
+            </div>
         </div>
         <!-- タグの表示部分 -->
         <div class="ma-1">
@@ -48,6 +62,8 @@
 </template>
 
 <script>
+import { mdiHeartOutline, mdiCartOutline, mdiGoogleChrome } from "@mdi/js";
+
 export default {
     name: "ItemCard",
     props: {
@@ -55,6 +71,13 @@ export default {
             type: Object,
             required: true,
         },
+    },
+    data() {
+        return {
+            imageUrl: "",
+            mdiHeartOutlineIcon: mdiHeartOutline,
+            mdiCartOutlineIcon: mdiCartOutline,
+        };
     },
     computed: {
         to() {
@@ -71,6 +94,30 @@ export default {
         handleShopClick(shop) {
             this.$emit("shop-clicked", shop);
         },
+        handleCartClick() {
+            // if (this.item.purchased) {
+            //     this.$emit("cart-clicked", this.item.purchased);
+            // } else {
+            //     this.$emit("cart-clicked", false);
+            // }
+            if (this.item.purchased) {
+                this.item.purchased = !this.item.purchased;
+                const new_data = JSON.parse(JSON.stringify(this.item));
+                chrome.storage.local.set({
+                    [`items_${this.item.id}`]: new_data,
+                });
+            } else {
+                this.item.purchased = true;
+                const new_data = JSON.parse(JSON.stringify(this.item));
+                new_data.purchased = true;
+                chrome.storage.local.set({
+                    [`items_${this.item.id}`]: new_data,
+                });
+            }
+        },
+    },
+    created() {
+        this.imageUrl = this.item.images[0].original;
     },
 };
 </script>

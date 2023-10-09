@@ -32,7 +32,8 @@ async function addData() {
         url: raw_data.url,
         tags: tags,
         category: raw_data.category.name,
-        status: statusArray
+        status: statusArray,
+        wished: raw_data.wished,
     };
     // 追加のデータを取得して保存
     const additionalDescriptionElement = document.querySelector(

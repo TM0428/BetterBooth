@@ -40,6 +40,20 @@
                     </div>
                 </v-col>
             </v-row>
+            <!-- <v-row>
+                <v-col>
+                    <div v-if="srchCart >= 0">
+                        <div class="text-caption">cart:</div>
+                        <v-chip
+                            closable
+                            :color="srchCart === 1 ? 'blue' : 'grey lighten-2'"
+                            @click.close="removeCart()"
+                        >
+                            <v-icon :icon="mdiCartOutlineIcon"></v-icon>
+                        </v-chip>
+                    </div>
+                </v-col>
+            </v-row> -->
             <v-row>
                 <v-col>
                     <div v-if="srchTags.length != 0" class="text-caption">
@@ -72,6 +86,7 @@
                         :item="item"
                         @tag-clicked="handleTagClicked"
                         @shop-clicked="handleShopClicked"
+                        @cart-clicked="handleCartClicked"
                     />
                 </v-col>
                 <v-col cols="12" sm="6" md="4" lg="3" xl="2">
@@ -140,7 +155,7 @@ import zh_cn from "../locales/zh-CN.json";
 import zh_tw from "../locales/zh-TW.json";
 import ItemCard from "../components/ItemCard.vue";
 import ItemImportCard from "../components/ItemImportCard.vue";
-import { mdiMagnify } from "@mdi/js";
+import { mdiMagnify, mdiCartOutline } from "@mdi/js";
 
 export default {
     components: {
@@ -152,10 +167,12 @@ export default {
             itemList: [],
             srchTags: [],
             srchShop: {},
+            srchCart: -1,
             searchText: "",
             inputKey: 0,
             lang: ja,
             mdiMagnifyIcon: mdiMagnify,
+            mdiCartOutlineIcon: mdiCartOutline,
         };
     },
     computed: {
@@ -172,9 +189,17 @@ export default {
                 // const tagsMatch =
                 //     this.srchTags.length === 0 ||
                 //     this.srchTags.some((stag) => item.tags.includes(stag));
-                const tagsMatch = this.srchTags.every((stag) =>
-                    item.tags.includes(stag)
-                );
+                // const tagsMatch = this.srchTags.every((stag) =>
+                //     item.tags.includes(stag)
+                // );
+                let tagsMatch = false;
+                if (this.srchTags.length === 0) {
+                    tagsMatch = true;
+                } else if (item.tags) {
+                    tagsMatch = this.srchTags.every((stag) =>
+                        item.tags.includes(stag)
+                    );
+                }
 
                 const shopMatch =
                     this.srchShop.name === undefined ||
@@ -286,12 +311,7 @@ export default {
                     chrome.storage.local.get(`${itemId}`, (itemResult) => {
                         const itemData = itemResult[itemId];
                         if (itemData && itemData.name) {
-                            this.itemList.push({
-                                id: itemId.replace("items_", ""),
-                                name: itemData.name,
-                                shop: itemData.shop,
-                                image: itemData.images[0].original,
-                            });
+                            this.itemList.push(itemData);
                         }
                     });
                 });
@@ -309,11 +329,18 @@ export default {
             console.log(shop);
             this.srchShop = shop;
         },
+        handleCartClicked(cart) {
+            console.log(cart);
+            cart ? (this.srchCart = 1) : (this.srchCart = 0);
+        },
         removeTag(index) {
             this.srchTags.splice(index, 1); // 配列から指定されたインデックスのタグを削除
         },
         removeShop() {
             this.srchShop = {};
+        },
+        removeCart() {
+            this.srchCart = -1;
         },
     },
     created() {
@@ -373,13 +400,7 @@ export default {
                 chrome.storage.local.get(`${itemId}`, (itemResult) => {
                     const itemData = itemResult[itemId];
                     if (itemData && itemData.name) {
-                        this.itemList.push({
-                            id: itemId.replace("items_", ""),
-                            name: itemData.name,
-                            shop: itemData.shop,
-                            image: itemData.images[0].original,
-                            tags: itemData.tags ? itemData.tags : [],
-                        });
+                        this.itemList.push(itemData);
                     }
                 });
             });

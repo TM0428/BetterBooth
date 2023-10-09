@@ -24,6 +24,7 @@ async function getPurchaseData() {
                 tags: tags,
                 category: raw_data.category.name,
                 status: statusArray,
+                wished: raw_data.wished,
                 purchased: true
             };
             console.log(data);
