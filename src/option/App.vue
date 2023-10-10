@@ -8,4 +8,11 @@
     </main>
 </template>
 
-<style scoped></style>
+<style>
+html,
+body {
+    height: 100%;
+    margin: 0;
+    background-color: #eee;
+}
+</style>

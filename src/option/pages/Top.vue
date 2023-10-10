@@ -1,46 +1,84 @@
 <template>
     <div>
-        <div class="text-h2 page-title ma-3">{{ lang.topTitle }}</div>
-        <div class="help-and-search text-body-1 ml-4">
-            <div class="help-link">
-                <router-link :to="{ name: 'Howto' }" class="help-link-text">{{
-                    lang.topHowto
-                }}</router-link>
-            </div>
+        <div class="toolbar">
+            <v-toolbar color="primary" density="comfortable">
+                <v-toolbar-title>{{ lang.topTitle }}</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <a
+                    target="_blank"
+                    href="https://tm0428.github.io/BetterBooth/howto/"
+                >
+                    <v-btn icon>
+                        <v-icon
+                            :icon="mdiHelpCircleOutlineIcon"
+                            color="white"
+                        ></v-icon>
+                        <v-tooltip activator="parent" location="bottom">{{
+                            lang.topHowto
+                        }}</v-tooltip>
+                    </v-btn>
+                </a>
+                <v-text-field
+                    class="mr-4"
+                    v-model="searchText"
+                    :label="lang.topSearchText"
+                    :prepend-icon="mdiMagnifyIcon"
+                    clearable
+                    :clear-icon="mdiCloseCircleOutlineIcon"
+                    @click:clear="searchText = ''"
+                    rounded="rounded-pill"
+                    density="compact"
+                    single-line
+                    hide-details
+                ></v-text-field>
+            </v-toolbar>
         </div>
+        <div class="content">
+            <v-container fluid>
+                <!-- <v-row>
+                    <v-col cols="12" sm="6" md="4" lg="3">
+                        <v-text-field
+                            v-model="searchText"
+                            :label="lang.topSearchText"
+                            :prepend-icon="mdiMagnifyIcon"
+                            single-line
+                            hide-details
+                        ></v-text-field>
+                    </v-col>
+                </v-row> -->
+                <v-row>
+                    <v-col class="pb-2">
+                        <div class="text-h4" v-if="searchText != ''">
+                            Search by {{ searchText }}
+                        </div>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="py-1">
+                        <div v-if="srchShop.name">
+                            <div class="text-caption">
+                                <p class="text-subtitle-1">
+                                    shop:
+                                </p>
+                            </div>
+                            <v-chip
+                                class="text-blue-darken-3"
+                                variant="outlined"
+                                closable
+                                @click:close="removeShop()"
+                            >
+                                <v-avatar start>
+                                    <v-img
+                                        :src="srchShop.thumbnail_url"
+                                    ></v-img>
+                                </v-avatar>
 
-        <v-container fluid>
-            <v-row>
-                <v-col cols="12" sm="6" md="4" lg="3">
-                    <v-text-field
-                        v-model="searchText"
-                        :label="lang.topSearchText"
-                        :prepend-icon="mdiMagnifyIcon"
-                        single-line
-                        hide-details
-                    ></v-text-field>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    <div v-if="srchShop.name">
-                        <div class="text-caption">shop:</div>
-                        <v-chip
-                            class="text-blue-darken-3"
-                            variant="outlined"
-                            closable
-                            @click:close="removeShop()"
-                        >
-                            <v-avatar start>
-                                <v-img :src="srchShop.thumbnail_url"></v-img>
-                            </v-avatar>
-
-                            {{ srchShop.name }}
-                        </v-chip>
-                    </div>
-                </v-col>
-            </v-row>
-            <!-- <v-row>
+                                {{ srchShop.name }}
+                            </v-chip>
+                        </div>
+                    </v-col>
+                </v-row>
+                <!-- <v-row>
                 <v-col>
                     <div v-if="srchCart >= 0">
                         <div class="text-caption">cart:</div>
@@ -54,70 +92,75 @@
                     </div>
                 </v-col>
             </v-row> -->
-            <v-row>
-                <v-col>
-                    <div v-if="srchTags.length != 0" class="text-caption">
-                        tags:
-                    </div>
-                    <v-chip
-                        v-for="(stag, index) in srchTags"
-                        :key="stag"
-                        closable
-                        @click:close="removeTag(index)"
-                        class="ma-1"
-                        style="text-align: right"
+                <v-row>
+                    <v-col class="py-1">
+                        <div v-if="srchTags.length != 0" class="text-caption">
+                            <p class="text-subtitle-1">
+                                tags:
+                            </p>
+                        </div>
+                        <v-chip
+                            v-for="(stag, index) in srchTags"
+                            :key="stag"
+                            closable
+                            @click:close="removeTag(index)"
+                            class="ma-1"
+                            style="text-align: right"
+                        >
+                            {{ stag }}
+                        </v-chip>
+                    </v-col>
+                </v-row>
+                <v-row class="mx-auto">
+                    <!-- アイテムカードを表示 -->
+                    <v-col
+                        v-for="item in paginatedItems"
+                        :key="item.id"
+                        cols="12"
+                        sm="6"
+                        md="4"
+                        lg="3"
+                        xl="2"
                     >
-                        {{ stag }}
-                    </v-chip>
-                </v-col>
-            </v-row>
-            <v-row class="mx-auto">
-                <!-- アイテムカードを表示 -->
-                <v-col
-                    v-for="item in paginatedItems"
-                    :key="item.id"
-                    cols="12"
-                    sm="6"
-                    md="4"
-                    lg="3"
-                    xl="2"
-                >
-                    <ItemCard
-                        :item="item"
-                        @tag-clicked="handleTagClicked"
-                        @shop-clicked="handleShopClicked"
-                        @cart-clicked="handleCartClicked"
-                    />
-                </v-col>
-                <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                    lg="3"
-                    xl="2"
-                    v-if="paginatedItems.length < 24"
-                >
-                    <ItemImportCard
-                        :lang="lang"
-                        @item-imported="handleItemImported"
-                    />
-                </v-col>
-            </v-row>
+                        <ItemCard
+                            :item="item"
+                            @tag-clicked="handleTagClicked"
+                            @shop-clicked="handleShopClicked"
+                            @cart-clicked="handleCartClicked"
+                        />
+                    </v-col>
+                    <v-col
+                        cols="12"
+                        sm="6"
+                        md="4"
+                        lg="3"
+                        xl="2"
+                        v-if="paginatedItems.length < 24"
+                    >
+                        <ItemImportCard
+                            :lang="lang"
+                            @item-imported="handleItemImported"
+                        />
+                    </v-col>
+                </v-row>
 
-            <v-pagination
-                v-model="page"
-                :length="pageCount"
-                :total-visible="7"
-            ></v-pagination>
-        </v-container>
+                <v-pagination
+                    v-model="page"
+                    :length="pageCount"
+                    :total-visible="7"
+                ></v-pagination>
+            </v-container>
 
-        <a class="page-title text-body-1 ml-4" href="/src/popup/popup.html">{{
-            lang.topSetttings
-        }}</a>
+            <a
+                class="page-title text-body-1 ml-4"
+                href="/src/popup/popup.html"
+                >{{ lang.topSetttings }}</a
+            >
+        </div>
     </div>
 </template>
 
-<style>
+<style scoped>
 .page-title {
     text-align: center;
 }
@@ -163,7 +206,12 @@ import zh_cn from "../locales/zh-CN.json";
 import zh_tw from "../locales/zh-TW.json";
 import ItemCard from "../components/ItemCard.vue";
 import ItemImportCard from "../components/ItemImportCard.vue";
-import { mdiMagnify, mdiCartOutline } from "@mdi/js";
+import {
+    mdiMagnify,
+    mdiCartOutline,
+    mdiHelpCircleOutline,
+    mdiCloseCircleOutline,
+} from "@mdi/js";
 
 export default {
     components: {
@@ -179,10 +227,12 @@ export default {
             searchText: "",
             inputKey: 0,
             lang: ja,
-            mdiMagnifyIcon: mdiMagnify,
-            mdiCartOutlineIcon: mdiCartOutline,
             page: 1,
             itemsPerPage: 24,
+            mdiMagnifyIcon: mdiMagnify,
+            mdiCartOutlineIcon: mdiCartOutline,
+            mdiHelpCircleOutlineIcon: mdiHelpCircleOutline,
+            mdiCloseCircleOutlineIcon: mdiCloseCircleOutline,
         };
     },
     computed: {

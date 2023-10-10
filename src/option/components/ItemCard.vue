@@ -39,6 +39,9 @@
                 <div v-if="item.download">
                     <v-chip :color="item.download ? 'blue' : 'grey lighten-2'">
                         <v-icon :icon="mdiCloudArrowDownOutlineIcon"></v-icon>
+                        <v-tooltip activator="parent" location="left">
+                            Download item
+                        </v-tooltip>
                     </v-chip>
                 </div>
                 <div v-else>
@@ -47,6 +50,9 @@
                         @click.stop="handleCartClick()"
                     >
                         <v-icon :icon="mdiCartOutlineIcon"></v-icon>
+                        <v-tooltip activator="parent" location="left">
+                            Purchase Item
+                        </v-tooltip>
                     </v-chip>
                 </div>
             </div>

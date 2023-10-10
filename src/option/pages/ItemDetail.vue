@@ -34,11 +34,11 @@
         </v-container>
 
         <p
-            class="description text-body-1 ml-2"
+            class="description text-body-1 ml-4"
             v-html="formatDescription(data.description)"
         ></p>
         <p
-            class="additional-description text-body-1 ml-2"
+            class="additional-description text-body-1 ml-4"
             v-if="data.additionalDescription"
             v-html="formatDescription(data.additionalDescription)"
         ></p>
@@ -202,11 +202,10 @@ export default {
             this.data = result[`items_${this.itemId}`];
             console.log(this.data);
             if (this.data.additionalDescription) {
-                this.data.additionalDescription =
-                    this.data.additionalDescription.replaceAll(
-                        "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
-                        "ma-1 pt-8"
-                    );
+                this.data.additionalDescription = this.data.additionalDescription.replaceAll(
+                    "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
+                    "ma-1 pt-8"
+                );
             }
         });
     },
