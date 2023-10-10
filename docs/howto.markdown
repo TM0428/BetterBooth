@@ -1,6 +1,6 @@
 ---
 layout: page
-title: HowTo
+title: how to
 permalink: /howto/
 ---
 
@@ -41,6 +41,7 @@ ver. 0.3.1より、アイテムのインポート機能の追加を行いまし�
 また、データ容量をできるだけ少なくするために、json形式を採用しています。
 
 ```js=
+ver. ~0.3.5
 {
     additionalDescription: "<section> ... </section>",
     Description: ...,
@@ -54,8 +55,32 @@ ver. 0.3.1より、アイテムのインポート機能の追加を行いまし�
         url: ...
     }
 }
+
+ver. 0.4.0~
+{
+    additionalDescription: innerHTML,
+    Description: String
+    id: Int
+    images: List[Dict{
+        original: String,
+        resized: String
+    }],
+    name: String,
+    price: String
+    shop: {
+        name: String,
+        subdomain: String,
+        url: String
+    },
+    status: List[String],
+    tags: List[String],
+    purchased: Bool,
+    download: Bool
+}
 ```
-基本的には、BOOTH側が提供しているJSONファイルの一部を切り取ったものを用意し、足りない部分をadditionalDescriptionで補っているという形になります。<br>
+`ver. 0.4.0`以降は、表示情報を増やすため、データ量を増やしました。その代わり、検索がしやすくなったり、まとめやすくすることができるようになりました。
+
+基本的には、BOOTH側が提供しているJSONファイルの一部を使用し、足りない部分をadditionalDescriptionで補っているという形になります。<br>
 このデータ量は画像を含んでいないため、数百件を保存したとしても問題は無いと考えられますが、あまりにも多すぎる場合はストレージを圧迫する可能性が考えられます。<br>
 その場合は、"データをエクスポート"からデータをダウンロードし、chromeからは削除してください。
 

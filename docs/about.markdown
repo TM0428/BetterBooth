@@ -4,15 +4,40 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+Better Boothは、[booth.pm](https://booth.pm)における使い勝手をより良くするために作成した拡張機能です。
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+## ショップのブロック機能
+AIで作成されたイラストや、大量に同じようなアイテムを出品しているショップがありますよね？<br>
+そんなショップのアイテムを検索欄から消してくれる機能です。
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+検索一覧ページでは、びっくりマーク`!`が追加されています。<br>
+<img src="{{site.baseurl}}/images/search_shop_block_btn.png" style="height:300px">
+
+これをクリックすることで、ショップをブロックできます。<br>
+また、ショップのページから直接ブロックすることもできます。
+<img src="{{site.baseurl}}/images/shop_block_btn.png" style="height:300px">
+
+フォローボタンの横にブロックというボタンが新たに追加されます。これをクリックすることでもアイテムの非表示化ができます。
+
+### 間違えてブロックしちゃった/ブロック解除したい
+もし間違えてブロックしてしまった場合も、元に戻す方法があります。
+拡張機能をクリックすると、`Filter`という項目があります。
+
+<img src="{{site.baseurl}}/images/extension_filter.png" style="height:300px">
+
+ここから、解除したいurlを見つけて、REMOVEボタンを押してください。これでブロックの解除ができます。
+
+## 検索設定の保存機能
+検索する時、毎回"おすすめ順/全年齢"になっているのが鬱陶しさを感じていませんか？<br>
+この拡張機能はそんな検索における条件を別の条件に固定することができます。<br>
+拡張機能をクリックすると、`Search Setting`という項目があります。
+
+<img src="{{site.baseurl}}/images/extension_search_setting.png" style="height:350px">
+
+デフォルトでは無効になっていますが、無効化するのチェックボックスをクリックすれば検索設定を変えることができるようになります。
+
+## 商品情報の保存
+買った商品一覧を見た時、商品情報を見ようとしたら`お探しのページが見つかりませんでした…`なんて言われたことはありませんか？<br>
+ページに描かれてる猫(?)は可愛いのですが、情報が無くなってしまうのは困ります。
 
 
-[jekyll-organization]: https://github.com/jekyll
