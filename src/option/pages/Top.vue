@@ -196,6 +196,10 @@ export default {
                     if (term === "is:cart") {
                         return item.purchased;
                     }
+                    // "is:download" という単語の特別な処理
+                    if (term === "is:download") {
+                        return item.download;
+                    }
 
                     return (
                         item.name.toLowerCase().includes(term) ||

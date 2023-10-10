@@ -274,7 +274,7 @@
                             <v-list-item-content>
                                 <a
                                     target="_blank"
-                                    href="/src/option/option.html#/howto"
+                                    href="https://tm0428.github.io/BetterBooth/howto/"
                                     >{{ lang.linkToHelp }}</a
                                 >
                             </v-list-item-content>
