@@ -12,7 +12,7 @@ if(window.navigator.language !== "ja" && window.navigator.language !== "ja-JP"){
     itemGetLang = itemGetEn;
 }
 
-async function addData() {
+async function addData(additionalData = {}) {
     const itemId = "items_" + window.location.href.match(/\/items\/(\d+)/)[1];
     const url = window.location.href + ".json";
     const response = await fetch(url);
@@ -34,6 +34,7 @@ async function addData() {
         category: raw_data.category.name,
         status: statusArray,
         wished: raw_data.wished,
+        ...additionalData
     };
     // 追加のデータを取得して保存
     const additionalDescriptionElement = document.querySelector(
@@ -108,9 +109,34 @@ function addSaveButton() {
             share_btn.appendChild(divElement);
         }
     }, 1000);
+}
+
+function addDownloadedItem(){
+    const cartElements = document.querySelectorAll('.variation-cart');
+    cartElements.forEach(cart => {
+        // 各 '.variation-cart' 要素の子要素がaタグである場合
+        const anchor = cart.querySelector('a');
+        if (anchor) {
+            // クリックイベントリスナを追加
+            anchor.addEventListener('click', function(event) {
+                handleButtonClick(event, anchor);
+            });
+        }
+    });
+}
+
+function handleButtonClick(event, anchorElement) {
+    // ここで何らかのデータを収集または処理を行う
+    console.log('Button clicked:', anchorElement.href);
+
+    // 例: ダウンロードリンクを取得する
+    const downloadLink = anchorElement.href;
+    console.log('Download link:', downloadLink);
+
+    // その他の必要な処理...
+    addData({download: true});
 
 
-    
 }
 
 chrome.storage.sync.get("extended_settings", (result) => {
@@ -120,6 +146,7 @@ chrome.storage.sync.get("extended_settings", (result) => {
     }
     if(setting && setting.save_item){
         addSaveButton();
+        addDownloadedItem();
     }
 
 })

@@ -36,12 +36,19 @@
             <v-spacer></v-spacer>
             <!--購入したか-->
             <div class="mx-1">
-                <v-chip
-                    :color="item.purchased ? 'blue' : 'grey lighten-2'"
-                    @click.stop="handleCartClick()"
-                >
-                    <v-icon :icon="mdiCartOutlineIcon"></v-icon>
-                </v-chip>
+                <div v-if="item.download">
+                    <v-chip :color="item.download ? 'blue' : 'grey lighten-2'">
+                        <v-icon :icon="mdiCloudArrowDownOutlineIcon"></v-icon>
+                    </v-chip>
+                </div>
+                <div v-else>
+                    <v-chip
+                        :color="item.purchased ? 'blue' : 'grey lighten-2'"
+                        @click.stop="handleCartClick()"
+                    >
+                        <v-icon :icon="mdiCartOutlineIcon"></v-icon>
+                    </v-chip>
+                </div>
             </div>
         </div>
         <!-- タグの表示部分 -->
@@ -67,7 +74,11 @@
 </template>
 
 <script>
-import { mdiHeartOutline, mdiCartOutline, mdiGoogleChrome } from "@mdi/js";
+import {
+    mdiHeartOutline,
+    mdiCartOutline,
+    mdiCloudArrowDownOutline,
+} from "@mdi/js";
 
 export default {
     name: "ItemCard",
@@ -82,6 +93,7 @@ export default {
             imageUrl: "",
             mdiHeartOutlineIcon: mdiHeartOutline,
             mdiCartOutlineIcon: mdiCartOutline,
+            mdiCloudArrowDownOutlineIcon: mdiCloudArrowDownOutline,
         };
     },
     computed: {
