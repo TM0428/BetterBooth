@@ -121,6 +121,11 @@
                                             type="submit"
                                             color="primary"
                                             @click="downloadItems()"
+                                            v-bind:disabled="
+                                                downloadSaveInfoRules[0] !=
+                                                    true ||
+                                                    downloadSaveExt == ''
+                                            "
                                         >
                                             Save
                                         </v-btn>
@@ -233,6 +238,7 @@ import zh_cn from "../locales/zh-CN.json";
 import zh_tw from "../locales/zh-TW.json";
 import ItemCard from "../components/ItemCard.vue";
 import ItemImportCard from "../components/ItemImportCard.vue";
+
 import {
     mdiMagnify,
     mdiCartOutline,
