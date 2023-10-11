@@ -27,6 +27,10 @@ url: "https://tm0428.github.io" # the base hostname & protocol for your site, e.
 twitter_username: 428_tm
 github_username: TM0428
 
+sass:
+    sass_dir: _sass
+    style: compressed
+
 # Build settings
 theme: minima
 plugins:
