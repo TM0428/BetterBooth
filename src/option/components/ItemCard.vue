@@ -4,6 +4,7 @@
         class="d-flex flex-column ma-auto pa-1"
         height="100%"
         max-width="310px"
+        min-width="270px"
     >
         <v-img
             :src="imageUrl"
@@ -28,15 +29,20 @@
                 </v-avatar>
                 <span
                     class="d-inline-block text-truncate"
-                    style="max-width: 170px"
+                    style="max-width: 220px"
                 >
                     {{ item.shop.name }}
                 </span>
             </v-chip>
+        </div>
+        <div class="ma-1 d-flex flex-row">
+            <div class="text-subtitle-1 text-primary">
+                {{ item.price }}
+            </div>
             <v-spacer></v-spacer>
             <!--購入したか-->
-            <div class="mx-1">
-                <div v-if="item.download">
+            <div class="d-flex flex-row">
+                <div v-if="item.download" class="mx-1">
                     <v-chip :color="item.download ? 'blue' : 'grey lighten-2'">
                         <v-icon :icon="mdiCloudArrowDownOutlineIcon"></v-icon>
                         <v-tooltip activator="parent" location="left">
@@ -44,19 +50,28 @@
                         </v-tooltip>
                     </v-chip>
                 </div>
-                <div v-else>
+                <div class="mx-1">
                     <v-chip
                         :color="item.purchased ? 'blue' : 'grey lighten-2'"
                         @click.stop="handleCartClick()"
                     >
                         <v-icon :icon="mdiCartOutlineIcon"></v-icon>
                         <v-tooltip activator="parent" location="left">
-                            Purchase Item
+                            <div v-if="item.purchased">
+                                Purchased!
+                            </div>
+                            <div v-else-if="item.purchased === undefined">
+                                No data
+                            </div>
+                            <div v-else>
+                                Not Purchased
+                            </div>
                         </v-tooltip>
                     </v-chip>
                 </div>
             </div>
         </div>
+
         <!-- タグの表示部分 -->
         <div class="ma-1">
             <div style="display: inline-block">

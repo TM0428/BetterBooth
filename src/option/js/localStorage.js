@@ -13,9 +13,14 @@ export async function setItemData(data) {
             // 既にあるため、元のデータとのマージ
             const oldDataResult = await getFromStorage(itemId);
             const oldData = oldDataResult[itemId];
+            // oldDataのtagを一時保存
+            const oldTag = oldData.tags;
+
             const mergedData = {
                 ...oldData,
                 ...data,
+                tags: oldTag
+
             };
             await setToStorage({ [`${itemId}`]: mergedData });
         } else {

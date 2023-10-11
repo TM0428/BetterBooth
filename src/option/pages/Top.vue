@@ -24,7 +24,7 @@
                     :label="lang.topSearchText"
                     :prepend-icon="mdiMagnifyIcon"
                     clearable
-                    :clear-icon="mdiCloseCircleOutlineIcon"
+                    :clear-icon="mdiCloseCircleIcon"
                     @click:clear="searchText = ''"
                     rounded="rounded-pill"
                     density="compact"
@@ -210,7 +210,7 @@ import {
     mdiMagnify,
     mdiCartOutline,
     mdiHelpCircleOutline,
-    mdiCloseCircleOutline,
+    mdiCloseCircle,
 } from "@mdi/js";
 
 export default {
@@ -232,7 +232,7 @@ export default {
             mdiMagnifyIcon: mdiMagnify,
             mdiCartOutlineIcon: mdiCartOutline,
             mdiHelpCircleOutlineIcon: mdiHelpCircleOutline,
-            mdiCloseCircleOutlineIcon: mdiCloseCircleOutline,
+            mdiCloseCircleIcon: mdiCloseCircle,
         };
     },
     computed: {

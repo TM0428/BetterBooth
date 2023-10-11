@@ -41,9 +41,13 @@ async function getPurchaseData() {
                     chrome.storage.local.get(itemId, (result) => {
     
                         const oldData = result[itemId];
+                        // oldDataのtagを一時保存
+                        const oldTag = oldData.tags;
+
                         const mergedData = {
                             ...oldData,
-                            ...data
+                            ...data,
+                            tags: oldTag
                           };
                         chrome.storage.local.set({ [`${itemId}`]: mergedData });
                     });
