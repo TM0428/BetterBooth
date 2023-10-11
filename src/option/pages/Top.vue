@@ -35,22 +35,99 @@
         </div>
         <div class="content">
             <v-container fluid>
-                <!-- <v-row>
-                    <v-col cols="12" sm="6" md="4" lg="3">
-                        <v-text-field
-                            v-model="searchText"
-                            :label="lang.topSearchText"
-                            :prepend-icon="mdiMagnifyIcon"
-                            single-line
-                            hide-details
-                        ></v-text-field>
-                    </v-col>
-                </v-row> -->
                 <v-row>
-                    <v-col v-bind:class="searchText != '' ? 'pb-2' : 'pb-0'">
+                    <v-col class="pb-2 d-flex flex-row">
                         <div class="text-h4" v-if="searchText != ''">
                             Search by {{ searchText }}
                         </div>
+                        <v-spacer></v-spacer>
+                        <v-btn>
+                            {{ lang.allDownloadButton }}
+                            <v-dialog
+                                v-model="dialog"
+                                activator="parent"
+                                width="auto"
+                            >
+                                <v-card>
+                                    <v-card-title>
+                                        データのダウンロード
+                                    </v-card-title>
+                                    <div class="ma-4">
+                                        <div class="v-subtitle-1">
+                                            ダウンロード形式
+                                        </div>
+                                        <v-radio-group
+                                            inline
+                                            v-model="downloadSaveExt"
+                                        >
+                                            <v-radio
+                                                label="CSV"
+                                                value="CSV"
+                                            ></v-radio>
+                                            <v-radio
+                                                label="JSON"
+                                                value="JSON"
+                                            ></v-radio>
+                                        </v-radio-group>
+                                        <div
+                                            v-if="downloadSaveExt == ''"
+                                            class="text-error"
+                                        >
+                                            At least one item should be selected
+                                        </div>
+                                        <div class="v-subtitle-1">
+                                            保存情報
+                                        </div>
+                                        <v-row>
+                                            <v-col
+                                                cols="12"
+                                                sm="6"
+                                                md="4"
+                                                lg="3"
+                                                v-for="(info,
+                                                index) in downloadSaveList"
+                                                :key="info.value"
+                                            >
+                                                <v-checkbox
+                                                    :label="info.label"
+                                                    v-model="downloadSaveInfo"
+                                                    color="primary"
+                                                    :value="info.value"
+                                                    hide-details
+                                                    :rules="
+                                                        downloadSaveInfoRules
+                                                    "
+                                                ></v-checkbox>
+                                            </v-col>
+                                        </v-row>
+                                        <div
+                                            v-if="
+                                                downloadSaveInfoRules[0] != true
+                                            "
+                                            class="text-error"
+                                        >
+                                            {{ downloadSaveInfoRules[0] }}
+                                        </div>
+                                    </div>
+
+                                    <v-card-actions>
+                                        <v-btn
+                                            color="primary"
+                                            @click="dialog = false"
+                                        >
+                                            Close
+                                        </v-btn>
+                                        <v-btn
+                                            type="submit"
+                                            color="primary"
+                                            @click="downloadItems()"
+                                        >
+                                            Save
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+                        </v-btn>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -78,20 +155,6 @@
                         </div>
                     </v-col>
                 </v-row>
-                <!-- <v-row>
-                <v-col>
-                    <div v-if="srchCart >= 0">
-                        <div class="text-caption">cart:</div>
-                        <v-chip
-                            closable
-                            :color="srchCart === 1 ? 'blue' : 'grey lighten-2'"
-                            @click.close="removeCart()"
-                        >
-                            <v-icon :icon="mdiCartOutlineIcon"></v-icon>
-                        </v-chip>
-                    </div>
-                </v-col>
-            </v-row> -->
                 <v-row>
                     <v-col class="py-1">
                         <div v-if="srchTags.length != 0" class="text-caption">
@@ -149,54 +212,18 @@
                     :length="pageCount"
                     :total-visible="7"
                 ></v-pagination>
-            </v-container>
 
-            <a
-                class="page-title text-body-1 ml-4"
-                href="/src/popup/popup.html"
-                >{{ lang.topSetttings }}</a
-            >
+                <a
+                    class="page-title text-body-1 ml-4"
+                    href="/src/popup/popup.html"
+                    >{{ lang.topSetttings }}</a
+                >
+            </v-container>
         </div>
     </v-app>
 </template>
 
-<style scoped>
-.page-title {
-    text-align: center;
-}
-
-.search-bar {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.search-icon {
-    position: absolute;
-    left: 30px;
-}
-
-.search-input {
-    padding: 5px 10px 5px 30px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    outline: none;
-    font-size: 16px;
-    width: 100%;
-}
-
-.search-input:focus {
-    border: 1px solid #999;
-}
-
-.card-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 20px;
-}
-</style>
+<style scoped></style>
 
 <script>
 import ja from "../locales/ja.json";
@@ -225,10 +252,14 @@ export default {
             srchShop: {},
             srchCart: -1,
             searchText: "",
+            downloadSaveExt: "CSV",
+            downloadSaveList: [],
+            downloadSaveInfo: [],
             inputKey: 0,
             lang: ja,
             page: 1,
             itemsPerPage: 24,
+            dialog: false,
             mdiMagnifyIcon: mdiMagnify,
             mdiCartOutlineIcon: mdiCartOutline,
             mdiHelpCircleOutlineIcon: mdiHelpCircleOutline,
@@ -273,6 +304,12 @@ export default {
 
                 return keywordMatch && tagsMatch && shopMatch;
             });
+        },
+        downloadSaveInfoRules() {
+            return [
+                this.downloadSaveInfo.length > 0 ||
+                    "At least one item should be selected",
+            ];
         },
         paginatedItems() {
             const start = (this.page - 1) * this.itemsPerPage;
@@ -334,6 +371,72 @@ export default {
         removeCart() {
             this.srchCart = -1;
             this.page = 1;
+        },
+        downloadItems() {
+            // 1. filteredItemListから必要なデータを抽出
+            const dataToDownload = this.filteredItemList.map((item) => {
+                const extracted = {};
+                this.downloadSaveInfo.forEach((key) => {
+                    switch (key) {
+                        case "shop.name":
+                            extracted["shop.name"] = item.shop.name;
+                            break;
+                        case "shop.url":
+                            extracted["shop.url"] = item.shop.url;
+                            break;
+                        default:
+                            extracted[key] = item[key];
+                    }
+                });
+                return extracted;
+            });
+
+            let fileContent;
+            let mimeType;
+            let fileExtension;
+
+            // 2. this.downloadSaveExtの値に基づいて、データの形式を決定
+            if (this.downloadSaveExt === "CSV") {
+                fileContent = this.convertToCSV(dataToDownload);
+                mimeType = "text/csv;charset=utf-8;";
+                fileExtension = ".csv";
+            } else if (this.downloadSaveExt === "JSON") {
+                fileContent = JSON.stringify(dataToDownload, null, 4);
+                mimeType = "application/json;charset=utf-8;";
+                fileExtension = ".json";
+            } else {
+                console.error("Unknown download format:", this.downloadSaveExt);
+                return;
+            }
+
+            // 3. データをBlobオブジェクトに変換し、それをダウンロードするリンクとして使用
+            const blob = new Blob([fileContent], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", "download" + fileExtension);
+            link.style.visibility = "hidden";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        },
+
+        convertToCSV(objArray) {
+            const array =
+                typeof objArray !== "object" ? JSON.parse(objArray) : objArray;
+            let str = "";
+            let headers = this.downloadSaveInfo.join(",") + "\r\n";
+            str += headers;
+
+            for (let i = 0; i < array.length; i++) {
+                let line = "";
+                for (let index in array[i]) {
+                    if (line !== "") line += ",";
+                    line += '"' + String(array[i][index]) + '"';
+                }
+                str += line + "\r\n";
+            }
+            return str;
         },
     },
     created() {
@@ -398,6 +501,8 @@ export default {
                 });
             });
         });
+        this.downloadSaveList = this.lang.downloadSaveList;
+        this.downloadSaveInfo = this.downloadSaveList.map((item) => item.value);
     },
 };
 </script>
