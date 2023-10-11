@@ -8,11 +8,4 @@
     </main>
 </template>
 
-<style>
-html,
-body {
-    height: 100%;
-    margin: 0;
-    background-color: #eee;
-}
-</style>
+<style></style>

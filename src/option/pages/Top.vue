@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-app class="pa-0 ma-0">
         <div class="toolbar">
             <v-toolbar color="primary" density="comfortable">
                 <v-toolbar-title>{{ lang.topTitle }}</v-toolbar-title>
@@ -47,7 +47,7 @@
                     </v-col>
                 </v-row> -->
                 <v-row>
-                    <v-col class="pb-2">
+                    <v-col v-bind:class="searchText != '' ? 'pb-2' : 'pb-0'">
                         <div class="text-h4" v-if="searchText != ''">
                             Search by {{ searchText }}
                         </div>
@@ -157,7 +157,7 @@
                 >{{ lang.topSetttings }}</a
             >
         </div>
-    </div>
+    </v-app>
 </template>
 
 <style scoped>

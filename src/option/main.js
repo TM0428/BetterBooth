@@ -13,7 +13,7 @@ import colors from "vuetify/lib/util/colors";
 const LightTheme = {
     dark: false,
     colors: {
-        background: "#eee",
+        background: "#EEE",
         surface: "#FFFFFF",
         primary: "#ff4d50",
         "primary-darken-1": "#3700B3",
@@ -40,7 +40,7 @@ const vuetify = createVuetify({
         },
     },
     theme: {
-        defaultTheme: "themes",
+        defaultTheme: "LightTheme",
         themes: {
             LightTheme,
         },

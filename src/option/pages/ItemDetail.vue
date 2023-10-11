@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <v-app class="content pa-0 ma-0">
         <!--title-->
         <div class="text-h4 ma-2 py-2">{{ data.name }}</div>
 
@@ -118,7 +118,7 @@
             <span class="popup-close" @click="closePopup">&times;</span>
             <img :src="popupImage" alt="Popup Image" class="popup-image" />
         </div>
-    </div>
+    </v-app>
 </template>
 
 <script>
