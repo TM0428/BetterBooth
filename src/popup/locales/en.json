@@ -19,7 +19,8 @@
     "disableButtonEnable": "Enable",
     "BlockText": "Block",
     "BlockingText": "Blocking",
-    "saveItemOption": "Save item data(experimental feature)",
+    "saveItemOption": "Save item data",
     "linkToHelp": "What is \"Save item\"?",
-    "savePurchaseItem": "Save information on purchased products automatically"
+    "savePurchaseItem": "Save information on purchased products automatically",
+    "gotoItemPage": "Item List"
 }

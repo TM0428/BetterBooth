@@ -12,5 +12,17 @@
     "itemExport": "Export Data",
     "itemDelete": "Delete This Item",
     "howtoGotoGithub": "Please See English version here.",
-    "howtoGithubLink": "https://github.com/TM0428/BetterBooth/blob/master/docs/README_en.md"
+    "howtoGithubLink": "https://github.com/TM0428/BetterBooth/blob/master/docs/README_en.md",
+    "allDownloadButton": "Download List",
+    "downloadTitle": "Data Download",
+    "downloadExt": "Download Format:",
+    "downloadInfo": "Save Information",
+    "downloadSaveList": [
+        { "label": "Shop Name", "value": "shop.name" },
+        { "label": "Shop URL", "value": "shop.url" },
+        { "label": "Item Name", "value": "name" },
+        { "label": "Price", "value": "price" },
+        { "label": "Downloaded", "value": "download" },
+        { "label": "Purchased", "value": "purchased" }
+    ]
 }

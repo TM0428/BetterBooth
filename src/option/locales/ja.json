@@ -14,6 +14,9 @@
     "howtoGotoGithub": "さらに詳しい使い方の説明はこちら",
     "howtoGithubLink": "https://github.com/TM0428/BetterBooth/blob/master/docs/README.md",
     "allDownloadButton": "アイテムを一括で保存",
+    "downloadTitle": "データのダウンロード",
+    "downloadExt": "ダウンロード形式",
+    "downloadInfo": "保存情報",
     "downloadSaveList": [
         { "label": "ショップ名", "value": "shop.name" },
         { "label": "ショップURL", "value": "shop.url" },

@@ -19,7 +19,8 @@
     "disableButtonEnable": "Enable",
     "BlockText": "ブロック",
     "BlockingText": "ブロック中",
-    "saveItemOption": "商品の情報を保存する(実験的機能)",
+    "saveItemOption": "商品の情報を保存する",
     "linkToHelp": "商品の保存とは？",
-    "savePurchaseItem": "購入した商品の情報を自動で保存する"
+    "savePurchaseItem": "購入した商品の情報を自動で保存する",
+    "gotoItemPage": "商品一覧ページへ"
 }

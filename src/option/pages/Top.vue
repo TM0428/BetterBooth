@@ -50,11 +50,11 @@
                             >
                                 <v-card>
                                     <v-card-title>
-                                        データのダウンロード
+                                        {{ lang.downloadTitle }}
                                     </v-card-title>
                                     <div class="ma-4">
                                         <div class="v-subtitle-1">
-                                            ダウンロード形式
+                                            {{ lang.downloadExt }}
                                         </div>
                                         <v-radio-group
                                             inline
@@ -76,7 +76,7 @@
                                             At least one item should be selected
                                         </div>
                                         <div class="v-subtitle-1">
-                                            保存情報
+                                            {{ lang.downloadInfo }}
                                         </div>
                                         <v-row>
                                             <v-col
@@ -283,9 +283,15 @@ export default {
                     if (term === "is:cart") {
                         return item.purchased;
                     }
+                    if (term === "!is:cart") {
+                        return !item.purchased;
+                    }
                     // "is:download" という単語の特別な処理
                     if (term === "is:download") {
                         return item.download;
+                    }
+                    if (term === "!is:download") {
+                        return !item.download;
                     }
 
                     return (
@@ -495,6 +501,11 @@ export default {
                         this.lang = ja;
                 }
             }
+
+            this.downloadSaveList = this.lang.downloadSaveList;
+            this.downloadSaveInfo = this.downloadSaveList.map(
+                (item) => item.value
+            );
         });
         chrome.storage.local.get("items", (result) => {
             const itemIdList = result.items || [];
@@ -507,8 +518,6 @@ export default {
                 });
             });
         });
-        this.downloadSaveList = this.lang.downloadSaveList;
-        this.downloadSaveInfo = this.downloadSaveList.map((item) => item.value);
     },
 };
 </script>
