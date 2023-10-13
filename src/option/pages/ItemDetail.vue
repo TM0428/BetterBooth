@@ -49,7 +49,7 @@
                     <v-col cols="12" sm="6" md="4" lg="3" xl="2">
                         <v-btn
                             block
-                            :to="{ name: 'Top' }"
+                            @click="$router.go(-1)"
                             :prepend-icon="mdiArrowLeftIcon"
                             rounded="xl"
                             size="large"
@@ -202,10 +202,11 @@ export default {
             this.data = result[`items_${this.itemId}`];
             console.log(this.data);
             if (this.data.additionalDescription) {
-                this.data.additionalDescription = this.data.additionalDescription.replaceAll(
-                    "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
-                    "ma-1 pt-8"
-                );
+                this.data.additionalDescription =
+                    this.data.additionalDescription.replaceAll(
+                        "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
+                        "ma-1 pt-8"
+                    );
             }
         });
     },

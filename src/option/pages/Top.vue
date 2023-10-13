@@ -84,8 +84,9 @@
                                                 sm="6"
                                                 md="4"
                                                 lg="3"
-                                                v-for="(info,
-                                                index) in downloadSaveList"
+                                                v-for="(
+                                                    info, index
+                                                ) in downloadSaveList"
                                                 :key="info.value"
                                             >
                                                 <v-checkbox
@@ -124,7 +125,7 @@
                                             v-bind:disabled="
                                                 downloadSaveInfoRules[0] !=
                                                     true ||
-                                                    downloadSaveExt == ''
+                                                downloadSaveExt == ''
                                             "
                                         >
                                             Save
@@ -139,9 +140,7 @@
                     <v-col class="py-1">
                         <div v-if="srchShop.name">
                             <div class="text-caption">
-                                <p class="text-subtitle-1">
-                                    shop:
-                                </p>
+                                <p class="text-subtitle-1">shop:</p>
                             </div>
                             <v-chip
                                 class="text-blue-darken-3"
@@ -163,9 +162,7 @@
                 <v-row>
                     <v-col class="py-1">
                         <div v-if="srchTags.length != 0" class="text-caption">
-                            <p class="text-subtitle-1">
-                                tags:
-                            </p>
+                            <p class="text-subtitle-1">tags:</p>
                         </div>
                         <v-chip
                             v-for="(stag, index) in srchTags"
@@ -216,6 +213,7 @@
                     v-model="page"
                     :length="pageCount"
                     :total-visible="7"
+                    @update:modelValue="updateQuery"
                 ></v-pagination>
 
                 <a
@@ -312,7 +310,7 @@ export default {
 
                 const shopMatch =
                     this.srchShop.name === undefined ||
-                    this.srchShop.name === item.shop.name;
+                    this.srchShop.url === item.shop.url;
 
                 return keywordMatch && tagsMatch && shopMatch;
             });
@@ -349,16 +347,17 @@ export default {
             });
         },
         handleTagClicked(tag) {
-            console.log(tag); // ここでクリックされたtagを受け取る
-            // srchTagsに同じテキストが存在しない場合、配列に追加
+            console.log(tag);
             if (!this.srchTags.includes(tag)) {
                 this.srchTags.push(tag);
             }
+            this.updateQuery();
             this.page = 1;
         },
         handleShopClicked(shop) {
             console.log(shop);
             this.srchShop = shop;
+            this.updateQuery();
             this.page = 1;
         },
         handleCartClicked(cart) {
@@ -374,16 +373,59 @@ export default {
         },
         removeTag(index) {
             this.srchTags.splice(index, 1); // 配列から指定されたインデックスのタグを削除
+            this.updateQuery();
             this.page = 1;
         },
         removeShop() {
             this.srchShop = {};
+            this.updateQuery();
             this.page = 1;
         },
         removeCart() {
             this.srchCart = -1;
             this.page = 1;
         },
+        updatePageFromQuery() {
+            if (this.$route.query.page) {
+                this.page = Number(this.$route.query.page);
+            }
+        },
+        updateSearchTextFromQuery() {
+            if (this.$route.query.search) {
+                this.searchText = this.$route.query.search;
+            }
+        },
+        updateTagsFromQuery() {
+            if (this.$route.query.tags) {
+                if (typeof this.$route.query.tags == "string") {
+                    this.srchTags = Array(this.$route.query.tags);
+                } else {
+                    this.srchTags = this.$route.query.tags;
+                }
+            }
+        },
+        updateShopFromQuery() {
+            if (this.$route.query.shop_name) {
+                this.srchShop = {
+                    name: this.$route.query.shop_name,
+                    thumbnail_url: this.$route.query.shop_icon,
+                    url: this.$route.query.shop_url,
+                };
+            }
+        },
+        updateQuery() {
+            this.$router.push({
+                query: {
+                    search: this.searchText,
+                    page: this.page,
+                    tags: this.srchTags,
+                    shop_url: this.srchShop.url,
+                    shop_icon: this.srchShop.thumbnail_url,
+                    shop_name: this.srchShop.name,
+                },
+            });
+        },
+
         downloadItems() {
             // 1. filteredItemListから必要なデータを抽出
             const dataToDownload = this.filteredItemList.map((item) => {
@@ -449,6 +491,24 @@ export default {
                 str += line + "\r\n";
             }
             return str;
+        },
+    },
+    mounted() {
+        this.updatePageFromQuery();
+        this.updateSearchTextFromQuery();
+        this.updateTagsFromQuery();
+        this.updateShopFromQuery();
+    },
+    watch: {
+        "$route.query.page": function (newVal, oldVal) {
+            this.updatePageFromQuery();
+        },
+        "$route.query.search": function (newVal, oldVal) {
+            this.updateSearchTextFromQuery();
+        },
+        searchText: function (newVal, oldVal) {
+            this.page = 1;
+            this.updateQuery();
         },
     },
     created() {
