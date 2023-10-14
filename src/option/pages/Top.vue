@@ -2,11 +2,14 @@
     <v-app class="pa-0 ma-0">
         <div class="toolbar">
             <v-toolbar color="primary" density="comfortable">
-                <v-toolbar-title>{{ lang.topTitle }}</v-toolbar-title>
+                <v-toolbar-title class="d-flex flex-row">
+                    {{ lang.topTitle }}
+                    <div class="text-caption">v0.4.2</div>
+                </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <a
                     target="_blank"
-                    href="https://tm0428.github.io/BetterBooth/howto/"
+                    href="https://tm0428.github.io/BetterBooth/howto/#%E6%A4%9C%E7%B4%A2%E6%96%B9%E6%B3%95%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"
                 >
                     <v-btn icon>
                         <v-icon
@@ -30,6 +33,7 @@
                     density="compact"
                     single-line
                     hide-details
+                    @update:modelValue="updateSearchText"
                 ></v-text-field>
             </v-toolbar>
         </div>
@@ -385,9 +389,13 @@ export default {
             this.srchCart = -1;
             this.page = 1;
         },
+        updateSearchText() {
+            this.page = 1;
+            this.updateQuery();
+        },
         updatePageFromQuery() {
             if (this.$route.query.page) {
-                this.page = Number(this.$route.query.page);
+                this.page = Number(this.$route.query.page) || 1;
             }
         },
         updateSearchTextFromQuery() {
@@ -494,10 +502,13 @@ export default {
         },
     },
     mounted() {
-        this.updatePageFromQuery();
+        // const tmp_page = Number(this.$route.query.page) || 1;
         this.updateSearchTextFromQuery();
         this.updateTagsFromQuery();
         this.updateShopFromQuery();
+        // this.page = tmp_page;
+        this.updatePageFromQuery();
+        this.updateQuery();
     },
     watch: {
         "$route.query.page": function (newVal, oldVal) {
@@ -505,10 +516,6 @@ export default {
         },
         "$route.query.search": function (newVal, oldVal) {
             this.updateSearchTextFromQuery();
-        },
-        searchText: function (newVal, oldVal) {
-            this.page = 1;
-            this.updateQuery();
         },
     },
     created() {
