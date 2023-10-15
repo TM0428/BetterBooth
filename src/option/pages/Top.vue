@@ -63,7 +63,7 @@
                                 <p class="text-subtitle-1">shop:</p>
                             </div>
                             <v-chip
-                                class="text-blue-darken-3"
+                                color="info"
                                 variant="outlined"
                                 closable
                                 @click:close="removeShop()"

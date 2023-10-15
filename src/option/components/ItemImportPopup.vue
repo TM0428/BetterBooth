@@ -1,5 +1,5 @@
 <template>
-    <v-btn class="mr-4" variant="outlined">
+    <v-btn class="mr-4" variant="outlined" color="success">
         {{ lang.topImport }}
         <v-dialog v-model="dialog_import" activator="parent" width="auto">
             <v-card width="100%" height="100%">
