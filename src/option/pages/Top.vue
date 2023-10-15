@@ -264,14 +264,14 @@ export default {
             if (!this.srchTags.includes(tag)) {
                 this.srchTags.push(tag);
             }
-            this.updateQuery();
             this.page = 1;
+            this.updateQuery();
         },
         handleShopClicked(shop) {
             console.log(shop);
             this.srchShop = shop;
-            this.updateQuery();
             this.page = 1;
+            this.updateQuery();
         },
         handleCartClicked(cart) {
             console.log(cart);
@@ -286,13 +286,13 @@ export default {
         },
         removeTag(index) {
             this.srchTags.splice(index, 1); // 配列から指定されたインデックスのタグを削除
-            this.updateQuery();
             this.page = 1;
+            this.updateQuery();
         },
         removeShop() {
             this.srchShop = {};
-            this.updateQuery();
             this.page = 1;
+            this.updateQuery();
         },
         removeCart() {
             this.srchCart = -1;

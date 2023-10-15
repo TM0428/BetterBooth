@@ -20,7 +20,7 @@
         <!--ショップ-->
         <div class="ma-1 d-flex flex-row">
             <v-chip
-                class="text-blue-darken-3"
+                color="info"
                 variant="outlined"
                 @click.stop="handleShopClick(item.shop)"
             >
@@ -43,7 +43,7 @@
             <!--購入したか-->
             <div class="d-flex flex-row">
                 <div v-if="item.download" class="mx-1">
-                    <v-chip :color="item.download ? 'blue' : 'grey lighten-2'">
+                    <v-chip :color="item.download ? 'info' : 'disable'">
                         <v-icon :icon="mdiCloudArrowDownOutlineIcon"></v-icon>
                         <v-tooltip activator="parent" location="left">
                             Download item
@@ -52,20 +52,16 @@
                 </div>
                 <div class="mx-1">
                     <v-chip
-                        :color="item.purchased ? 'blue' : 'grey lighten-2'"
+                        :color="item.purchased ? 'info' : 'disable'"
                         @click.stop="handleCartClick()"
                     >
                         <v-icon :icon="mdiCartOutlineIcon"></v-icon>
                         <v-tooltip activator="parent" location="left">
-                            <div v-if="item.purchased">
-                                Purchased!
-                            </div>
+                            <div v-if="item.purchased">Purchased!</div>
                             <div v-else-if="item.purchased === undefined">
                                 No data
                             </div>
-                            <div v-else>
-                                Not Purchased
-                            </div>
+                            <div v-else>Not Purchased</div>
                         </v-tooltip>
                     </v-chip>
                 </div>

@@ -2,8 +2,7 @@
     <v-btn class="mr-4" variant="outlined">
         {{ lang.topImport }}
         <v-dialog v-model="dialog_import" activator="parent" width="auto">
-            <v-card>
-                <v-card-title> Welcome to Import Card! </v-card-title>
+            <v-card width="100%" height="100%">
                 <v-row class="my-3 text-center" justify="center">
                     <v-col cols="10">
                         <v-btn
@@ -23,9 +22,9 @@
                                 </v-col>
                                 <v-col
                                     cols="12"
-                                    class="text-truncate mb-2 mt-n2"
+                                    class="text-truncate mb-2 mt-n2 text-lowercase"
                                 >
-                                    ファイルのインポート
+                                    ファイル(.json)の選択
                                 </v-col>
                             </v-row>
                         </v-btn>
@@ -73,12 +72,15 @@ export default {
         onFileDropped(event) {
             console.log(event.dataTransfer.files[0]);
             this.import_dragged = false;
+            this.fileRead(event.dataTransfer.files[0]);
         },
         onFileChange(event) {
             this.inputKey += 1;
             const file = event.target.files[0];
             if (!file) return;
-
+            this.fileRead(file);
+        },
+        fileRead(file) {
             const reader = new FileReader();
             reader.onload = () => {
                 const data = JSON.parse(reader.result);
