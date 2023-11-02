@@ -24,7 +24,7 @@
                                     cols="12"
                                     class="text-truncate mb-2 mt-n2 text-lowercase"
                                 >
-                                    ファイル(.json)の選択
+                                    {{ lang.topImportJson }}
                                 </v-col>
                             </v-row>
                         </v-btn>

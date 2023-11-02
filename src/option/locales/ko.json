@@ -3,6 +3,7 @@
     "topHowto": "사용 방법",
     "topSearchText": "아이템 검색...",
     "topImport": "데이터를 가져오기...",
+    "topImportJson": "Select File(.json)",
     "topSetttings": "설정 페이지로 이동",
     "topInvalid": "유효하지 않은 입력 데이터입니다.",
     "topDataAdd": "데이터를 추가했습니다.",

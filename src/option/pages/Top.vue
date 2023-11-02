@@ -4,7 +4,7 @@
             <v-toolbar color="primary" density="comfortable">
                 <v-toolbar-title class="d-flex flex-row">
                     {{ lang.topTitle }}
-                    <div class="text-caption">v0.4.2</div>
+                    <div class="text-caption">v0.4.3</div>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <a
@@ -33,7 +33,7 @@
                     density="compact"
                     single-line
                     hide-details
-                    @update:modelValue="updateSearchText"
+                    @change="updateSearchText"
                 ></v-text-field>
             </v-toolbar>
         </div>
@@ -351,12 +351,15 @@ export default {
         this.updateQuery();
     },
     watch: {
-        "$route.query.page": function (newVal, oldVal) {
+        "$route.query.page": function(newVal, oldVal) {
             this.updatePageFromQuery();
         },
-        "$route.query.search": function (newVal, oldVal) {
+        "$route.query.search": function(newVal, oldVal) {
             this.updateSearchTextFromQuery();
         },
+        // searchText: function(newVal, oldVal) {
+        //     this.updateQuery();
+        // },
     },
     created() {
         // 言語ファイルが正しく読み込まれることを確認してください

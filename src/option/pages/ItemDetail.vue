@@ -34,11 +34,11 @@
         </v-container>
 
         <p
-            class="description text-body-1 ml-4"
+            class="description text-body-1 mx-4"
             v-html="formatDescription(data.description)"
         ></p>
         <p
-            class="additional-description text-body-1 ml-4"
+            class="additional-description text-body-1 mx-4"
             v-if="data.additionalDescription"
             v-html="formatDescription(data.additionalDescription)"
         ></p>
@@ -202,11 +202,10 @@ export default {
             this.data = result[`items_${this.itemId}`];
             console.log(this.data);
             if (this.data.additionalDescription) {
-                this.data.additionalDescription =
-                    this.data.additionalDescription.replaceAll(
-                        "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
-                        "ma-1 pt-8"
-                    );
+                this.data.additionalDescription = this.data.additionalDescription.replaceAll(
+                    "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
+                    "ma-1 pt-8"
+                );
             }
         });
     },
@@ -313,50 +312,6 @@ export default {
     color: white;
     font-size: 36px;
     cursor: pointer;
-}
-
-.button-wrapper {
-    flex-wrap: wrap;
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.delete-button,
-.export-button,
-.shop-button {
-    display: flex;
-    align-items: center;
-    background: none;
-    border: 1px solid rgba(128, 128, 128, 0.24);
-    height: 48px;
-    padding: 0 24px 0 16px;
-    margin-right: 16px;
-    margin-bottom: 8px;
-    letter-spacing: 0.25px;
-    border-radius: 24px;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: background-color 0.3s ease;
-}
-
-.delete-button:hover,
-.export-button:hover,
-.shop-button:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-.delete-button:active,
-.export-button:active,
-.shop-button:active {
-    background-color: rgba(0, 0, 0, 0.2);
-}
-
-.button-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex-grow: 1;
 }
 
 body {
