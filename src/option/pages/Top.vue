@@ -28,7 +28,10 @@
                     :prepend-icon="mdiMagnifyIcon"
                     clearable
                     :clear-icon="mdiCloseCircleIcon"
-                    @click:clear="searchText = ''"
+                    @click:clear="
+                        searchText = '';
+                        updateQuery();
+                    "
                     rounded="rounded-pill"
                     density="compact"
                     single-line
@@ -175,7 +178,7 @@ export default {
     data() {
         return {
             itemList: [],
-            srchTags: [],
+            srchTags: Array(),
             srchShop: {},
             srchCart: -1,
             searchText: "",
@@ -303,22 +306,15 @@ export default {
             this.updateQuery();
         },
         updatePageFromQuery() {
-            if (this.$route.query.page) {
-                this.page = Number(this.$route.query.page) || 1;
-            }
+            this.page = Number(this.$route.query.page) || 1;
         },
         updateSearchTextFromQuery() {
-            if (this.$route.query.search) {
-                this.searchText = this.$route.query.search;
-            }
+            this.searchText = this.$route.query.search || "";
         },
         updateTagsFromQuery() {
+            console.log("updateTagsFromQuery");
             if (this.$route.query.tags) {
-                if (typeof this.$route.query.tags == "string") {
-                    this.srchTags = Array(this.$route.query.tags);
-                } else {
-                    this.srchTags = this.$route.query.tags;
-                }
+                this.srchTags = this.$route.query.tags.split(",") || [];
             }
         },
         updateShopFromQuery() {
@@ -328,38 +324,38 @@ export default {
                     thumbnail_url: this.$route.query.shop_icon,
                     url: this.$route.query.shop_url,
                 };
+            } else {
+                this.srchShop = {};
             }
         },
         updateQuery() {
+            const tags_str = this.srchTags.join(",");
             this.$router.push({
                 query: {
                     search: this.searchText,
                     page: this.page,
-                    tags: this.srchTags,
+                    tags: tags_str,
                     shop_url: this.srchShop.url,
                     shop_icon: this.srchShop.thumbnail_url,
                     shop_name: this.srchShop.name,
                 },
             });
         },
+        updateAllQuery() {
+            this.updateSearchTextFromQuery();
+            this.updateTagsFromQuery();
+            this.updateShopFromQuery();
+            this.updatePageFromQuery();
+            // this.updateQuery();
+        },
     },
     mounted() {
-        this.updateSearchTextFromQuery();
-        this.updateTagsFromQuery();
-        this.updateShopFromQuery();
-        this.updatePageFromQuery();
-        this.updateQuery();
+        this.updateAllQuery();
     },
     watch: {
-        "$route.query.page": function(newVal, oldVal) {
-            this.updatePageFromQuery();
+        $route: function (newVal, oldVal) {
+            this.updateAllQuery();
         },
-        "$route.query.search": function(newVal, oldVal) {
-            this.updateSearchTextFromQuery();
-        },
-        // searchText: function(newVal, oldVal) {
-        //     this.updateQuery();
-        // },
     },
     created() {
         // 言語ファイルが正しく読み込まれることを確認してください
