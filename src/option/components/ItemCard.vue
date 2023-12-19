@@ -42,6 +42,14 @@
             <v-spacer></v-spacer>
             <!--購入したか-->
             <div class="d-flex flex-row">
+                <div v-if="item.restock" class="mx-1">
+                    <v-chip :color="item.restock ? 'warning' : 'disable'">
+                        <v-icon :icon="mdiEmailAlertOutlineIcon"></v-icon>
+                        <v-tooltip activator="parent" location="left">
+                            Restore request
+                        </v-tooltip>
+                    </v-chip>
+                </div>
                 <div v-if="item.download" class="mx-1">
                     <v-chip :color="item.download ? 'info' : 'disable'">
                         <v-icon :icon="mdiCloudArrowDownOutlineIcon"></v-icon>
@@ -95,6 +103,7 @@ import {
     mdiHeartOutline,
     mdiCartOutline,
     mdiCloudArrowDownOutline,
+    mdiEmailAlertOutline,
 } from "@mdi/js";
 
 export default {
@@ -111,6 +120,7 @@ export default {
             mdiHeartOutlineIcon: mdiHeartOutline,
             mdiCartOutlineIcon: mdiCartOutline,
             mdiCloudArrowDownOutlineIcon: mdiCloudArrowDownOutline,
+            mdiEmailAlertOutlineIcon: mdiEmailAlertOutline,
         };
     },
     computed: {

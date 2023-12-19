@@ -1,7 +1,7 @@
 <template>
     <v-app class="content pa-0 ma-0">
         <!--title-->
-        <div class="text-h4 ma-2 py-2">{{ data.name }}</div>
+        <div class="text-h4 ma-2 py-2 font-bold">{{ data.name }}</div>
 
         <v-container class="mx-lg-2 px-2 mx-sm-4">
             <v-row class="mx-sm-4">
@@ -283,7 +283,11 @@ export default {
 .content {
     font-family: -apple-system, BlinkMacSystemFont, Avenir, "Helvetica Neue",
         "Segoe UI", Arial, "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN",
-        メイリオ, Meiryo, "ＭＳ Ｐゴシック", sans-serif;
+        メイリオ, Meiryo, "ＭＳ Ｐゴシック", sans-serif !important;
+}
+
+.font-bold {
+    font-weight: 700 !important;
 }
 
 .popup {

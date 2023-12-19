@@ -123,18 +123,44 @@ function addSaveButton() {
 function addDownloadedItem() {
     const cartElements = document.querySelectorAll(".variation-cart");
     cartElements.forEach((cart) => {
+        // 子要素にdivタグ且つclassが"restock-request-links"がある場合は起動しない
+        const div = cart.querySelector("div.restock-request-links");
+        if (div) {
+            return;
+        }
         // 各 '.variation-cart' 要素の子要素がaタグである場合
         const anchor = cart.querySelector("a");
         if (anchor) {
             // クリックイベントリスナを追加
             anchor.addEventListener("click", function(event) {
-                handleButtonClick(event, anchor);
+                handleButtonClick(event, anchor, { download: true });
             });
         }
     });
 }
 
-function handleButtonClick(event, anchorElement) {
+function addRestockItem() {
+    const cartElements = document.querySelectorAll(".variation-cart");
+    cartElements.forEach((cart) => {
+        // 各 '.variation-cart' 要素の子要素がdivタグ且つclassが"restock-request-links"である場合
+        const div = cart.querySelector("div.restock-request-links");
+        if (div) {
+            // クリックイベントリスナを追加
+            // divにrequestedというクラスがある場合は、restock=falseにする
+            div.addEventListener("click", function(event) {
+                if (div.classList.contains("requested")) {
+                    handleButtonClick(event, div, { restock: false });
+                }
+                else{
+                    handleButtonClick(event, div, { restock: true });
+                }
+            });
+
+        }
+    });
+}
+
+function handleButtonClick(event, anchorElement, data) {
     // ここで何らかのデータを収集または処理を行う
     console.log("Button clicked:", anchorElement.href);
 
@@ -143,7 +169,7 @@ function handleButtonClick(event, anchorElement) {
     console.log("Download link:", downloadLink);
 
     // その他の必要な処理...
-    addData({ download: true });
+    addData(data);
 }
 
 chrome.storage.sync.get("extended_settings", (result) => {
@@ -154,5 +180,6 @@ chrome.storage.sync.get("extended_settings", (result) => {
     if (setting && setting.save_item) {
         addSaveButton();
         addDownloadedItem();
+        addRestockItem();
     }
 });

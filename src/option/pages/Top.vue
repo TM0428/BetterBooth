@@ -4,7 +4,7 @@
             <v-toolbar color="primary" density="comfortable">
                 <v-toolbar-title class="d-flex flex-row">
                     {{ lang.topTitle }}
-                    <div class="text-caption">v0.4.3</div>
+                    <div class="text-caption">v0.4.4</div>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <a
@@ -353,7 +353,7 @@ export default {
         this.updateAllQuery();
     },
     watch: {
-        $route: function (newVal, oldVal) {
+        $route: function(newVal, oldVal) {
             this.updateAllQuery();
         },
     },
