@@ -14,6 +14,7 @@
     "priceAscOption": "Price: Low to High",
     "stockLabel": "Include out of stock",
     "newArrivalLabel": "New Arrivals Only",
+    "autoReloadLabel": "ショップページの自動ページング",
     "saveButton": "Save",
     "disableButton": "Disable",
     "disableButtonEnable": "Enable",

@@ -14,6 +14,7 @@
     "priceAscOption": "価格が低い順",
     "stockLabel": "在庫なし・販売終了を含む",
     "newArrivalLabel": "最近公開された商品のみ",
+    "autoReloadLabel": "ショップページの自動ページング",
     "saveButton": "Save",
     "disableButton": "Disable",
     "disableButtonEnable": "Enable",

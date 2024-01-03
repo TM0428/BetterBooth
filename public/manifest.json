@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "__MSG_Name__",
     "default_locale": "ja",
-    "version": "0.4.4",
+    "version": "0.5.0",
     "description": "__MSG_Description__",
     "icons": {
         "128": "icon/icon-128.png",
@@ -79,6 +79,20 @@
             ],
             "js": [
                 "js/purchase.js"
+            ]
+        },
+        {
+            "matches": [
+                "*://*.booth.pm/"
+            ],
+            "exclude_matches": [
+                "*://booth.pm/carts/",
+                "*://accounts.booth.pm/*",
+                "*://manage.booth.pm/*",
+                "*://checkout.booth.pm/*"
+            ],
+            "js": [
+                "js/itemlist_sort.js"
             ]
         }
     ],

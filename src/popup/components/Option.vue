@@ -302,6 +302,24 @@
                                 </v-row>
                             </v-list-item-content>
                         </v-list-item>
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-row class="align-center">
+                                    <v-col :cols="7" class="text-body-2">{{
+                                        lang.autoReloadLabel
+                                    }}</v-col>
+                                    <v-col :cols="5">
+                                        <v-checkbox
+                                            class="d-flex justify-end"
+                                            hide-details
+                                            v-model="
+                                                extended_settings.auto_reload
+                                            "
+                                        />
+                                    </v-col>
+                                </v-row>
+                            </v-list-item-content>
+                        </v-list-item>
                     </v-list>
                     <v-list class="mt-0">
                         <v-list-item>
@@ -358,6 +376,7 @@ export default {
                 language: "ja",
                 save_item: false,
                 save_purchase: false,
+                auto_reload: false,
             },
             in_stock: true,
             notificationTimer: null,
