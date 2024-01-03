@@ -139,6 +139,10 @@ function make_content(data_item_json) {
 		const index = Math.max(0, Math.min(Math.floor(x / width * image_count), image_count - 1));
 		img.src = data_item_json.thumbnail_image_urls[index];
 	});
+	// マウスが外れた場合は最初の画像に戻す
+	div_swap_image.addEventListener("mouseleave", () => {
+		img.src = data_item_json.thumbnail_image_urls[0];
+	});
 
 	// make tree
 	div_item.appendChild(div_thumb);
