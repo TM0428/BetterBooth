@@ -6,7 +6,7 @@ const itemGetEn = {
     saveItem: "Save",
     clicksaveItem: "Saved.",
 };
-console.log(window.navigator.language);
+
 var itemGetLang = itemGetJa;
 if (
     window.navigator.language !== "ja" &&
@@ -114,7 +114,7 @@ function addSaveButton() {
         if (share_btn) {
             clearInterval(intervalId);
             share_btn.className = "flex mr-auto";
-            console.log(share_btn);
+            // console.log(share_btn);
             share_btn.appendChild(divElement);
         }
     }, 1000);
