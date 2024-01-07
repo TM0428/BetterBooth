@@ -93,6 +93,9 @@
             ],
             "js": [
                 "js/itemlist_sort.js"
+            ],
+            "css": [
+                "css/itemlist_sort.css"
             ]
         }
     ],

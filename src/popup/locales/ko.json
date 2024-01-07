@@ -14,7 +14,7 @@
     "priceAscOption": "낮은 가격순",
     "stockLabel": "품절 포함",
     "newArrivalLabel": "최신 상품만",
-    "autoReloadLabel": "ショップページの自動ページング",
+    "autoReloadLabel": "ショップページの自動ページング(only japanese)",
     "saveButton": "저장",
     "disableButton": "Disable",
     "disableButtonEnable": "Enable",

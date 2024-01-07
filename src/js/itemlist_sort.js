@@ -2,6 +2,7 @@ let next_page = 2;
 let max_page = 2;
 let ul_height = 0;
 let not_adding = true;
+let filter_section = null;
 
 /**
  * if scroll to bottom, load more items
@@ -39,18 +40,9 @@ async function load_more_items() {
 		item_list.appendChild(li);
 	}
 
+	filter_content();
+	make_filter_section_category_content();
 
-	// for(const li of ul.children) {
-	// 	console.log(li);
-	// 	// li have a data-item
-	// 	// delete &quot; from data-item and load json
-	// 	const data_item = li.getAttribute("data-item");
-	// 	const data_item_json = JSON.parse(data_item.replace(/&quot;/g, '"'));
-	// 	const div_item = make_content(data_item_json);
-	// 	li.appendChild(div_item);
-
-	// 	item_list.appendChild(li);
-	// }
 	next_page++;
 	not_adding = true;
 }
@@ -247,8 +239,174 @@ function make_content(data_item_json) {
 	return div_item;
 }
 
+function make_filter_section() {
+	// make section
+	// const section = make_filter_section_content();
+	const section = document.createElement("section");
+	section.className = "filter-section";
+	// make div.section-header
+	const div_section_header = document.createElement("div");
+	div_section_header.className = "section-header";
+	// make h2.section-title
+	const h2_section_title = document.createElement("h2");
+	h2_section_title.className = "section-title";
+	h2_section_title.textContent = "フィルター";
+	// make div.section-body
+	const div_section_body = document.createElement("div");
+	div_section_body.className = "section-body";
+	// make div.section-body-contents
+	const div_section_body_contents = make_filter_section_category_content();
 
 
+	// make tree
+	section.appendChild(div_section_header);
+	div_section_header.appendChild(h2_section_title);
+	section.appendChild(div_section_body);
+	div_section_body.appendChild(div_section_body_contents)
+
+	// add to div#js-shop first child
+	const div_js_shop = document.querySelector("div#js-shop");
+	div_js_shop.insertBefore(section, div_js_shop.firstChild);
+}
+
+function make_filter_section_category_content() {
+	if(filter_section != null) add_filter_section_content();
+	// make div.section-body-inner
+	const div_section_body_category = document.createElement("div");
+	div_section_body_category.className = "section-body-category";
+	// make a filter content
+	// all div.item-category textContent(duplication is removed)
+	const item_category_list = document.querySelectorAll("div.item-category");
+	const item_category_text_list = [];
+	for(const item_category of item_category_list) {
+		item_category_text_list.push(item_category.textContent);
+	}
+	const item_category_text_list_set = new Set(item_category_text_list);
+	const item_category_text_list_unique = Array.from(item_category_text_list_set);
+	// make div.filter-content
+	const div_filter_content = document.createElement("div");
+	div_filter_content.className = "filter-content";
+	// make div.filter-content-inner > div.filter-content-item
+	for(const item_category_text of item_category_text_list_unique) {
+		// make input and label
+		// label can click
+		// input is checkbox
+		const div_filter_content_inner = document.createElement("div");
+		div_filter_content_inner.className = "filter-content-inner";
+		const div_filter_content_item = document.createElement("div");
+		div_filter_content_item.className = "filter-content-item";
+		const input = document.createElement("input");
+		input.type = "checkbox";
+		input.id = item_category_text;
+		input.name = "filter";
+		input.value = item_category_text;
+
+		const label = document.createElement("label");
+		label.htmlFor = item_category_text;
+		label.textContent = item_category_text;
+
+		// add event listener
+		input.addEventListener("change", filter_content);
+
+		// make tree
+		div_filter_content.appendChild(div_filter_content_inner);
+		div_filter_content_inner.appendChild(div_filter_content_item);
+		div_filter_content_item.appendChild(input);
+		div_filter_content_item.appendChild(label);
+
+	}
+	console.log(div_filter_content);
+	div_section_body_category.appendChild(div_filter_content);
+	// console.log(section);
+	filter_section = div_section_body_category;
+	return div_section_body_category;
+}
+
+function add_filter_section_content() {
+	// sectionは既にあるので、item-categoryで追加されているものを追加する
+	// get all div.item-category textContent
+	const item_category_list = document.querySelectorAll(".item-category");
+	const item_category_text_list = [];
+	for(const item_category of item_category_list) {
+		item_category_text_list.push(item_category.textContent);
+	}
+	const item_category_text_list_set = new Set(item_category_text_list);
+	const item_category_text_list_unique = Array.from(item_category_text_list_set);
+	// search div.filter-content
+	const div_filter_content = document.querySelector("div.filter-content");
+	for(const item_category_text of item_category_text_list_unique) {
+		// if item_category_text is already in div.filter-content, continue
+		const div_filter_content_inner_list = div_filter_content.querySelectorAll("div.filter-content-inner");
+		let already_in = false;
+		for(const div_filter_content_inner of div_filter_content_inner_list) {
+			const input = div_filter_content_inner.querySelector("input");
+			if(input.value == item_category_text) {
+				already_in = true;
+				break;
+			}
+		}
+		if(already_in) continue;
+		// make input and label
+		// label can click
+		// input is checkbox
+		const div_filter_content_inner = document.createElement("div");
+		div_filter_content_inner.className = "filter-content-inner";
+		const div_filter_content_item = document.createElement("div");
+		div_filter_content_item.className = "filter-content-item";
+		const input = document.createElement("input");
+		input.type = "checkbox";
+		input.id = item_category_text;
+		input.name = "filter";
+		input.value = item_category_text;
+
+		const label = document.createElement("label");
+		label.htmlFor = item_category_text;
+		label.textContent = item_category_text;
+
+		// add event listener
+		input.addEventListener("change", filter_content);
+
+		// make tree
+		div_filter_content.appendChild(div_filter_content_inner);
+		div_filter_content_inner.appendChild(div_filter_content_item);
+		div_filter_content_item.appendChild(input);
+		div_filter_content_item.appendChild(label);
+
+	}
+
+
+}
+
+
+function filter_content() {
+	// get all checkbox
+	const checkbox_list = document.querySelectorAll("input[name='filter']");
+	// if all checkbox is not checked, display all li
+	let all_not_checked = true;
+	for(checkbox of checkbox_list) {
+		if(checkbox.checked) {
+			all_not_checked = false;
+			break;
+		}
+	}
+
+	// get ul.item-list
+	const item_list = document.querySelector("ul.item-list");
+	for(li of item_list.children) {
+		li.style.display = "none";
+		if(all_not_checked) {
+			li.style.display = "block";
+			continue;
+		}
+
+		// if checkbox is checked, and checkbox.value is in li.item-category, li.style.display = "block"
+		for(checkbox of checkbox_list) {
+			if(checkbox.checked && li.querySelector(".item-category").textContent == checkbox.value) {
+				li.style.display = "block";
+			}
+		}
+	}
+}
 
 chrome.storage.sync.get("extended_settings", (result) => {
     const setting = result.extended_settings;
@@ -257,6 +415,11 @@ chrome.storage.sync.get("extended_settings", (result) => {
 		// define max page
 		// query select div.shop-pager > nav > ul > li:last-child > a
 		const last_page = document.querySelector("div.shop-pager > nav > ul > li:last-child > a");
+		// if last_page is null, max_page is 1
+		if(last_page == null) {
+			max_page = 1;
+			return;
+		}
 		// href has "/items?page=2" format
 		const href = last_page.href;
 		// split href by "="
@@ -282,6 +445,7 @@ chrome.storage.sync.get("extended_settings", (result) => {
 		// disable shop-pager
 		const shop_pager = document.querySelector("div.shop-pager");
 		shop_pager.style.display = "none";
+		make_filter_section();
 
     }
 });
