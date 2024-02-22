@@ -3,6 +3,8 @@ let max_page = 2;
 let ul_height = 0;
 let not_adding = true;
 let filter_section = null;
+let include_sold_out = true;
+let include_r18 = "none";
 
 /**
  * if scroll to bottom, load more items
@@ -256,13 +258,16 @@ function make_filter_section() {
 	div_section_body.className = "section-body";
 	// make div.section-body-contents
 	const div_section_body_contents = make_filter_section_category_content();
+	// make div.filter-meta
+	const div_filter_meta = make_filter_meta_content();
 
 
 	// make tree
 	section.appendChild(div_section_header);
 	div_section_header.appendChild(h2_section_title);
 	section.appendChild(div_section_body);
-	div_section_body.appendChild(div_section_body_contents)
+	div_section_body.appendChild(div_section_body_contents);
+	div_section_body.appendChild(div_filter_meta);
 
 	// add to div#js-shop first child
 	const div_js_shop = document.querySelector("div#js-shop");
@@ -373,10 +378,69 @@ function add_filter_section_content() {
 		div_filter_content_item.appendChild(label);
 
 	}
-
-
 }
 
+function make_filter_meta_content() {
+
+	// make div.filter-meta
+	const div_filter_meta = document.createElement("div");
+	div_filter_meta.className = "filter-meta";
+	// make div.filter-meta-inner
+	const div_filter_meta_inner_stock = document.createElement("div");
+	div_filter_meta_inner_stock.className = "filter-meta-inner";
+	// first, make input and label
+	// label "在庫なしを含む" can click
+	// input is checkbox and checked
+	const input = document.createElement("input");
+	input.type = "checkbox";
+	input.id = "filter-meta";
+	input.name = "filter-meta";
+	input.value = "filter-meta";
+	input.checked = true;
+	const label = document.createElement("label");
+	label.htmlFor = "filter-meta";
+	label.textContent = "在庫なしを含む";
+	// add event listener
+	input.addEventListener("change", function() {
+			include_sold_out = !include_sold_out;
+			filter_content();
+		});
+
+	// second, make select and option
+	// option is "R-18のみ". "全年齢のみ", "指定なし"
+	const div_filter_meta_inner_rate = document.createElement("div");
+	div_filter_meta_inner_rate.className = "filter-meta-inner";
+	// make select
+	const select = document.createElement("select");
+	select.id = "filter-meta";
+	select.name = "filter-meta";
+	// make option
+	const option_r18 = document.createElement("option");
+	option_r18.value = "r18";
+	option_r18.textContent = "R-18のみ";
+	const option_all = document.createElement("option");
+	option_all.value = "all";
+	option_all.textContent = "全年齢のみ";
+	const option_none = document.createElement("option");
+	option_none.value = "none";
+	option_none.textContent = "指定なし";
+	// add event listener
+	select.addEventListener("change", () => {
+		include_r18 = select.value;
+		filter_content();
+	});
+	select.appendChild(option_none);
+	select.appendChild(option_r18);
+	select.appendChild(option_all);
+
+	// make tree
+	div_filter_meta.appendChild(div_filter_meta_inner_stock);
+	div_filter_meta.appendChild(div_filter_meta_inner_rate);
+	div_filter_meta_inner_stock.appendChild(input);
+	div_filter_meta_inner_stock.appendChild(label);
+	div_filter_meta_inner_rate.appendChild(select);
+	return div_filter_meta;
+}
 
 function filter_content() {
 	// get all checkbox
@@ -396,7 +460,6 @@ function filter_content() {
 		li.style.display = "none";
 		if(all_not_checked) {
 			li.style.display = "block";
-			continue;
 		}
 
 		// if checkbox is checked, and checkbox.value is in li.item-category, li.style.display = "block"
@@ -405,6 +468,20 @@ function filter_content() {
 				li.style.display = "block";
 			}
 		}
+
+		const data_item = li.getAttribute("data-item");
+		const data_item_json = JSON.parse(data_item.replace(/&quot;/g, '"'));
+		if(!include_sold_out && data_item_json.is_sold_out) {
+			li.style.display = "none";
+		}
+		if(include_r18 == "r18" && !data_item_json.is_adult) {
+			li.style.display = "none";
+		}
+		if(include_r18 == "all" && data_item_json.is_adult) {
+			li.style.display = "none";
+		}
+
+
 	}
 }
 
