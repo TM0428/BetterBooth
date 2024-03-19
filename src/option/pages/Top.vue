@@ -51,11 +51,10 @@
                         <ItemImportPopup
                             @item-imported="handleItemImported"
                         ></ItemImportPopup>
-                        <!-- <ItemDownloadPopup
+                        <ItemDownloadPopup
                             :filtered-item-list="filteredItemList"
-                            :lang="lang"
                         >
-                        </ItemDownloadPopup> -->
+                        </ItemDownloadPopup>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -116,18 +115,6 @@
                             @cart-clicked="handleCartClicked"
                         />
                     </v-col>
-                    <!-- <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                        lg="3"
-                        xl="2"
-                        v-if="paginatedItems.length < 24"
-                    >
-                        <ItemImportCard
-                            @item-imported="handleItemImported"
-                        />
-                    </v-col> -->
                 </v-row>
 
                 <v-pagination
@@ -150,7 +137,7 @@
 <script>
 import ItemCard from "../components/ItemCard.vue";
 import ItemImportCard from "../components/ItemImportCard.vue";
-// import ItemDownloadPopup from "../components/ItemDownloadPopup.vue";
+import ItemDownloadPopup from "../components/ItemDownloadPopup.vue";
 import ItemImportPopup from "../components/ItemImportPopup.vue";
 
 import {
@@ -158,14 +145,13 @@ import {
     mdiCartOutline,
     mdiHelpCircleOutline,
     mdiCloseCircle,
-    mdiFileImport,
 } from "@mdi/js";
 
 export default {
     components: {
         ItemCard,
         ItemImportCard,
-        // ItemDownloadPopup,
+        ItemDownloadPopup,
         ItemImportPopup,
     },
     data() {

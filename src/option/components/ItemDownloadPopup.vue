@@ -93,10 +93,10 @@ export default {
                 this.downloadSaveInfo.forEach((key) => {
                     switch (key) {
                         case "shop.name":
-                            extracted["shop.name"] = item.shop.name;
+                            extracted["shopName"] = item.shop.name;
                             break;
                         case "shop.url":
-                            extracted["shop.url"] = item.shop.url;
+                            extracted["shopURL"] = item.shop.url;
                             break;
                         default:
                             extracted[key] = item[key];
@@ -162,8 +162,22 @@ export default {
         },
     },
     created() {
-        this.downloadSaveList = this.lang.downloadSaveList;
+        this.downloadSaveList = [
+            { label: this.$t("downloadSaveList.shopName"), value: "shop.name" },
+            { label: this.$t("downloadSaveList.shopUrl"), value: "shop.url" },
+            { label: this.$t("downloadSaveList.itemName"), value: "name" },
+            { label: this.$t("downloadSaveList.price"), value: "price" },
+            {
+                label: this.$t("downloadSaveList.downloaded"),
+                value: "download",
+            },
+            {
+                label: this.$t("downloadSaveList.purchased"),
+                value: "purchased",
+            },
+        ];
         this.downloadSaveInfo = this.downloadSaveList.map((item) => item.value);
+        console.log(this.$t("downloadSaveList"));
     },
 };
 </script>
