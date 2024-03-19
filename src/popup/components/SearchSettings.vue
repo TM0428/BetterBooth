@@ -151,6 +151,7 @@ export default {
                 disable: true,
             },
             in_stock: true,
+            notificationTimer: null,
             notifText: "",
         };
     },
