@@ -1,46 +1,7 @@
 <template>
     <div class="content">
         <div class="new-filter">
-            <v-container class="ma-3 pa-0">
-                <h1 class="mb-2">{{ lang.filtersHeader }}</h1>
-                <v-card
-                    max-width="430px"
-                    variant="tonal"
-                    color="grey-lighten-1"
-                >
-                    <v-list class="filter-list mx-auto">
-                        <template
-                            v-for="(filter, index) in filters"
-                            :key="filter"
-                        >
-                            <v-list-item>
-                                <v-list-item-content
-                                    class="d-flex align-center justify-space-between"
-                                >
-                                    <a
-                                        :href="filter"
-                                        target="_blank"
-                                        class="text-body-2"
-                                        >{{ filter }}</a
-                                    >
-                                    <v-btn
-                                        color="red"
-                                        size="small"
-                                        variant="tonal"
-                                        @click="removeFilter(index)"
-                                    >
-                                        {{ lang.removeButton }}
-                                    </v-btn>
-                                </v-list-item-content>
-                            </v-list-item>
-                            <v-divider
-                                v-if="index !== filters.length - 1"
-                                :key="`divider-${index}`"
-                            ></v-divider>
-                        </template>
-                    </v-list>
-                </v-card>
-            </v-container>
+            <filter-contents></filter-contents>
         </div>
 
         <div class="new-search-setting">
@@ -360,8 +321,12 @@ import ko from "../locales/ko.json";
 import zh_cn from "../locales/zh-CN.json";
 import zh_tw from "../locales/zh-TW.json";
 import { mdiMenuDown } from "@mdi/js";
+import FilterContents from "../components/FilterContents.vue";
 
 export default {
+    components: {
+        FilterContents,
+    },
     data() {
         return {
             filters: [],
@@ -514,14 +479,5 @@ export default {
 <style scoped>
 .content {
     width: 450px;
-}
-
-.filter-list {
-    min-width: 350px;
-    width: 100%;
-    max-height: 200px;
-    overflow: scroll;
-    overflow-x: auto;
-    overflow-y: auto;
 }
 </style>
