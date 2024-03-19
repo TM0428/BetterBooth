@@ -14,6 +14,7 @@
                                     class="d-flex justify-end"
                                     hide-details
                                     v-model="settings.disable"
+                                    @change="saveData"
                                 />
                             </v-col>
                         </v-row>
@@ -49,6 +50,7 @@
                                     ]"
                                     item-title="text"
                                     item-value="value"
+                                    @update:modelValue="saveData"
                                 ></v-select>
                             </v-col>
                         </v-row>
@@ -76,7 +78,7 @@
                                         },
                                         {
                                             text: $t('wishListOption'),
-                                            value: 'wish_list',
+                                            value: 'wish_lists',
                                         },
                                         {
                                             text: $t('priceDescOption'),
@@ -89,6 +91,7 @@
                                     ]"
                                     item-title="text"
                                     item-value="value"
+                                    @update:modelValue="saveData"
                                 ></v-select>
                             </v-col>
                         </v-row>
@@ -105,6 +108,7 @@
                                     class="d-flex justify-end"
                                     hide-details
                                     v-model="in_stock"
+                                    @change="saveData"
                                 />
                             </v-col>
                         </v-row>
@@ -121,25 +125,8 @@
                                     class="d-flex justify-end"
                                     hide-details
                                     v-model="settings.new_arrival"
+                                    @change="saveData"
                                 />
-                            </v-col>
-                        </v-row>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
-            <v-list class="mt-0">
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-row class="align-center">
-                            <v-col cols="auto" class="ms-auto">
-                                <v-btn
-                                    color="blue"
-                                    variant="tonal"
-                                    class="d-flex justify-end"
-                                    @click="saveData()"
-                                >
-                                    {{ $t("saveButton") }}
-                                </v-btn>
                             </v-col>
                         </v-row>
                     </v-list-item-content>
@@ -172,7 +159,7 @@ export default {
             this.settings.in_stock = !this.in_stock;
             chrome.storage.sync.set({ settings: this.settings });
             console.log(this.settings);
-            this.showNotificationText("Saved!  Please reload.");
+            this.showNotificationText("Auto saved!  Please reload.");
         },
         showNotificationText(txt) {
             this.notifText = txt;
