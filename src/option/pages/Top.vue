@@ -125,7 +125,6 @@
                         v-if="paginatedItems.length < 24"
                     >
                         <ItemImportCard
-                            :lang="lang"
                             @item-imported="handleItemImported"
                         />
                     </v-col> -->

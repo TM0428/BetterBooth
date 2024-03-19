@@ -25,12 +25,12 @@
             アイテムの削除は、このページから行ってください。
         </p>
         <br />
-        <a v-bind:href="lang.howtoGithubLink">
-            {{ lang.howtoGotoGithub }}
+        <a v-bind:href="$t('howtoGithubLink')">
+            {{ $t("howtoGotoGithub") }}
         </a>
         <br /><br />
         <router-link :to="{ name: 'Top' }" class="shop-button">
-            {{ lang.itemBackToList }}
+            {{ $t("itemBackToList") }}
         </router-link>
     </div>
 </template>

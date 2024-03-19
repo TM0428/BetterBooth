@@ -146,7 +146,7 @@ export default {
             if (result != 0) {
                 window.alert("Some error occured!");
             } else {
-                window.alert(this.lang.topDataAdd);
+                window.alert(this.$t("topDataAdd"));
                 this.$emit("item-imported", result);
             }
             this.dialog_import = false;

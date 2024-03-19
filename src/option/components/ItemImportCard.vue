@@ -15,8 +15,7 @@
 
             <div class="ma-2 text-h6 text-weight-regular two-line-title">
                 <div class="ellipsis-2-lines">
-                    <!-- {{ $t("topImport") }} -->
-                    hoge
+                    {{ $t("topImport") }}
                 </div>
             </div>
             <input

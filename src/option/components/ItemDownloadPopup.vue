@@ -1,14 +1,14 @@
 <template>
     <v-btn color="info" variant="outlined">
-        {{ lang.allDownloadButton }}
+        {{ $t("allDownloadButton") }}
         <v-dialog v-model="dialog_download" activator="parent" width="auto">
             <v-card>
                 <v-card-title>
-                    {{ lang.downloadTitle }}
+                    {{ $t("downloadTitle") }}
                 </v-card-title>
                 <div class="ma-4">
                     <div class="v-subtitle-1">
-                        {{ lang.downloadExt }}
+                        {{ $t("downloadExt") }}
                     </div>
                     <v-radio-group inline v-model="downloadSaveExt">
                         <v-radio label="CSV" value="CSV"></v-radio>
@@ -18,7 +18,7 @@
                         At least one item should be selected
                     </div>
                     <div class="v-subtitle-1">
-                        {{ lang.downloadInfo }}
+                        {{ $t("downloadInfo") }}
                     </div>
                     <v-row>
                         <v-col
@@ -57,7 +57,7 @@
                         @click="downloadItems()"
                         v-bind:disabled="
                             downloadSaveInfoRules[0] != true ||
-                            downloadSaveExt == ''
+                                downloadSaveExt == ''
                         "
                     >
                         Save
@@ -72,10 +72,6 @@
 export default {
     name: "DownloadPopup",
     props: {
-        lang: {
-            type: Object,
-            required: true,
-        },
         filteredItemList: {
             type: Object,
             required: true,

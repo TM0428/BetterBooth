@@ -54,7 +54,7 @@
                             rounded="xl"
                             size="large"
                         >
-                            {{ lang.itemBackToList }}
+                            {{ $t("itemBackToList") }}
                         </v-btn>
                     </v-col>
                     <v-col cols="12" sm="6" md="4" lg="3" xl="2">
@@ -69,7 +69,7 @@
                                 size="large"
                                 :prepend-icon="mdiLinkIcon"
                             >
-                                {{ lang.itemGotoLink }}
+                                {{ $t("itemGotoLink") }}
                             </v-btn>
                         </a>
                     </v-col>
@@ -85,7 +85,7 @@
                                 size="large"
                                 :prepend-icon="mdiLinkIcon"
                             >
-                                {{ lang.itemGotoShop }}
+                                {{ $t("itemGotoShop") }}
                             </v-btn>
                         </a>
                     </v-col>
@@ -97,7 +97,7 @@
                             size="large"
                             @click="exportData"
                         >
-                            {{ lang.itemExport }}
+                            {{ $t("itemExport") }}
                         </v-btn>
                     </v-col>
                     <v-col cols="12" sm="6" md="4" lg="3" xl="2">
@@ -108,7 +108,7 @@
                             size="large"
                             @click="deleteItem"
                         >
-                            {{ lang.itemDelete }}
+                            {{ $t("itemDelete") }}
                         </v-btn>
                     </v-col>
                 </v-row>
@@ -123,11 +123,6 @@
 
 <script>
 import router from "@/option/router"; // Vue Router インスタンスのインポート
-import ja from "../locales/ja.json";
-import en from "../locales/en.json";
-import ko from "../locales/ko.json";
-import zh_cn from "../locales/zh-CN.json";
-import zh_tw from "../locales/zh-TW.json";
 import { mdiArrowLeft, mdiLink, mdiDownload, mdiDelete } from "@mdi/js";
 
 export default {
@@ -144,7 +139,6 @@ export default {
                 },
             },
             popupImage: null,
-            lang: ja,
             mdiArrowLeftIcon: mdiArrowLeft,
             mdiLinkIcon: mdiLink,
             mdiDownloadIcon: mdiDownload,
@@ -155,47 +149,11 @@ export default {
     created() {
         // 言語ファイルが正しく読み込まれることを確認してください
         const userLocale = window.navigator.language;
-        switch (userLocale) {
-            case "en":
-                this.lang = en;
-                break;
-            case "ko":
-                this.lang = ko;
-                break;
-            case "zh-CN":
-                this.lang = zh_cn;
-                break;
-            case "zh-TW":
-                this.lang = zh_tw;
-                break;
-            case "zh":
-                this.lang = zh_cn;
-                break;
-            default:
-                this.lang = ja;
-        }
+        this.$i18n.locale = userLocale;
         chrome.storage.sync.get("extended_settings", (result) => {
             const extended_settings = result.extended_settings;
             if (extended_settings && extended_settings.language) {
-                switch (extended_settings.language) {
-                    case "ko":
-                        this.lang = ko;
-                        break;
-                    case "zh-CN":
-                        this.lang = zh_cn;
-                        break;
-                    case "zh-TW":
-                        this.lang = zh_tw;
-                        break;
-                    case "zh":
-                        this.lang = zh_cn;
-                        break;
-                    case "en":
-                        this.lang = en;
-                        break;
-                    default:
-                        this.lang = ja;
-                }
+                this.$i18n.locale = extended_settings.language;
             }
         });
         chrome.storage.local.get(`items_${this.itemId}`, (result) => {

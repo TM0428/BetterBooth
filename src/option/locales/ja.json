@@ -17,5 +17,13 @@
     "allDownloadButton": "アイテムを一括で保存",
     "downloadTitle": "データのダウンロード",
     "downloadExt": "ダウンロード形式",
-    "downloadInfo": "保存情報"
+    "downloadInfo": "保存情報",
+    "downloadSaveList": {
+        "shopName": "ショップ名",
+        "shopUrl": "ショップURL",
+        "itemName": "アイテム名",
+        "price": "価格",
+        "downloaded": "ダウンロードしたか",
+        "purchased": "購入したか"
+    }
 }
