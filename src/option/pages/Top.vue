@@ -3,8 +3,8 @@
         <div class="toolbar">
             <v-toolbar color="primary" density="comfortable">
                 <v-toolbar-title class="d-flex flex-row">
-                    {{ lang.topTitle }}
-                    <div class="text-caption">v0.4.4</div>
+                    {{ $t("topTitle") }}
+                    <div class="text-caption">v0.5.0</div>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <a
@@ -17,14 +17,14 @@
                             color="white"
                         ></v-icon>
                         <v-tooltip activator="parent" location="bottom">{{
-                            lang.topHowto
+                            $t("topHowto")
                         }}</v-tooltip>
                     </v-btn>
                 </a>
                 <v-text-field
                     class="mr-4"
                     v-model="searchText"
-                    :label="lang.topSearchText"
+                    :label="$t('topSearchText')"
                     :prepend-icon="mdiMagnifyIcon"
                     clearable
                     :clear-icon="mdiCloseCircleIcon"
@@ -49,14 +49,13 @@
                         </div>
                         <v-spacer></v-spacer>
                         <ItemImportPopup
-                            :lang="lang"
                             @item-imported="handleItemImported"
                         ></ItemImportPopup>
-                        <ItemDownloadPopup
+                        <!-- <ItemDownloadPopup
                             :filtered-item-list="filteredItemList"
                             :lang="lang"
                         >
-                        </ItemDownloadPopup>
+                        </ItemDownloadPopup> -->
                     </v-col>
                 </v-row>
                 <v-row>
@@ -142,7 +141,7 @@
                 <a
                     class="page-title text-body-1 ml-4"
                     href="/src/popup/popup.html"
-                    >{{ lang.topSetttings }}</a
+                    >{{ $t("topSetttings") }}</a
                 >
             </v-container>
         </div>
@@ -150,14 +149,9 @@
 </template>
 
 <script>
-import ja from "../locales/ja.json";
-import en from "../locales/en.json";
-import ko from "../locales/ko.json";
-import zh_cn from "../locales/zh-CN.json";
-import zh_tw from "../locales/zh-TW.json";
 import ItemCard from "../components/ItemCard.vue";
 import ItemImportCard from "../components/ItemImportCard.vue";
-import ItemDownloadPopup from "../components/ItemDownloadPopup.vue";
+// import ItemDownloadPopup from "../components/ItemDownloadPopup.vue";
 import ItemImportPopup from "../components/ItemImportPopup.vue";
 
 import {
@@ -172,7 +166,7 @@ export default {
     components: {
         ItemCard,
         ItemImportCard,
-        ItemDownloadPopup,
+        // ItemDownloadPopup,
         ItemImportPopup,
     },
     data() {
@@ -183,7 +177,6 @@ export default {
             srchCart: -1,
             searchText: "",
             inputKey: 0,
-            lang: ja,
             page: 1,
             itemsPerPage: 24,
             mdiMagnifyIcon: mdiMagnify,
@@ -351,9 +344,10 @@ export default {
     },
     mounted() {
         this.updateAllQuery();
+        console.log(this.$t("topTitle"));
     },
     watch: {
-        $route: function(newVal, oldVal) {
+        $route: function() {
             this.updateAllQuery();
         },
     },
@@ -361,25 +355,7 @@ export default {
         // 言語ファイルが正しく読み込まれることを確認してください
         const userLocale = window.navigator.language;
         // console.log(userLocale);
-        switch (userLocale) {
-            case "en":
-                this.lang = en;
-                break;
-            case "ko":
-                this.lang = ko;
-                break;
-            case "zh-CN":
-                this.lang = zh_cn;
-                break;
-            case "zh-TW":
-                this.lang = zh_tw;
-                break;
-            case "zh":
-                this.lang = zh_cn;
-                break;
-            default:
-                this.lang = ja;
-        }
+        this.$i18n.locale = userLocale;
         chrome.storage.sync.get("extended_settings", (result) => {
             const extended_settings = result.extended_settings;
             if (!(extended_settings && extended_settings.save_item)) {
@@ -387,25 +363,7 @@ export default {
                 return;
             }
             if (extended_settings && extended_settings.language) {
-                switch (extended_settings.language) {
-                    case "ko":
-                        this.lang = ko;
-                        break;
-                    case "zh-CN":
-                        this.lang = zh_cn;
-                        break;
-                    case "zh-TW":
-                        this.lang = zh_tw;
-                        break;
-                    case "zh":
-                        this.lang = zh_cn;
-                        break;
-                    case "en":
-                        this.lang = en;
-                        break;
-                    default:
-                        this.lang = ja;
-                }
+                this.$i18n.locale = extended_settings.language;
             }
         });
         chrome.storage.local.get("items", (result) => {

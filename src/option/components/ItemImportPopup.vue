@@ -1,6 +1,6 @@
 <template>
     <v-btn class="mr-4" variant="outlined" color="success">
-        {{ lang.topImport }}
+        {{ $t("topImport") }}
         <v-dialog v-model="dialog_import" activator="parent" width="auto">
             <v-card width="100%" height="100%">
                 <v-row class="my-3 text-center" justify="center">
@@ -24,7 +24,7 @@
                                     cols="12"
                                     class="text-truncate mb-2 mt-n2 text-lowercase"
                                 >
-                                    {{ lang.topImportJson }}
+                                    {{ $t("topImportJson") }}
                                 </v-col>
                             </v-row>
                         </v-btn>
@@ -49,10 +49,6 @@ import { setItemData } from "../js/localStorage";
 
 export default {
     props: {
-        lang: {
-            type: Object,
-            required: true,
-        },
         filteredItemList: {
             type: Object,
             required: true,
@@ -105,7 +101,7 @@ export default {
                     this.addStorage(sanitizedData);
                     // Perform any further operations with the sanitizedData
                 } else {
-                    window.alert(this.lang.topInvalid);
+                    window.alert(this.$t("topInvalid"));
                 }
             };
             reader.readAsText(file);

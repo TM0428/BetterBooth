@@ -7,7 +7,7 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { aliases, mdi } from "vuetify/iconsets/mdi-svg";
-import { mdiAccount } from "@mdi/js";
+import i18n from "./i18n.js";
 import colors from "vuetify/lib/util/colors";
 
 const LightTheme = {
@@ -31,8 +31,8 @@ const DarkTheme = {
     colors: {
         primary: "#ff4d50",
         background: "#111",
-    }
-}
+    },
+};
 
 const vuetify = createVuetify({
     components,
@@ -41,7 +41,6 @@ const vuetify = createVuetify({
         defaultSet: "mdi",
         aliases: {
             ...aliases,
-            account: mdiAccount,
         },
         sets: {
             mdi,
@@ -51,7 +50,7 @@ const vuetify = createVuetify({
         defaultTheme: "LightTheme",
         themes: {
             LightTheme,
-            DarkTheme
+            DarkTheme,
         },
     },
 });
@@ -59,4 +58,5 @@ const vuetify = createVuetify({
 createApp(App)
     .use(vuetify)
     .use(router)
+    .use(i18n)
     .mount("#app");
