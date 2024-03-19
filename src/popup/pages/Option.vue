@@ -1,168 +1,14 @@
 <template>
     <div class="content">
-        <div class="new-filter">
+        <div class="filter">
             <filter-contents></filter-contents>
         </div>
 
-        <div class="new-search-setting">
-            <v-container class="ma-3 pa-0">
-                <h1 class="mb-2">Search Settings:</h1>
-                <v-card
-                    max-width="430px"
-                    variant="tonal"
-                    color="grey-lighten-1"
-                >
-                    <v-list class="mb-0">
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-row class="align-center">
-                                    <v-col :cols="7" class="text-body-2">{{
-                                        lang.toggleSearchSetting
-                                    }}</v-col>
-                                    <v-col :cols="5">
-                                        <v-checkbox
-                                            class="d-flex justify-end"
-                                            hide-details
-                                            v-model="settings.disable"
-                                        />
-                                    </v-col>
-                                </v-row>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                    <v-list class="my-0" v-bind:disabled="settings.disable">
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-row class="align-center">
-                                    <v-col :cols="7" class="text-body-2">{{
-                                        lang.ageLabel
-                                    }}</v-col>
-                                    <v-col :cols="5">
-                                        <v-select
-                                            density="compact"
-                                            size="small"
-                                            v-model="settings.age"
-                                            hide-details
-                                            :items="[
-                                                {
-                                                    text: lang.includeOption,
-                                                    value: 'include',
-                                                },
-                                                {
-                                                    text: lang.defaultOption,
-                                                    value: 'default',
-                                                },
-                                                {
-                                                    text: lang.onlyOption,
-                                                    value: 'only',
-                                                },
-                                            ]"
-                                            item-title="text"
-                                            item-value="value"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-row class="align-center">
-                                    <v-col :cols="7" class="text-body-2">{{
-                                        lang.sortLabel
-                                    }}</v-col>
-                                    <v-col :cols="5">
-                                        <v-select
-                                            density="compact"
-                                            v-model="settings.sort"
-                                            hide-details
-                                            :items="[
-                                                {
-                                                    text: lang.popularOption,
-                                                    value: '',
-                                                },
-                                                {
-                                                    text: lang.newOption,
-                                                    value: 'new',
-                                                },
-                                                {
-                                                    text: lang.wishListOption,
-                                                    value: 'wish_list',
-                                                },
-                                                {
-                                                    text: lang.priceDescOption,
-                                                    value: 'price_desc',
-                                                },
-                                                {
-                                                    text: lang.priceAscOption,
-                                                    value: 'price_asc',
-                                                },
-                                            ]"
-                                            item-title="text"
-                                            item-value="value"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-row class="align-center">
-                                    <v-col :cols="7" class="text-body-2">{{
-                                        lang.stockLabel
-                                    }}</v-col>
-                                    <v-col :cols="5">
-                                        <v-checkbox
-                                            class="d-flex justify-end"
-                                            hide-details
-                                            v-model="in_stock"
-                                        />
-                                    </v-col>
-                                </v-row>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-row class="align-center">
-                                    <v-col :cols="7" class="text-body-2">{{
-                                        lang.newArrivalLabel
-                                    }}</v-col>
-                                    <v-col :cols="5">
-                                        <v-checkbox
-                                            class="d-flex justify-end"
-                                            hide-details
-                                            v-model="settings.new_arrival"
-                                        />
-                                    </v-col>
-                                </v-row>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                    <v-list class="mt-0">
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-row class="align-center">
-                                    <v-col cols="auto" class="ms-auto">
-                                        <v-btn
-                                            color="blue"
-                                            variant="tonal"
-                                            class="d-flex justify-end"
-                                            @click="saveData()"
-                                        >
-                                            {{ lang.saveButton }}
-                                        </v-btn>
-                                    </v-col>
-                                </v-row>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                    <div class="text-body-1">
-                        {{ notifText }}
-                    </div>
-                </v-card>
-            </v-container>
+        <div class="search-setting">
+            <search-settings></search-settings>
         </div>
 
-        <div class="new-extension-setting">
+        <div class="extension-setting">
             <v-container class="ma-3 pa-0">
                 <h1 class="mb-2">Extension Settings:</h1>
                 <v-card
@@ -322,47 +168,28 @@ import zh_cn from "../locales/zh-CN.json";
 import zh_tw from "../locales/zh-TW.json";
 import { mdiMenuDown } from "@mdi/js";
 import FilterContents from "../components/FilterContents.vue";
+import SearchSettings from "../components/SearchSettings.vue";
 
 export default {
     components: {
         FilterContents,
+        SearchSettings,
     },
     data() {
         return {
-            filters: [],
-            settings: {
-                age: "include",
-                sort: "",
-                in_stock: false,
-                new_arrival: false,
-                disable: true,
-            },
             extended_settings: {
                 language: "ja",
                 save_item: false,
                 save_purchase: false,
                 auto_reload: false,
             },
-            in_stock: true,
             notificationTimer: null,
-            notifText: "",
             exnotifText: "",
             lang: ja,
             mdiMenuDownIcon: mdiMenuDown,
         };
     },
     methods: {
-        removeFilter(index) {
-            this.filters.splice(index, 1);
-            console.log(this.filters);
-            chrome.storage.sync.set({ filters: Array.from(this.filters) });
-        },
-        saveData() {
-            this.settings.in_stock = !this.in_stock;
-            chrome.storage.sync.set({ settings: this.settings });
-            console.log(this.settings);
-            this.showNotificationText("Saved!  Please reload.");
-        },
         saveExtendedData() {
             console.log(this.extended_settings);
             chrome.storage.sync.set({
@@ -391,18 +218,6 @@ export default {
                     this.lang = ja;
                     this.extended_settings.language = "ja";
             }
-        },
-        showNotificationText(txt) {
-            this.notifText = txt;
-
-            if (this.notificationTimer) {
-                clearTimeout(this.notificationTimer); // 前回のタイマーをキャンセル
-            }
-
-            this.notificationTimer = setTimeout(() => {
-                this.notifText = "";
-                this.notificationTimer = null; // タイマーをクリア
-            }, 2000);
         },
         showExNotificationText(txt) {
             this.exnotifText = txt;
@@ -442,23 +257,6 @@ export default {
                 this.lang = ja;
                 this.extended_settings.language = "ja";
         }
-        chrome.storage.sync.get("filters", (result) => {
-            this.filters = result.filters || [];
-        });
-        chrome.storage.sync.get("settings", (result) => {
-            console.log(result.settings);
-            if (result.settings !== undefined) {
-                this.settings = result.settings;
-                this.settings.disable =
-                    this.settings.disable === undefined
-                        ? true
-                        : this.settings.disable;
-                this.in_stock =
-                    this.settings.in_stock === undefined
-                        ? true
-                        : !this.settings.in_stock;
-            }
-        });
         chrome.storage.sync.get("extended_settings", (result) => {
             console.log(result.extended_settings);
             const extended_settings = result.extended_settings;
