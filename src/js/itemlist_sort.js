@@ -40,6 +40,7 @@ async function load_more_items() {
         li.appendChild(div_item);
 
         item_list.appendChild(li);
+        // break;
     }
 
     filter_content();
@@ -129,10 +130,8 @@ function make_content(data_item_json) {
         // その中でどこにいるかを計算する
         // その位置に応じてimg.srcを変更する
         const width = div_swap_image.offsetWidth;
-        const x =
-            event.clientX -
-            div_swap_image.parentNode.parentNode.parentNode.parentNode
-                .offsetLeft;
+        const x = event.clientX - div_swap_image.getBoundingClientRect().left;
+        // console.log(x);
         const index = Math.max(
             0,
             Math.min(Math.floor((x / width) * image_count), image_count - 1)
@@ -297,7 +296,6 @@ function make_filter_section_category_content() {
     if (item_category_list.length == 0) {
         setTimeout(make_filter_section_category_content, 1000);
     }
-    console.log(item_category_list);
     const item_category_text_list = [];
     for (const item_category of item_category_list) {
         item_category_text_list.push(item_category.textContent);
@@ -337,7 +335,6 @@ function make_filter_section_category_content() {
         div_filter_content_item.appendChild(input);
         div_filter_content_item.appendChild(label);
     }
-    console.log(div_filter_content);
     div_section_body_category.appendChild(div_filter_content);
     // console.log(section);
     filter_section = div_section_body_category;
@@ -360,9 +357,8 @@ function add_filter_section_content() {
     const div_filter_content = document.querySelector("div.filter-content");
     for (const item_category_text of item_category_text_list_unique) {
         // if item_category_text is already in div.filter-content, continue
-        const div_filter_content_inner_list = div_filter_content.querySelectorAll(
-            "div.filter-content-inner"
-        );
+        const div_filter_content_inner_list =
+            div_filter_content.querySelectorAll("div.filter-content-inner");
         let already_in = false;
         for (const div_filter_content_inner of div_filter_content_inner_list) {
             const input = div_filter_content_inner.querySelector("input");
@@ -420,7 +416,7 @@ function make_filter_meta_content() {
     label.htmlFor = "filter-meta";
     label.textContent = "在庫なしを含む";
     // add event listener
-    input.addEventListener("change", function() {
+    input.addEventListener("change", function () {
         include_sold_out = !include_sold_out;
         filter_content();
     });

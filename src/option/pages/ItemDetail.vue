@@ -45,7 +45,7 @@
             <div class="new-buttons">
                 <v-container>
                     <v-row>
-                        <v-col cols="12" sm="6" md="4" lg="3" xl="2">
+                        <v-col cols="12" sm="6" md="4" lg="3" xl="3">
                             <v-btn
                                 block
                                 @click="$router.go(-1)"
@@ -56,7 +56,7 @@
                                 {{ $t("itemBackToList") }}
                             </v-btn>
                         </v-col>
-                        <v-col cols="12" sm="6" md="4" lg="3" xl="2">
+                        <v-col cols="12" sm="6" md="4" lg="3" xl="3">
                             <a
                                 :href="data.url"
                                 target="_blank"
@@ -72,7 +72,7 @@
                                 </v-btn>
                             </a>
                         </v-col>
-                        <v-col cols="12" sm="6" md="4" lg="3" xl="2">
+                        <v-col cols="12" sm="6" md="4" lg="3" xl="3">
                             <a
                                 :href="data.shop.url"
                                 target="_blank"
@@ -88,7 +88,7 @@
                                 </v-btn>
                             </a>
                         </v-col>
-                        <v-col cols="12" sm="6" md="4" lg="3" xl="2">
+                        <v-col cols="12" sm="6" md="4" lg="3" xl="3">
                             <v-btn
                                 block
                                 :prepend-icon="mdiDownloadIcon"
@@ -99,7 +99,7 @@
                                 {{ $t("itemExport") }}
                             </v-btn>
                         </v-col>
-                        <v-col cols="12" sm="6" md="4" lg="3" xl="2">
+                        <v-col cols="12" sm="6" md="4" lg="3" xl="3">
                             <v-btn
                                 block
                                 :prepend-icon="mdiDeleteIcon"
@@ -160,10 +160,11 @@ export default {
             this.data = result[`items_${this.itemId}`];
             console.log(this.data);
             if (this.data.additionalDescription) {
-                this.data.additionalDescription = this.data.additionalDescription.replaceAll(
-                    "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
-                    "ma-1 pt-8"
-                );
+                this.data.additionalDescription =
+                    this.data.additionalDescription.replaceAll(
+                        "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
+                        "ma-1 pt-8"
+                    );
             }
         });
     },
