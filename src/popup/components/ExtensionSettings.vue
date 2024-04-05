@@ -19,28 +19,7 @@
                                         saveExtendedData();
                                     "
                                     hide-details
-                                    :items="[
-                                        {
-                                            text: '日本語',
-                                            value: 'ja',
-                                        },
-                                        {
-                                            text: 'English',
-                                            value: 'en',
-                                        },
-                                        {
-                                            text: '한국어',
-                                            value: 'ko',
-                                        },
-                                        {
-                                            text: '中文（简体）',
-                                            value: 'zh-CN',
-                                        },
-                                        {
-                                            text: '中文（繁體）',
-                                            value: 'zh-TW',
-                                        },
-                                    ]"
+                                    :items="lang_data"
                                     item-title="text"
                                     item-value="value"
                                 ></v-select>
@@ -151,6 +130,28 @@ export default {
             },
             notificationTimer: null,
             exnotifText: "",
+            lang_data: [
+                {
+                    text: "日本語",
+                    value: "ja",
+                },
+                {
+                    text: "English",
+                    value: "en",
+                },
+                {
+                    text: "한국어",
+                    value: "ko",
+                },
+                {
+                    text: "中文（简体）",
+                    value: "zh-CN",
+                },
+                {
+                    text: "中文（繁體）",
+                    value: "zh-TW",
+                },
+            ],
         };
     },
     methods: {
