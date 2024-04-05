@@ -212,29 +212,6 @@ function make_content(data_item_json) {
     const div_price = document.createElement("div");
     div_price.className = "price u-align-middle";
     div_price.textContent = data_item_json.price;
-    // make form
-    const form = document.createElement("form");
-    form.action = data_item_json.url;
-    form.method = "post";
-
-    // make input
-    const input = document.createElement("input");
-    input.name = "authenticity_token";
-    input.type = "hidden";
-    input.value =
-        "WaD6PJhLc-6R6ORe1Fo6Uf6ozmoXyNBE43dXsv1FJYMYmOicAsUnOfINwDDOAF98ojV6Ioa_tvC3PDKGbNmoOQ";
-    // make button
-    const button = document.createElement("button");
-    button.className =
-        "relative flex gap-2 items-center no-underline font-heavy-sans font-semibold bg-transparent !text-text-gray300 shop__text--link50";
-    // make pixiv-icon
-    // const pixiv_icon = document.createElement("pixiv-icon");
-    // // pixiv_icon.name = "24/BoothLikeOn";
-    // // pixiv_icon["unsafe-non-guideline-scale"] = "0.6666666666666666";
-    // // make div.typography-14
-    // const div_typography_14 = document.createElement("div");
-    // div_typography_14.className = "typography-14 !typography-16";
-    // div_typography_14.textContent = data_item_json.like_count;
     // make tree
     div_item.appendChild(div_thumb);
     div_item.appendChild(div_item_head);
@@ -244,11 +221,6 @@ function make_content(data_item_json) {
     div_item_head.appendChild(h2_item_name);
     div_item_head.appendChild(div_lo_grid);
     div_lo_grid.appendChild(div_price);
-    div_lo_grid.appendChild(form);
-    form.appendChild(input);
-    form.appendChild(button);
-    // button.appendChild(pixiv_icon);
-    // button.appendChild(div_typography_14);
     return div_item;
 }
 

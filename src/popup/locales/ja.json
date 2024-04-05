@@ -15,6 +15,7 @@
     "stockLabel": "在庫なし・販売終了を含む",
     "newArrivalLabel": "最近公開された商品のみ",
     "autoReloadLabel": "ショップページの自動ページング",
+    "autoReloadWarning": "※スマホや画面の小さい状態だと表示が崩れることがあります",
     "saveButton": "Save",
     "disableButton": "Disable",
     "disableButtonEnable": "Enable",

@@ -51,9 +51,12 @@
                 <v-list-item>
                     <v-list-item-content>
                         <v-row class="align-center">
-                            <v-col :cols="7" class="text-body-2">{{
-                                $t("autoReloadLabel")
-                            }}</v-col>
+                            <v-col :cols="7" class="text-body-2">
+                                <div>{{ $t("autoReloadLabel") }}</div>
+                                <div class="text-caption">
+                                    {{ $t("autoReloadWarning") }}
+                                </div>
+                            </v-col>
                             <v-col :cols="5">
                                 <v-checkbox
                                     class="d-flex justify-end"
