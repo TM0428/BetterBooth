@@ -57,7 +57,7 @@
                         @click="downloadItems()"
                         v-bind:disabled="
                             downloadSaveInfoRules[0] != true ||
-                                downloadSaveExt == ''
+                            downloadSaveExt == ''
                         "
                     >
                         Save
@@ -177,7 +177,6 @@ export default {
             },
         ];
         this.downloadSaveInfo = this.downloadSaveList.map((item) => item.value);
-        console.log(this.$t("downloadSaveList"));
     },
 };
 </script>

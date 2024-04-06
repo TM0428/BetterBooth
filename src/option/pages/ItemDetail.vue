@@ -24,10 +24,60 @@
                             chips
                             clearable
                             multiple
+                            hide-details
                             label="tags"
                             variant="solo"
                         >
                         </v-combobox>
+                        <div class="text-h4 ma-2">
+                            {{ data.price }}
+                        </div>
+                        <v-row class="ma-2">
+                            <v-col cols="12">
+                                <v-btn
+                                    block
+                                    :prepend-icon="mdiCartOutlineIcon"
+                                    rounded="xl"
+                                    :variant="
+                                        data.purchased ? 'flat' : 'outlined'
+                                    "
+                                    size="large"
+                                    color="info"
+                                    @click="togglePurchased"
+                                >
+                                    <div v-if="data.purchased">
+                                        {{ $t("purchased") }}
+                                    </div>
+                                    <div v-else>
+                                        {{ $t("notpurchased") }}
+                                    </div>
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="12" v-if="data.download">
+                                <v-btn
+                                    block
+                                    :prepend-icon="mdiCloudArrowDownOutlineIcon"
+                                    rounded="xl"
+                                    size="large"
+                                    color="info"
+                                    variant="tonal"
+                                >
+                                    {{ $t("isDLItem") }}
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="12" v-if="data.restock">
+                                <v-btn
+                                    block
+                                    :prepend-icon="mdiEmailAlertOutlineIcon"
+                                    rounded="xl"
+                                    size="large"
+                                    color="warning"
+                                    variant="tonal"
+                                >
+                                    {{ $t("restockRequest") }}
+                                </v-btn>
+                            </v-col>
+                        </v-row>
                     </v-col>
                 </v-row>
             </v-container>
@@ -42,7 +92,7 @@
                 v-html="formatDescription(data.additionalDescription)"
             ></p>
 
-            <div class="new-buttons">
+            <div class="footer-buttons">
                 <v-container>
                     <v-row>
                         <v-col cols="12" sm="6" md="4" lg="3" xl="3">
@@ -123,7 +173,15 @@
 
 <script>
 import router from "@/option/router"; // Vue Router インスタンスのインポート
-import { mdiArrowLeft, mdiLink, mdiDownload, mdiDelete } from "@mdi/js";
+import {
+    mdiArrowLeft,
+    mdiLink,
+    mdiDownload,
+    mdiDelete,
+    mdiCartOutline,
+    mdiEmailAlertOutline,
+    mdiCloudArrowDownOutline,
+} from "@mdi/js";
 
 export default {
     props: ["itemId"],
@@ -143,19 +201,13 @@ export default {
             mdiLinkIcon: mdiLink,
             mdiDownloadIcon: mdiDownload,
             mdiDeleteIcon: mdiDelete,
+            mdiCartOutlineIcon: mdiCartOutline,
+            mdiEmailAlertOutlineIcon: mdiEmailAlertOutline,
+            mdiCloudArrowDownOutlineIcon: mdiCloudArrowDownOutline,
         };
     },
 
-    created() {
-        // 言語ファイルが正しく読み込まれることを確認してください
-        const userLocale = window.navigator.language;
-        this.$i18n.locale = userLocale;
-        chrome.storage.sync.get("extended_settings", (result) => {
-            const extended_settings = result.extended_settings;
-            if (extended_settings && extended_settings.language) {
-                this.$i18n.locale = extended_settings.language;
-            }
-        });
+    mounted() {
         chrome.storage.local.get(`items_${this.itemId}`, (result) => {
             this.data = result[`items_${this.itemId}`];
             console.log(this.data);
@@ -196,7 +248,7 @@ export default {
             URL.revokeObjectURL(url);
         },
         deleteItem() {
-            if (confirm("データを削除しますか？")) {
+            if (confirm(this.$t("itemDeleteConfirm"))) {
                 chrome.storage.local.get("items", (result) => {
                     const items = result.items || [];
                     const updatedItems = items.filter(
@@ -212,7 +264,7 @@ export default {
                                     `Item with ID ${this.itemId} deleted successfully.`
                                 );
                                 // 削除が完了した後の処理をここに記述する
-                                window.alert("削除が完了しました。");
+                                window.alert(this.$t("itemDeleteComplete"));
                                 router.push({ name: "Top" }); // Topページにリダイレクト
                             }
                         );
@@ -220,17 +272,25 @@ export default {
                 });
             }
         },
+        togglePurchased() {
+            this.data.purchased = !this.data.purchased;
+            this.saveData();
+        },
+        toggleWished() {
+            this.data.wished = !this.data.wished;
+            this.saveData();
+        },
+        saveData() {
+            const new_data = JSON.parse(JSON.stringify(this.data));
+            chrome.storage.local.set({
+                [`items_${this.itemId}`]: new_data,
+            });
+        },
     },
     watch: {
         "data.tags": {
             handler(n, old) {
-                const new_data = JSON.parse(JSON.stringify(this.data));
-                chrome.storage.local.set({
-                    [`items_${this.data.id}`]: new_data,
-                });
-                // chrome.storage.local.get(`items_${this.itemId}`, (result) => {
-                //     console.log(result[`items_${this.itemId}`]);
-                // });
+                this.saveData();
             },
             deep: true,
         },
@@ -247,6 +307,7 @@ export default {
 .center-margin {
     margin: 0 auto;
     max-width: 1100px;
+    background-color: #fafafa;
 }
 
 .font-bold {

@@ -290,7 +290,6 @@ export default {
             this.searchText = this.$route.query.search || "";
         },
         updateTagsFromQuery() {
-            console.log("updateTagsFromQuery");
             if (this.$route.query.tags) {
                 this.srchTags = this.$route.query.tags.split(",") || [];
             }
@@ -329,10 +328,10 @@ export default {
     },
     mounted() {
         this.updateAllQuery();
-        console.log(this.$t("topTitle"));
+        // console.log(this.$t("topTitle"));
     },
     watch: {
-        $route: function() {
+        $route: function () {
             this.updateAllQuery();
         },
     },

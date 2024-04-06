@@ -25,5 +25,12 @@
         "price": "価格",
         "downloaded": "ダウンロードしたか",
         "purchased": "購入したか"
-    }
+    },
+    "purchased": "購入済み",
+    "notpurchased": "未購入",
+    "undefPurchase": "購入不明",
+    "restockRequest": "メールをリクエスト済み",
+    "isDLItem": "ダウンロード商品",
+    "itemDeleteConfirm": "このアイテムを削除しますか？",
+    "itemDeleteComplete": "削除しました。"
 }
