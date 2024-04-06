@@ -4,7 +4,7 @@
             <!--title-->
             <div class="text-h4 ma-2 py-2 font-bold">{{ data.name }}</div>
 
-            <v-container class="mx-lg-2 px-2 mx-sm-4">
+            <div class="mx-lg-2 px-2 mx-sm-4">
                 <v-row class="mx-sm-4">
                     <v-col cols="12" sm="12" md="12" lg="6" xl="6">
                         <v-carousel class="bg-grey-lighten-2">
@@ -80,7 +80,7 @@
                         </v-row>
                     </v-col>
                 </v-row>
-            </v-container>
+            </div>
 
             <p
                 class="description text-body-1 mx-4"
