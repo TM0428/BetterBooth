@@ -13,7 +13,7 @@
             aspect-ratio="1"
         />
         <div class="ma-2 text-h6 text-weight-regular two-line-title">
-            <div class="ellipsis-2-lines" style="inherit;">
+            <div class="ellipsis-2-lines inherit">
                 {{ item.name }}
             </div>
         </div>
@@ -27,10 +27,7 @@
                 <v-avatar start>
                     <v-img :src="item.shop.thumbnail_url"></v-img>
                 </v-avatar>
-                <span
-                    class="d-inline-block text-truncate"
-                    style="max-width: 220px"
-                >
+                <span class="d-inline-block text-truncate shop-name">
                     {{ item.shop.name }}
                 </span>
             </v-chip>
@@ -46,7 +43,7 @@
                     <v-chip :color="item.restock ? 'warning' : 'disable'">
                         <v-icon :icon="mdiEmailAlertOutlineIcon"></v-icon>
                         <v-tooltip activator="parent" location="left">
-                            Restore request
+                            {{ $t("restockRequest") }}
                         </v-tooltip>
                     </v-chip>
                 </div>
@@ -54,7 +51,7 @@
                     <v-chip :color="item.download ? 'info' : 'disable'">
                         <v-icon :icon="mdiCloudArrowDownOutlineIcon"></v-icon>
                         <v-tooltip activator="parent" location="left">
-                            Download item
+                            {{ $t("isDLItem") }}
                         </v-tooltip>
                     </v-chip>
                 </div>
@@ -65,11 +62,15 @@
                     >
                         <v-icon :icon="mdiCartOutlineIcon"></v-icon>
                         <v-tooltip activator="parent" location="left">
-                            <div v-if="item.purchased">Purchased!</div>
-                            <div v-else-if="item.purchased === undefined">
-                                No data
+                            <div v-if="item.purchased">
+                                {{ $t("purchased") }}
                             </div>
-                            <div v-else>Not Purchased</div>
+                            <div v-else-if="item.purchased === undefined">
+                                {{ $t("undefPurchase") }}
+                            </div>
+                            <div v-else>
+                                {{ $t("notpurchased") }}
+                            </div>
                         </v-tooltip>
                     </v-chip>
                 </div>
@@ -78,7 +79,7 @@
 
         <!-- タグの表示部分 -->
         <div class="ma-1">
-            <div style="display: inline-block">
+            <div class="inline-block">
                 <v-chip
                     v-for="tag in item.tags"
                     :key="tag"
@@ -86,10 +87,7 @@
                     class="ma-1"
                     @click.stop="handleTagClick(tag)"
                 >
-                    <span
-                        class="d-inline-block text-truncate"
-                        style="max-width: 240px"
-                    >
+                    <span class="d-inline-block text-truncate tag-name">
                         {{ tag }}
                     </span>
                 </v-chip>
@@ -181,5 +179,19 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     max-height: 66px;
+}
+.shop-name {
+    max-width: 220px;
+}
+.tag-name {
+    max-width: 240px;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.inherit {
+    width: inherit;
 }
 </style>

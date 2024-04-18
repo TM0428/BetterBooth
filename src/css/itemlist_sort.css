@@ -1,0 +1,25 @@
+.filter-section {
+    background-color: #fff;
+    padding: 0 20px 20px 20px;
+    margin-bottom: 25px;
+    margin-top: -15px;
+    border-radius: 7px;
+    border: 1px solid #f3f3f3;
+}
+
+.section-body {
+    display: flex;
+}
+
+.section-body-category {
+    margin-right: 50px;
+}
+
+select#filter-meta {
+    border: #f3f3f3;
+    border-radius: 5px;
+    padding: 5px;
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: #f2f2f2;
+}

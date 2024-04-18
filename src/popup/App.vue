@@ -1,5 +1,5 @@
 <script setup>
-import Option from "./components/Option.vue";
+import Option from "./pages/Option.vue";
 </script>
 
 <template>

@@ -14,15 +14,15 @@
             />
 
             <div class="ma-2 text-h6 text-weight-regular two-line-title">
-                <div class="ellipsis-2-lines" style="inherit;">
-                    {{ lang.topImport }}
+                <div class="ellipsis-2-lines">
+                    {{ $t("topImport") }}
                 </div>
             </div>
             <input
                 ref="uploadInput"
                 type="file"
                 accept=".json"
-                style="display: none"
+                style="display: none;"
                 @change="onFileChange"
                 :key="inputKey"
             />
@@ -36,12 +36,6 @@ import { setItemData } from "../js/localStorage";
 
 export default {
     name: "ItemCard",
-    props: {
-        lang: {
-            type: Object,
-            required: true,
-        },
-    },
     data() {
         return {
             mdiPlusCircleOutlineIcon: mdiPlusCircleOutline,
@@ -80,7 +74,7 @@ export default {
                     this.addStorage(sanitizedData);
                     // Perform any further operations with the sanitizedData
                 } else {
-                    window.alert(this.lang.topInvalid);
+                    window.alert(this.$t("topInvalid"));
                 }
             };
             reader.readAsText(file);
@@ -125,7 +119,7 @@ export default {
             if (result != 0) {
                 window.alert("Some error occured!");
             } else {
-                window.alert(this.lang.topDataAdd);
+                window.alert(this.$t("topDataAdd"));
                 this.$emit("item-imported", result);
             }
         },

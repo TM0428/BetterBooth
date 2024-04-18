@@ -14,6 +14,7 @@
     "priceAscOption": "價格從低到高",
     "stockLabel": "顯示已售完及販售結束的商品",
     "newArrivalLabel": "最近公開的商品限定",
+    "autoReloadLabel": "ショップページの自動ページング(only japanese)",
     "saveButton": "保存",
     "disableButton": "Disable",
     "disableButtonEnable": "Enable",

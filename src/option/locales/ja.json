@@ -18,12 +18,19 @@
     "downloadTitle": "データのダウンロード",
     "downloadExt": "ダウンロード形式",
     "downloadInfo": "保存情報",
-    "downloadSaveList": [
-        { "label": "ショップ名", "value": "shop.name" },
-        { "label": "ショップURL", "value": "shop.url" },
-        { "label": "アイテム名", "value": "name" },
-        { "label": "価格", "value": "price" },
-        { "label": "ダウンロードしたか", "value": "download" },
-        { "label": "購入したか", "value": "purchased" }
-    ]
+    "downloadSaveList": {
+        "shopName": "ショップ名",
+        "shopUrl": "ショップURL",
+        "itemName": "アイテム名",
+        "price": "価格",
+        "downloaded": "ダウンロードしたか",
+        "purchased": "購入したか"
+    },
+    "purchased": "購入済み",
+    "notpurchased": "未購入",
+    "undefPurchase": "購入不明",
+    "restockRequest": "メールをリクエスト済み",
+    "isDLItem": "ダウンロード商品",
+    "itemDeleteConfirm": "このアイテムを削除しますか？",
+    "itemDeleteComplete": "削除しました。"
 }

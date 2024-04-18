@@ -18,12 +18,12 @@
     "downloadTitle": "Data Download",
     "downloadExt": "Download Format:",
     "downloadInfo": "Save Information",
-    "downloadSaveList": [
-        { "label": "Shop Name", "value": "shop.name" },
-        { "label": "Shop URL", "value": "shop.url" },
-        { "label": "Item Name", "value": "name" },
-        { "label": "Price", "value": "price" },
-        { "label": "Downloaded", "value": "download" },
-        { "label": "Purchased", "value": "purchased" }
-    ]
+    "downloadSaveList": {
+        "shopName": "Shop Name",
+        "shopUrl": "Shop URL",
+        "itemName": "Item Name",
+        "price": "Price",
+        "downloaded": "Downloaded",
+        "purchased": "Purchased"
+    }
 }
