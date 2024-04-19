@@ -14,7 +14,7 @@
                                     class="d-flex justify-end"
                                     hide-details
                                     v-model="settings.disable"
-                                    @change="saveData"
+                                    @update:modelValue="saveData()"
                                 />
                             </v-col>
                         </v-row>
@@ -50,7 +50,7 @@
                                     ]"
                                     item-title="text"
                                     item-value="value"
-                                    @update:modelValue="saveData"
+                                    @update:modelValue="saveData()"
                                 ></v-select>
                             </v-col>
                         </v-row>
@@ -91,7 +91,7 @@
                                     ]"
                                     item-title="text"
                                     item-value="value"
-                                    @update:modelValue="saveData"
+                                    @update:modelValue="saveData()"
                                 ></v-select>
                             </v-col>
                         </v-row>
@@ -108,7 +108,7 @@
                                     class="d-flex justify-end"
                                     hide-details
                                     v-model="in_stock"
-                                    @change="saveData"
+                                    @update:modelValue="saveData()"
                                 />
                             </v-col>
                         </v-row>
@@ -125,7 +125,7 @@
                                     class="d-flex justify-end"
                                     hide-details
                                     v-model="settings.new_arrival"
-                                    @change="saveData"
+                                    @update:modelValue="saveData()"
                                 />
                             </v-col>
                         </v-row>

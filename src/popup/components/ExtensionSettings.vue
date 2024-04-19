@@ -41,7 +41,7 @@
                                     class="d-flex justify-end"
                                     hide-details
                                     v-model="extended_settings.auto_reload"
-                                    @click="saveExtendedData"
+                                    @update:modelValue="saveExtendedData()"
                                 />
                             </v-col>
                         </v-row>
@@ -58,7 +58,7 @@
                                     class="d-flex justify-end"
                                     hide-details
                                     v-model="extended_settings.save_item"
-                                    @click="saveExtendedData"
+                                    @update:modelValue="saveExtendedData()"
                                 />
                             </v-col>
                         </v-row>
@@ -86,7 +86,7 @@
                                     class="d-flex justify-end"
                                     hide-details
                                     v-model="extended_settings.save_purchase"
-                                    @click="saveExtendedData"
+                                    @update:modelValue="saveExtendedData()"
                                 />
                             </v-col>
                         </v-row>
@@ -157,10 +157,18 @@ export default {
     methods: {
         saveExtendedData() {
             console.log(this.extended_settings);
-            chrome.storage.sync.set({
-                extended_settings: this.extended_settings,
-            });
-            this.showExNotificationText("Saved!");
+            chrome.storage.sync
+                .set({
+                    extended_settings: this.extended_settings,
+                })
+                .then(() => {
+                    this.showExNotificationText("Saved!");
+                    // debug
+                    chrome.storage.sync.get("extended_settings", (result) => {
+                        console.log(result.extended_settings);
+                    });
+                });
+            // this.showExNotificationText("Saved!");
         },
         showExNotificationText(txt) {
             this.exnotifText = txt;
