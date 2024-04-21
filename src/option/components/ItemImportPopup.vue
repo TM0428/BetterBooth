@@ -17,13 +17,9 @@
                         >
                             <v-row class="text-center" justify="center">
                                 <v-col cols="12" class="mt-2 mb-n2">
-                                    <v-icon :icon="mdiFileImportIcon" size="40">
-                                    </v-icon>
+                                    <v-icon :icon="mdiFileImportIcon" size="40"> </v-icon>
                                 </v-col>
-                                <v-col
-                                    cols="12"
-                                    class="text-truncate mb-2 mt-n2 text-lowercase"
-                                >
+                                <v-col cols="12" class="text-truncate mb-2 mt-n2 text-lowercase">
                                     {{ $t("topImportJson") }}
                                 </v-col>
                             </v-row>
@@ -51,14 +47,14 @@ export default {
     props: {
         filteredItemList: {
             type: Object,
-            required: true,
-        },
+            required: true
+        }
     },
     data() {
         return {
             dialog_import: false,
             mdiFileImportIcon: mdiFileImport,
-            import_dragged: false,
+            import_dragged: false
         };
     },
     methods: {
@@ -83,8 +79,7 @@ export default {
                 if (this.validateData(data)) {
                     // Only keep the required properties from the data object
                     const sanitizedData = {
-                        additionalDescription:
-                            data.additionalDescription || null,
+                        additionalDescription: data.additionalDescription || null,
                         description: data.description,
                         id: data.id,
                         price: data.price || "",
@@ -94,7 +89,7 @@ export default {
                         url: data.url || "",
                         shop: data.shop || null,
                         tags: data.tags || [],
-                        purchased: data.purchased || false,
+                        purchased: data.purchased || false
                     };
                     console.log(sanitizedData);
 
@@ -150,7 +145,7 @@ export default {
                 this.$emit("item-imported", result);
             }
             this.dialog_import = false;
-        },
-    },
+        }
+    }
 };
 </script>

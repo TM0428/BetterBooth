@@ -1,18 +1,18 @@
 async function getPurchaseData() {
     // クラス名 "hidden" を持つすべての要素を取得
-    let elements = document.querySelectorAll('div.hidden');
+    let elements = document.querySelectorAll("div.hidden");
     // 各要素から "data-product-id" の値を取得してコンソールに出力
-    for(let i = 0;i < elements.length; i++){
-        const productId = elements[i].getAttribute('data-product-id');
-        if(productId){
+    for (let i = 0; i < elements.length; i++) {
+        const productId = elements[i].getAttribute("data-product-id");
+        if (productId) {
             const itemId = "items_" + String(productId);
             const url = "https://booth.pm/ja/items/" + String(productId) + ".json";
             const response = await fetch(url);
             const text = await response.text();
             const raw_data = JSON.parse(text);
-            const tags = raw_data.tags.map(tag => tag.name);
-            const statusArray = raw_data.variations.map(item => item.status);
-        
+            const tags = raw_data.tags.map((tag) => tag.name);
+            const statusArray = raw_data.variations.map((item) => item.status);
+
             const data = {
                 name: raw_data.name,
                 images: raw_data.images,
@@ -35,11 +35,9 @@ async function getPurchaseData() {
                     items.push(itemId);
                     chrome.storage.local.set({ items: items });
                     chrome.storage.local.set({ [`${itemId}`]: data });
-                }
-                else if (items) {
+                } else if (items) {
                     // 既に登録されているので更新
                     chrome.storage.local.get(itemId, (result) => {
-    
                         const oldData = result[itemId];
                         // oldDataのtagを一時保存
                         const oldTag = oldData.tags;
@@ -48,12 +46,10 @@ async function getPurchaseData() {
                             ...oldData,
                             ...data,
                             tags: oldTag
-                          };
+                        };
                         chrome.storage.local.set({ [`${itemId}`]: mergedData });
                     });
-                    
-                }
-                else {
+                } else {
                     // リスト作成と登録
                     items = [itemId];
                     console.log(items);
@@ -62,17 +58,13 @@ async function getPurchaseData() {
                 }
             });
             console.log("item add complete.");
-
         }
     }
-
 }
-
 
 chrome.storage.sync.get("extended_settings", (result) => {
     const setting = result.extended_settings;
-    if(setting && setting.save_item && setting.save_purchase){
+    if (setting && setting.save_item && setting.save_purchase) {
         getPurchaseData();
     }
-
 });

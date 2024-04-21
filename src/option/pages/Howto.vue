@@ -13,9 +13,7 @@
             この機能は、表示しているアイテム情報を取得し、Chrome上で保存しています。
             <br />
             JSON形式での保存であるため、できるだけ保存情報は少なくしていますが、
-            <strong
-                >重くなる可能性もありますので、いらないアイテムは削除してください。</strong
-            >
+            <strong>重くなる可能性もありますので、いらないアイテムは削除してください。</strong>
             <br />
             アイテムを登録したい場合は、アイテムページの"ツイート"ボタンの隣に配置した、"+データを保存"ボタンを押すことで登録も可能です。
             <br /><br />
@@ -45,7 +43,7 @@ import zh_tw from "../locales/zh-TW.json";
 export default {
     data() {
         return {
-            lang: ja,
+            lang: ja
         };
     },
     methods: {
@@ -69,7 +67,7 @@ export default {
                 default:
                     this.lang = ja;
             }
-        },
+        }
     },
     created() {
         // 言語ファイルが正しく読み込まれることを確認してください
@@ -110,7 +108,7 @@ export default {
                 this.extended_settings.language = userLocale;
             }
         });
-    },
+    }
 };
 </script>
 

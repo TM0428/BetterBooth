@@ -132,10 +132,7 @@ function make_content(data_item_json) {
         const width = div_swap_image.offsetWidth;
         const x = event.clientX - div_swap_image.getBoundingClientRect().left;
         // console.log(x);
-        const index = Math.max(
-            0,
-            Math.min(Math.floor((x / width) * image_count), image_count - 1)
-        );
+        const index = Math.max(0, Math.min(Math.floor((x / width) * image_count), image_count - 1));
         img.src = data_item_json.thumbnail_image_urls[index];
     });
     // マウスが外れた場合は最初の画像に戻す
@@ -206,8 +203,7 @@ function make_content(data_item_json) {
 
     // make div.lo-grid
     const div_lo_grid = document.createElement("div");
-    div_lo_grid.className =
-        "lo-grid u-justify-content-between u-align-items-center";
+    div_lo_grid.className = "lo-grid u-justify-content-between u-align-items-center";
     // make div.price
     const div_price = document.createElement("div");
     div_price.className = "price u-align-middle";
@@ -273,9 +269,7 @@ function make_filter_section_category_content() {
         item_category_text_list.push(item_category.textContent);
     }
     const item_category_text_list_set = new Set(item_category_text_list);
-    const item_category_text_list_unique = Array.from(
-        item_category_text_list_set
-    );
+    const item_category_text_list_unique = Array.from(item_category_text_list_set);
     // make div.filter-content
     const div_filter_content = document.createElement("div");
     div_filter_content.className = "filter-content";
@@ -322,15 +316,14 @@ function add_filter_section_content() {
         item_category_text_list.push(item_category.textContent);
     }
     const item_category_text_list_set = new Set(item_category_text_list);
-    const item_category_text_list_unique = Array.from(
-        item_category_text_list_set
-    );
+    const item_category_text_list_unique = Array.from(item_category_text_list_set);
     // search div.filter-content
     const div_filter_content = document.querySelector("div.filter-content");
     for (const item_category_text of item_category_text_list_unique) {
         // if item_category_text is already in div.filter-content, continue
-        const div_filter_content_inner_list =
-            div_filter_content.querySelectorAll("div.filter-content-inner");
+        const div_filter_content_inner_list = div_filter_content.querySelectorAll(
+            "div.filter-content-inner"
+        );
         let already_in = false;
         for (const div_filter_content_inner of div_filter_content_inner_list) {
             const input = div_filter_content_inner.querySelector("input");
@@ -434,7 +427,7 @@ function filter_content() {
     const checkbox_list = document.querySelectorAll("input[name='filter']");
     // if all checkbox is not checked, display all li
     let all_not_checked = true;
-    for (checkbox of checkbox_list) {
+    for (const checkbox of checkbox_list) {
         if (checkbox.checked) {
             all_not_checked = false;
             break;
@@ -443,14 +436,14 @@ function filter_content() {
 
     // get ul.item-list
     const item_list = document.querySelector("ul.item-list");
-    for (li of item_list.children) {
+    for (const li of item_list.children) {
         li.style.display = "none";
         if (all_not_checked) {
             li.style.display = "contents";
         }
 
         // if checkbox is checked, and checkbox.value is in li.item-category, li.style.display = "contents"
-        for (checkbox of checkbox_list) {
+        for (const checkbox of checkbox_list) {
             if (
                 checkbox.checked &&
                 li.querySelector(".item-category").textContent == checkbox.value
@@ -478,9 +471,7 @@ chrome.storage.sync.get("extended_settings", (result) => {
     if (setting && setting.auto_reload) {
         // define max page
         // query select div.shop-pager > nav > ul > li:last-child > a
-        const last_page = document.querySelector(
-            "div.shop-pager > nav > ul > li:last-child > a"
-        );
+        const last_page = document.querySelector("div.shop-pager > nav > ul > li:last-child > a");
         // if last_page is null, max_page is 1
         if (last_page == null) {
             max_page = 1;
@@ -494,7 +485,7 @@ chrome.storage.sync.get("extended_settings", (result) => {
         max_page = parseInt(href_split[href_split.length - 1]);
         // add event listener
         window.addEventListener("scroll", () => {
-            const scrollHeight = document.documentElement.scrollHeight;
+            // const scrollHeight = document.documentElement.scrollHeight;
             const scrollTop = document.documentElement.scrollTop;
             // get height from ul.item-list's bottom
             const item_list = document.querySelector("ul.item-list");

@@ -6,9 +6,7 @@
                 <v-list-item>
                     <v-list-item-content>
                         <v-row class="align-center">
-                            <v-col :cols="7" class="text-body-2"
-                                >Language</v-col
-                            >
+                            <v-col :cols="7" class="text-body-2">Language</v-col>
                             <v-col :cols="5">
                                 <v-select
                                     density="compact"
@@ -66,11 +64,9 @@
                 </v-list-item>
                 <v-list-item>
                     <v-list-item-content>
-                        <a
-                            target="_blank"
-                            href="https://tm0428.github.io/BetterBooth/howto/"
-                            >{{ $t("linkToHelp") }}</a
-                        >
+                        <a target="_blank" href="https://tm0428.github.io/BetterBooth/howto/">{{
+                            $t("linkToHelp")
+                        }}</a>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
@@ -98,10 +94,7 @@
                     <v-list-item-content>
                         <v-row class="align-center">
                             <v-col cols="auto" class="ms-auto">
-                                <a
-                                    target="_blank"
-                                    href="/src/option/option.html#/"
-                                >
+                                <a target="_blank" href="/src/option/option.html#/">
                                     <v-btn color="#ff4d50">
                                         {{ $t("gotoItemPage") }}
                                     </v-btn>
@@ -126,32 +119,32 @@ export default {
                 language: "ja",
                 save_item: false,
                 save_purchase: false,
-                auto_reload: false,
+                auto_reload: false
             },
             notificationTimer: null,
             exnotifText: "",
             lang_data: [
                 {
                     text: "日本語",
-                    value: "ja",
+                    value: "ja"
                 },
                 {
                     text: "English",
-                    value: "en",
+                    value: "en"
                 },
                 {
                     text: "한국어",
-                    value: "ko",
+                    value: "ko"
                 },
                 {
                     text: "中文（简体）",
-                    value: "zh-CN",
+                    value: "zh-CN"
                 },
                 {
                     text: "中文（繁體）",
-                    value: "zh-TW",
-                },
-            ],
+                    value: "zh-TW"
+                }
+            ]
         };
     },
     methods: {
@@ -159,7 +152,7 @@ export default {
             console.log(this.extended_settings);
             chrome.storage.sync
                 .set({
-                    extended_settings: this.extended_settings,
+                    extended_settings: this.extended_settings
                 })
                 .then(() => {
                     this.showExNotificationText("Saved!");
@@ -184,21 +177,17 @@ export default {
         },
         changeLanguage() {
             this.$i18n.locale = this.extended_settings.language;
-        },
+        }
     },
     created() {
         const userLocale = window.navigator.language;
         chrome.storage.sync.get("extended_settings", (result) => {
             console.log(result.extended_settings);
             // this.extended_settingsに対して、result.extended_settingsを更新
-            this.extended_settings.language =
-                result.extended_settings.language || "ja";
-            this.extended_settings.save_item =
-                result.extended_settings.save_item || false;
-            this.extended_settings.save_purchase =
-                result.extended_settings.save_purchase || false;
-            this.extended_settings.auto_reload =
-                result.extended_settings.auto_reload || false;
+            this.extended_settings.language = result.extended_settings.language || "ja";
+            this.extended_settings.save_item = result.extended_settings.save_item || false;
+            this.extended_settings.save_purchase = result.extended_settings.save_purchase || false;
+            this.extended_settings.auto_reload = result.extended_settings.auto_reload || false;
 
             if (result.extended_settings && result.extended_settings.language) {
             } else {
@@ -206,6 +195,6 @@ export default {
             }
             this.$i18n.locale = this.extended_settings.language;
         });
-    },
+    }
 };
 </script>

@@ -5,20 +5,17 @@ const contentJa = {
     genre: "ジャンル、商品名など",
     block: "ブロック",
     blocking: "ブロック中",
-    gotoExtension: "拡張機能のページへ",
+    gotoExtension: "拡張機能のページへ"
 };
 const contentEn = {
     keyword: "Search",
     genre: "Genre, Item Name, etc.",
     block: "block",
     blocking: "blocking",
-    gotoExtension: "Go to Extension Page",
+    gotoExtension: "Go to Extension Page"
 };
 var contentLang = contentJa;
-if (
-    window.navigator.language !== "ja" &&
-    window.navigator.language !== "ja-JP"
-) {
+if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP") {
     contentLang = contentEn;
 }
 
@@ -81,9 +78,7 @@ function attachOptionURL() {
                 // 下のナビゲーションに含まれる場合は、ソート条件を維持させる
                 if (aElement.classList.contains("nav-item")) return;
                 // console.log(aElement.href);
-                const regex = new RegExp(
-                    "https?://booth.pm/.*/(search|browse)/.*"
-                );
+                const regex = new RegExp("https?://booth.pm/.*/(search|browse)/.*");
 
                 if (regex.test(aElement.href)) {
                     var url = new URL(aElement.href);
@@ -208,16 +203,11 @@ function makeNewSearchTab() {
     const reactAutowhatever1Element = document.createElement("div");
     reactAutowhatever1Element.id = "react-autowhatever-1";
     reactAutowhatever1Element.role = "listbox";
-    reactAutowhatever1Element.classList.add(
-        "item-search-input__suggestions_container"
-    );
+    reactAutowhatever1Element.classList.add("item-search-input__suggestions_container");
 
     // div要素にinput要素とreact-autowhatever-1要素を追加
     const inputContainerElement = document.createElement("div");
-    inputContainerElement.classList.add(
-        "item-search-input__container",
-        "relative"
-    );
+    inputContainerElement.classList.add("item-search-input__container", "relative");
     inputContainerElement.appendChild(inputElement);
     inputContainerElement.appendChild(reactAutowhatever1Element);
 
@@ -258,9 +248,7 @@ function makeNewSearchTab() {
 
     // div要素を既存の要素に追加
     var intervalId = setInterval(() => {
-        var existingElement = document.querySelector(
-            "div.w-full.shrink div.item-search-box"
-        );
+        var existingElement = document.querySelector("div.w-full.shrink div.item-search-box");
         if (existingElement) {
             clearInterval(intervalId);
             existingElement.prepend(divElement);
@@ -293,12 +281,7 @@ function makeNewSPSearchTab() {
     searchInput.name = "query";
     searchInput.id = "query";
     searchInput.placeholder = contentLang.genre;
-    searchInput.classList.add(
-        "ac-tags",
-        "item-search-input",
-        "full-length",
-        "tt-input"
-    );
+    searchInput.classList.add("ac-tags", "item-search-input", "full-length", "tt-input");
     searchInput.autocomplete = "off";
     searchInput.spellcheck = "false";
     searchInput.dir = "auto";
@@ -387,10 +370,7 @@ function makeNewSPSearchTab() {
             searchBar.style.display = "none";
 
             // 新しい検索タブを挿入
-            searchBar.parentNode.insertBefore(
-                newSearchTab,
-                searchBar.nextSibling
-            );
+            searchBar.parentNode.insertBefore(newSearchTab, searchBar.nextSibling);
         }
     }, 1000);
 }
@@ -410,7 +390,7 @@ function addButton() {
         icon.className = "icon-attention s-1x";
         var text = document.createElement("span");
         text.classList.add("u-align-middle");
-        const htmlLang = document.documentElement.lang;
+        // const htmlLang = document.documentElement.lang;
         var block = contentLang.block;
         var blocking = contentLang.blocking;
         if (filterArray && filterArray.includes(window.location.origin + "/")) {
@@ -441,6 +421,7 @@ function addButton() {
         button.appendChild(text);
         button.addEventListener("click", () => {
             const url = window.location.origin + "/";
+            var module_contents = document.querySelector("main.modules");
             if (button.classList.contains(NOW_BLOCK)) {
                 button.classList.remove(
                     NOW_BLOCK,
@@ -448,20 +429,13 @@ function addButton() {
                     "shop__text--price"
                 );
                 button.classList.add(NOT_BLOCK, "shop__text--contents");
-                var contents = document.querySelector("main.modules");
-                contents.style.display = "block";
+                module_contents.style.display = "block";
                 text.textContent = block;
                 removeFilter(url);
-            }
-            else {
+            } else {
                 button.classList.remove(NOT_BLOCK, "shop__text--contents");
-                button.classList.add(
-                    NOW_BLOCK,
-                    "shop__background--contents",
-                    "shop__text--price"
-                );
-                var contents = document.querySelector("main.modules");
-                contents.style.display = "none";
+                button.classList.add(NOW_BLOCK, "shop__background--contents", "shop__text--price");
+                module_contents.style.display = "none";
                 text.textContent = blocking;
                 addFilter(url);
             }
@@ -475,9 +449,7 @@ function toggleFade(content) {
 }
 
 function hideDescription() {
-    const description = document.querySelector(
-        "div.booth-description div.u-mb-300"
-    );
+    const description = document.querySelector("div.booth-description div.u-mb-300");
     if (description && description.clientHeight > 400) {
         const content = description.children[0];
         content.className = "description-contents";
@@ -506,10 +478,8 @@ function hideDescription() {
 function insertLinkIntoNav() {
     // 新しい<a>タグを作成
     const newLink = document.createElement("a");
-    newLink.className =
-        "no-underline text-text-default visited:text-text-default";
-    newLink.href =
-        "chrome-extension://ncbkofnnehldkacfhlodemjdcicdfopf/src/popup/popup.html";
+    newLink.className = "no-underline text-text-default visited:text-text-default";
+    newLink.href = "chrome-extension://ncbkofnnehldkacfhlodemjdcicdfopf/src/popup/popup.html";
 
     // <a>タグの中に<div>要素を作成し、その中にテキストを挿入
     const divElement = document.createElement("div");
@@ -557,16 +527,10 @@ function addDeletedItem() {
 
         // テキストコンテンツを設定
         title_h1.textContent = itemdata.name;
-        title_h1.classList.add(
-            "font-bold",
-            "leading-[32px]",
-            "m-0",
-            "text-[24px]"
-        );
+        title_h1.classList.add("font-bold", "leading-[32px]", "m-0", "text-[24px]");
         var des = itemdata.description.replace("\\n", "<br>");
         console.log(des);
-        warning.textContent =
-            '*このページは、拡張機能"Better BOOTH"によって作成されています。';
+        warning.textContent = '*このページは、拡張機能"Better BOOTH"によって作成されています。';
         description_p.innerHTML = itemdata.description.replace(/\n/g, "<br>");
         image_img.src = itemdata.images[0].original;
 
@@ -590,9 +554,7 @@ function notReload() {
         // リダイレクト
         const url = window.location.href;
         // const regex = new RegExp('https?://(manage|checkout|accounts).*.booth.pm.*');
-        const regex = new RegExp(
-            "https?://(?!.*(manage|checkout|accounts)).*.booth.pm/items/.*"
-        );
+        const regex = new RegExp("https?://(?!.*(manage|checkout|accounts)).*.booth.pm/items/.*");
         if (regex.test(url)) {
             console.log("reload");
             window.location.href = window.location.href.replace(

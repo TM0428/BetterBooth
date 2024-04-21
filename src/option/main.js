@@ -23,15 +23,15 @@ const LightTheme = {
         info: "#2196F3",
         disable: "#BDBDBD",
         success: "#4CAF50",
-        warning: "#FB8C00",
-    },
+        warning: "#FB8C00"
+    }
 };
 const DarkTheme = {
     dark: true,
     colors: {
         primary: "#ff4d50",
-        background: "#111",
-    },
+        background: "#111"
+    }
 };
 
 const vuetify = createVuetify({
@@ -40,23 +40,19 @@ const vuetify = createVuetify({
     icons: {
         defaultSet: "mdi",
         aliases: {
-            ...aliases,
+            ...aliases
         },
         sets: {
-            mdi,
-        },
+            mdi
+        }
     },
     theme: {
         defaultTheme: "LightTheme",
         themes: {
             LightTheme,
-            DarkTheme,
-        },
-    },
+            DarkTheme
+        }
+    }
 });
 
-createApp(App)
-    .use(vuetify)
-    .use(router)
-    .use(i18n)
-    .mount("#app");
+createApp(App).use(vuetify).use(router).use(i18n).mount("#app");

@@ -28,8 +28,8 @@ export default {
     components: {
         FilterContents,
         SearchSettings,
-        ExtensionSettings,
-    },
+        ExtensionSettings
+    }
 };
 </script>
 <style scoped>

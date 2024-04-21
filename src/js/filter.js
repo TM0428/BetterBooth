@@ -1,29 +1,28 @@
 const filterJa = {
-    "confirmBlockFront": "ショップ「",
-    "confirmBlockBack": "」をブロックしますか？"
+    confirmBlockFront: "ショップ「",
+    confirmBlockBack: "」をブロックしますか？"
 };
 const filterEn = {
-    "confirmBlockFront": "Will you block the shop \"",
-    "confirmBlockBack": "\"?"
+    confirmBlockFront: 'Will you block the shop "',
+    confirmBlockBack: '"?'
 };
 var filterLang = filterJa;
-if(window.navigator.language !== "ja" && window.navigator.language !== "ja-JP"){
+if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP") {
     filterLang = filterEn;
 }
 
 /**
  * フィルターを追加する関数
- * @param {string} word 
+ * @param {string} word
  */
 function addFilter(word) {
-    chrome.storage.sync.get('filters', (result) => {
+    chrome.storage.sync.get("filters", (result) => {
         var filterArray = result.filters;
         if (filterArray && !filterArray.includes(word)) {
             filterArray.push(word);
             chrome.storage.sync.set({ filters: filterArray });
             console.log("filter add.");
-        }
-        else {
+        } else {
             filterArray = [word];
             chrome.storage.sync.set({ filters: filterArray });
             console.log("filter add.");
@@ -37,14 +36,16 @@ function addFilter(word) {
 function filterList() {
     const marketGrid = document.querySelector("div.l-row.l-market-grid");
     const liElements = document.querySelectorAll(`li.item-card.l-card`);
-    chrome.storage.sync.get('filters', (result) => {
+    chrome.storage.sync.get("filters", (result) => {
         var filterArray = result.filters;
         if (filterArray) {
             // li要素の中から、指定された条件に一致する要素を取得する
-            liElements.forEach(liElement => {
-                const itemCardSummaryElement = liElement.querySelector('div.item-card__summary');
-                const itemCardShopInfoElement = itemCardSummaryElement.querySelector('div.item-card__shop-info');
-                const aElement = itemCardShopInfoElement.querySelector('a');
+            liElements.forEach((liElement) => {
+                const itemCardSummaryElement = liElement.querySelector("div.item-card__summary");
+                const itemCardShopInfoElement = itemCardSummaryElement.querySelector(
+                    "div.item-card__shop-info"
+                );
+                const aElement = itemCardShopInfoElement.querySelector("a");
 
                 if (aElement) {
                     // hrefValues.push(aElement.href);
@@ -55,10 +56,10 @@ function filterList() {
                 }
             });
         }
-        if(marketGrid) marketGrid.style.visibility = "visible";
+        if (marketGrid) marketGrid.style.visibility = "visible";
     });
     // li要素の中から、指定された条件に一致する要素を取得する
-    liElements.forEach(liElement => {
+    liElements.forEach((liElement) => {
         attachShopURL(liElement);
         attachBlockButton(liElement);
     });
@@ -67,10 +68,12 @@ function filterList() {
 function filterReload(url) {
     const liElements = document.querySelectorAll(`li.item-card.l-card`);
     // li要素の中から、指定された条件に一致する要素を取得する
-    liElements.forEach(liElement => {
-        const itemCardSummaryElement = liElement.querySelector('div.item-card__summary');
-        const itemCardShopInfoElement = itemCardSummaryElement.querySelector('div.item-card__shop-info');
-        const aElement = itemCardShopInfoElement.querySelector('a');
+    liElements.forEach((liElement) => {
+        const itemCardSummaryElement = liElement.querySelector("div.item-card__summary");
+        const itemCardShopInfoElement = itemCardSummaryElement.querySelector(
+            "div.item-card__shop-info"
+        );
+        const aElement = itemCardShopInfoElement.querySelector("a");
 
         if (aElement && aElement.href === url) {
             liElement.style.display = "none";
@@ -81,47 +84,51 @@ function filterReload(url) {
 /**
  * カード表示されたアイテムについて、
  * *://booth.pm/items/*のurlを*://*.booth.pm/items/*に変更する関数
- * @param {*} liElement 
+ * @param {*} liElement
  */
 function attachShopURL(liElement) {
     // リンクをbooth.pmから*.booth.pmに変更する
-    const aElement = liElement.querySelector('div.item-card__shop-info a');
+    const aElement = liElement.querySelector("div.item-card__shop-info a");
     const base_url = aElement.href;
     // console.log(base_url);
     const item = liElement.querySelector("div.item-card__title a");
     const itemURL = new URL(item.getAttribute("href"));
-    const lang_URL = itemURL.pathname.substring(itemURL.pathname.indexOf('/') + 1);
-    const newURL = base_url + lang_URL.substring(lang_URL.indexOf('/') + 1);
+    const lang_URL = itemURL.pathname.substring(itemURL.pathname.indexOf("/") + 1);
+    const newURL = base_url + lang_URL.substring(lang_URL.indexOf("/") + 1);
     item.setAttribute("href", newURL);
     const thumbs = liElement.querySelectorAll("a.js-thumbnail-image");
-    thumbs.forEach(thumb => {
+    thumbs.forEach((thumb) => {
         thumb.href = newURL;
     });
 }
 
 function attachBlockButton(liElement) {
-    const itemCardSummaryElement = liElement.querySelector('div.item-card__summary');
-    const itemCardShopInfoElement = itemCardSummaryElement.querySelector('div.item-card__shop-info');
-    const aElement = itemCardShopInfoElement.querySelector('a');
+    const itemCardSummaryElement = liElement.querySelector("div.item-card__summary");
+    const itemCardShopInfoElement = itemCardSummaryElement.querySelector(
+        "div.item-card__shop-info"
+    );
+    const aElement = itemCardShopInfoElement.querySelector("a");
     // ユーザーの横に!マークを設置し、そこからブロックも可にする
-    var icon = document.createElement('i');
-    icon.className = 'icon-attention s-1x';
+    var icon = document.createElement("i");
+    icon.className = "icon-attention s-1x";
     icon.display = "inline";
     icon.style.cursor = "pointer";
     icon.classList.add("block-btn_margin");
 
-    const shopName = aElement.querySelector('div.item-card__shop-name').textContent;
-    icon.addEventListener('click', () => {
-        var confirm = window.confirm(filterLang.confirmBlockFront + shopName + filterLang.confirmBlockBack);
+    const shopName = aElement.querySelector("div.item-card__shop-name").textContent;
+    icon.addEventListener("click", () => {
+        var confirm = window.confirm(
+            filterLang.confirmBlockFront + shopName + filterLang.confirmBlockBack
+        );
         if (confirm) {
             addFilter(aElement.href);
             filterReload(aElement.href);
         }
     });
 
-    liElement.querySelector('div.item-card__shop-info').appendChild(icon);
-    liElement.querySelector('div.item-card__shop-info').classList.add("u-justify-content-between");
-    liElement.querySelector('a.item-card__shop-name-anchor').display = "inline";
+    liElement.querySelector("div.item-card__shop-info").appendChild(icon);
+    liElement.querySelector("div.item-card__shop-info").classList.add("u-justify-content-between");
+    liElement.querySelector("a.item-card__shop-name-anchor").display = "inline";
 }
 /*
 function hasParentItemCard(target) {

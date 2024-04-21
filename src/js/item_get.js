@@ -1,17 +1,14 @@
 const itemGetJa = {
     saveItem: "Save",
-    clicksaveItem: "データを保存しました。",
+    clicksaveItem: "データを保存しました。"
 };
 const itemGetEn = {
     saveItem: "Save",
-    clicksaveItem: "Saved.",
+    clicksaveItem: "Saved."
 };
 
 var itemGetLang = itemGetJa;
-if (
-    window.navigator.language !== "ja" &&
-    window.navigator.language !== "ja-JP"
-) {
+if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP") {
     itemGetLang = itemGetEn;
 }
 
@@ -37,16 +34,11 @@ async function addData(additionalData = {}) {
         category: raw_data.category.name,
         status: statusArray,
         wished: raw_data.wished,
-        ...additionalData,
+        ...additionalData
     };
     // 追加のデータを取得して保存
-    const additionalDescriptionElement = document.querySelector(
-        ".description.empty\\:hidden"
-    );
-    if (
-        additionalDescriptionElement &&
-        additionalDescriptionElement.children.length > 0
-    ) {
+    const additionalDescriptionElement = document.querySelector(".description.empty\\:hidden");
+    if (additionalDescriptionElement && additionalDescriptionElement.children.length > 0) {
         const additionalDescription = additionalDescriptionElement.innerHTML;
         data.additionalDescription = additionalDescription;
     }
@@ -58,8 +50,7 @@ async function addData(additionalData = {}) {
             items.push(itemId);
             chrome.storage.local.set({ items: items });
             chrome.storage.local.set({ [`${itemId}`]: data });
-        }
-        else if (items) {
+        } else if (items) {
             // 既に登録されているので更新
 
             chrome.storage.local.get(itemId, (result) => {
@@ -70,12 +61,11 @@ async function addData(additionalData = {}) {
                 const mergedData = {
                     ...oldData,
                     ...data,
-                    tags: oldTag,
+                    tags: oldTag
                 };
                 chrome.storage.local.set({ [`${itemId}`]: mergedData });
             });
-        }
-        else {
+        } else {
             // リスト作成と登録
             items = [itemId];
             console.log(items);
@@ -108,9 +98,7 @@ function addSaveButton() {
     // div要素を既存の要素に追加
     var intervalId = setInterval(() => {
         // 検索バーの要素を取得
-        var share_btn = document.querySelector(
-            `div.flex.items-start.mt-8 div.mr-auto`
-        );
+        var share_btn = document.querySelector(`div.flex.items-start.mt-8 div.mr-auto`);
         if (share_btn) {
             clearInterval(intervalId);
             share_btn.className = "flex mr-auto";
@@ -132,7 +120,7 @@ function addDownloadedItem() {
         const anchor = cart.querySelector("a");
         if (anchor) {
             // クリックイベントリスナを追加
-            anchor.addEventListener("click", function(event) {
+            anchor.addEventListener("click", function (event) {
                 handleButtonClick(event, anchor, { download: true });
             });
         }
@@ -147,15 +135,13 @@ function addRestockItem() {
         if (div) {
             // クリックイベントリスナを追加
             // divにrequestedというクラスがある場合は、restock=falseにする
-            div.addEventListener("click", function(event) {
+            div.addEventListener("click", function (event) {
                 if (div.classList.contains("requested")) {
                     handleButtonClick(event, div, { restock: false });
-                }
-                else{
+                } else {
                     handleButtonClick(event, div, { restock: true });
                 }
             });
-
         }
     });
 }

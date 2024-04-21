@@ -6,12 +6,7 @@
             height="100%"
             max-width="310px"
         >
-            <v-icon
-                :icon="mdiPlusCircleOutlineIcon"
-                alt="Item Image"
-                class="cover"
-                size="100%"
-            />
+            <v-icon :icon="mdiPlusCircleOutlineIcon" alt="Item Image" class="cover" size="100%" />
 
             <div class="ma-2 text-h6 text-weight-regular two-line-title">
                 <div class="ellipsis-2-lines">
@@ -22,7 +17,7 @@
                 ref="uploadInput"
                 type="file"
                 accept=".json"
-                style="display: none;"
+                style="display: none"
                 @change="onFileChange"
                 :key="inputKey"
             />
@@ -38,7 +33,7 @@ export default {
     name: "ItemCard",
     data() {
         return {
-            mdiPlusCircleOutlineIcon: mdiPlusCircleOutline,
+            mdiPlusCircleOutlineIcon: mdiPlusCircleOutline
         };
     },
     methods: {
@@ -56,8 +51,7 @@ export default {
                 if (this.validateData(data)) {
                     // Only keep the required properties from the data object
                     const sanitizedData = {
-                        additionalDescription:
-                            data.additionalDescription || null,
+                        additionalDescription: data.additionalDescription || null,
                         description: data.description,
                         id: data.id,
                         price: data.price || "",
@@ -67,7 +61,7 @@ export default {
                         url: data.url || "",
                         shop: data.shop || null,
                         tags: data.tags || [],
-                        purchased: data.purchased || false,
+                        purchased: data.purchased || false
                     };
                     console.log(sanitizedData);
 
@@ -122,13 +116,13 @@ export default {
                 window.alert(this.$t("topDataAdd"));
                 this.$emit("item-imported", result);
             }
-        },
+        }
     },
     computed: {
         to() {
             return { name: "Item", params: { itemId: this.item.id } };
-        },
-    },
+        }
+    }
 };
 </script>
 

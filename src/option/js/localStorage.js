@@ -20,7 +20,6 @@ export async function setItemData(data) {
                 ...oldData,
                 ...data,
                 tags: oldTag
-
             };
             await setToStorage({ [`${itemId}`]: mergedData });
         } else {
