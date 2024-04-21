@@ -32,7 +32,8 @@ function addFilter(word) {
             filterArray.push(word);
             chrome.storage.sync.set({ filters: filterArray });
             console.log("filter add.");
-        } else {
+        }
+        else {
             filterArray = [word];
             chrome.storage.sync.set({ filters: filterArray });
             console.log("filter add.");
@@ -304,7 +305,8 @@ function makeNewSPSearchTab() {
     searchInput.addEventListener("input", function () {
         if (this.value) {
             clearIcon.style.display = "flex";
-        } else {
+        }
+        else {
             clearIcon.style.display = "none";
         }
     });
@@ -406,7 +408,8 @@ function addButton() {
             text.textContent = blocking;
             var contents = document.querySelector("main.modules");
             contents.style.display = "none";
-        } else {
+        }
+        else {
             button.classList.add(
                 "btn",
                 "small-dense",
@@ -432,7 +435,8 @@ function addButton() {
                 module_contents.style.display = "block";
                 text.textContent = block;
                 removeFilter(url);
-            } else {
+            }
+            else {
                 button.classList.remove(NOT_BLOCK, "shop__text--contents");
                 button.classList.add(NOW_BLOCK, "shop__background--contents", "shop__text--price");
                 module_contents.style.display = "none";
@@ -467,7 +471,8 @@ function hideDescription() {
                 var height = content.scrollHeight + "px";
                 content.style.height = height;
                 icon.className = "icon-arrow-open-up s-2x";
-            } else {
+            }
+            else {
                 content.style.height = "400px";
                 icon.className = "icon-arrow-open-down s-2x";
             }
@@ -498,7 +503,8 @@ function insertLinkIntoNav() {
             const existingChildren = navElement.children;
             if (existingChildren.length >= 2) {
                 navElement.insertBefore(newLink, existingChildren[1]);
-            } else {
+            }
+            else {
                 navElement.appendChild(newLink);
             }
         }
@@ -561,7 +567,8 @@ function notReload() {
                 "booth.pm/items/",
                 "booth.pm/en/items/"
             );
-        } else {
+        }
+        else {
             addDeletedItem();
         }
     }

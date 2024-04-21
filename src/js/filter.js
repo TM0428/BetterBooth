@@ -22,7 +22,8 @@ function addFilter(word) {
             filterArray.push(word);
             chrome.storage.sync.set({ filters: filterArray });
             console.log("filter add.");
-        } else {
+        }
+        else {
             filterArray = [word];
             chrome.storage.sync.set({ filters: filterArray });
             console.log("filter add.");

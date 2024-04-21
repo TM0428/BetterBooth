@@ -35,7 +35,8 @@ async function getPurchaseData() {
                     items.push(itemId);
                     chrome.storage.local.set({ items: items });
                     chrome.storage.local.set({ [`${itemId}`]: data });
-                } else if (items) {
+                }
+                else if (items) {
                     // 既に登録されているので更新
                     chrome.storage.local.get(itemId, (result) => {
                         const oldData = result[itemId];
@@ -49,7 +50,8 @@ async function getPurchaseData() {
                         };
                         chrome.storage.local.set({ [`${itemId}`]: mergedData });
                     });
-                } else {
+                }
+                else {
                     // リスト作成と登録
                     items = [itemId];
                     console.log(items);

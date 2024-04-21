@@ -186,7 +186,8 @@ export default {
                 let tagsMatch = false;
                 if (this.srchTags.length === 0) {
                     tagsMatch = true;
-                } else if (item.tags) {
+                }
+                else if (item.tags) {
                     tagsMatch = this.srchTags.every((stag) => item.tags.includes(stag));
                 }
 
@@ -282,7 +283,8 @@ export default {
                     thumbnail_url: this.$route.query.shop_icon,
                     url: this.$route.query.shop_url
                 };
-            } else {
+            }
+            else {
                 this.srchShop = {};
             }
         },

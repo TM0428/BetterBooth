@@ -106,11 +106,13 @@ export default {
                 fileContent = this.convertToCSV(dataToDownload);
                 mimeType = "text/csv;charset=utf-8;";
                 fileExtension = ".csv";
-            } else if (this.downloadSaveExt === "JSON") {
+            }
+            else if (this.downloadSaveExt === "JSON") {
                 fileContent = JSON.stringify(dataToDownload, null, 4);
                 mimeType = "application/json;charset=utf-8;";
                 fileExtension = ".json";
-            } else {
+            }
+            else {
                 console.error("Unknown download format:", this.downloadSaveExt);
                 return;
             }

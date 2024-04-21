@@ -9,7 +9,8 @@ export async function setItemData(data) {
             items.push(itemId);
             await setToStorage({ items: items });
             await setToStorage({ [`${itemId}`]: data });
-        } else if (items) {
+        }
+        else if (items) {
             // 既にあるため、元のデータとのマージ
             const oldDataResult = await getFromStorage(itemId);
             const oldData = oldDataResult[itemId];
@@ -22,14 +23,16 @@ export async function setItemData(data) {
                 tags: oldTag
             };
             await setToStorage({ [`${itemId}`]: mergedData });
-        } else {
+        }
+        else {
             // リストの新規作成
             items = [itemId];
             await setToStorage({ items: items });
             await setToStorage({ [`${itemId}`]: data });
         }
         return 0;
-    } catch (err) {
+    }
+    catch (err) {
         console.error(err);
         return 1;
     }
@@ -40,7 +43,8 @@ function getFromStorage(key) {
         chrome.storage.local.get(key, (result) => {
             if (chrome.runtime.lastError) {
                 reject(new Error(chrome.runtime.lastError));
-            } else {
+            }
+            else {
                 resolve(result);
             }
         });
@@ -52,7 +56,8 @@ function setToStorage(data) {
         chrome.storage.local.set(data, () => {
             if (chrome.runtime.lastError) {
                 reject(new Error(chrome.runtime.lastError));
-            } else {
+            }
+            else {
                 resolve();
             }
         });

@@ -101,10 +101,12 @@ export default {
                 this.extended_settings = extended_settings;
                 if (this.extended_settings.language) {
                     this.changeLanguage();
-                } else {
+                }
+                else {
                     this.extended_settings.language = userLocale;
                 }
-            } else {
+            }
+            else {
                 this.extended_settings.language = userLocale;
             }
         });

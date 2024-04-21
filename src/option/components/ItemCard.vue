@@ -139,7 +139,8 @@ export default {
                 chrome.storage.local.set({
                     [`items_${this.item.id}`]: new_data
                 });
-            } else {
+            }
+            else {
                 this.item.purchased = true;
                 const new_data = JSON.parse(JSON.stringify(this.item));
                 new_data.purchased = true;

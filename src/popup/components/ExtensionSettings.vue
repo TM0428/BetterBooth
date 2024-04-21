@@ -190,7 +190,8 @@ export default {
             this.extended_settings.auto_reload = result.extended_settings.auto_reload || false;
 
             if (result.extended_settings && result.extended_settings.language) {
-            } else {
+            }
+            else {
                 this.extended_settings.language = userLocale;
             }
             this.$i18n.locale = this.extended_settings.language;

@@ -50,7 +50,8 @@ async function addData(additionalData = {}) {
             items.push(itemId);
             chrome.storage.local.set({ items: items });
             chrome.storage.local.set({ [`${itemId}`]: data });
-        } else if (items) {
+        }
+        else if (items) {
             // 既に登録されているので更新
 
             chrome.storage.local.get(itemId, (result) => {
@@ -65,7 +66,8 @@ async function addData(additionalData = {}) {
                 };
                 chrome.storage.local.set({ [`${itemId}`]: mergedData });
             });
-        } else {
+        }
+        else {
             // リスト作成と登録
             items = [itemId];
             console.log(items);
@@ -138,7 +140,8 @@ function addRestockItem() {
             div.addEventListener("click", function (event) {
                 if (div.classList.contains("requested")) {
                     handleButtonClick(event, div, { restock: false });
-                } else {
+                }
+                else {
                     handleButtonClick(event, div, { restock: true });
                 }
             });
