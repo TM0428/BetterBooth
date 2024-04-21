@@ -1,0 +1,4 @@
+{
+    "plugins": ["prettier-plugin-brace-style"],
+    "brace-style": ["stroustrup", { "allowSingleLine": true }]
+}

@@ -446,16 +446,16 @@ function filter_content() {
     for (li of item_list.children) {
         li.style.display = "none";
         if (all_not_checked) {
-            li.style.display = "block";
+            li.style.display = "contents";
         }
 
-        // if checkbox is checked, and checkbox.value is in li.item-category, li.style.display = "block"
+        // if checkbox is checked, and checkbox.value is in li.item-category, li.style.display = "contents"
         for (checkbox of checkbox_list) {
             if (
                 checkbox.checked &&
                 li.querySelector(".item-category").textContent == checkbox.value
             ) {
-                li.style.display = "block";
+                li.style.display = "contents";
             }
         }
 

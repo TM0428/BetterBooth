@@ -23,3 +23,7 @@ select#filter-meta {
     margin-bottom: 10px;
     background-color: #f2f2f2;
 }
+
+.filter-section {
+    color: #252f3d;
+}

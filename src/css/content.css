@@ -15,7 +15,11 @@
 }
 
 .item-card__title-anchor--multiline {
-    height: 35px;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* 表示したい最大行数 */
+    color: aqua;
 }
 
 .l-item-card-badge {

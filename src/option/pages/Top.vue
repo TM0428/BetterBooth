@@ -4,7 +4,7 @@
             <v-toolbar color="primary" density="comfortable">
                 <v-toolbar-title class="d-flex flex-row">
                     {{ $t("topTitle") }}
-                    <div class="text-caption">v0.5.1</div>
+                    <div class="text-caption">v0.5.2</div>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <a
