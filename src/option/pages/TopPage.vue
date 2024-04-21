@@ -125,7 +125,6 @@
 
 <script>
 import ItemCard from "../components/ItemCard.vue";
-import ItemImportCard from "../components/ItemImportCard.vue";
 import ItemDownloadPopup from "../components/ItemDownloadPopup.vue";
 import ItemImportPopup from "../components/ItemImportPopup.vue";
 
@@ -134,7 +133,6 @@ import { mdiMagnify, mdiCartOutline, mdiHelpCircleOutline, mdiCloseCircle } from
 export default {
     components: {
         ItemCard,
-        ItemImportCard,
         ItemDownloadPopup,
         ItemImportPopup
     },

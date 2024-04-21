@@ -263,7 +263,7 @@ export default {
     },
     watch: {
         "data.tags": {
-            handler(n, old) {
+            handler() {
                 this.saveData();
             },
             deep: true

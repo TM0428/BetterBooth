@@ -1,6 +1,4 @@
-<script setup>
-// import Option from './components/Option.vue'
-</script>
+<script setup></script>
 
 <template>
     <main>

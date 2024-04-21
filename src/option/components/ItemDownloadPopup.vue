@@ -26,7 +26,7 @@
                             sm="6"
                             md="4"
                             lg="3"
-                            v-for="(info, index) in downloadSaveList"
+                            v-for="info in downloadSaveList"
                             :key="info.value"
                         >
                             <v-checkbox

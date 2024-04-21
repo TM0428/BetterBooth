@@ -8,7 +8,6 @@ import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { aliases, mdi } from "vuetify/iconsets/mdi-svg";
 import i18n from "./i18n.js";
-import colors from "vuetify/lib/util/colors";
 
 const LightTheme = {
     dark: false,

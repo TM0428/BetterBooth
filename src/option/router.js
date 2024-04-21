@@ -1,6 +1,6 @@
 import Item from "./pages/ItemDetail.vue";
-import Top from "./pages/Top.vue";
-import Howto from "./pages/Howto.vue";
+import Top from "./pages/TopPage.vue";
+import Howto from "./pages/HowtoPage.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [

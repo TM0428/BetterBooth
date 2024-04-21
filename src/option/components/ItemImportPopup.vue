@@ -85,7 +85,6 @@ export default {
                         price: data.price || "",
                         images: data.images || [],
                         name: data.name,
-                        price: data.price || null,
                         url: data.url || "",
                         shop: data.shop || null,
                         tags: data.tags || [],
