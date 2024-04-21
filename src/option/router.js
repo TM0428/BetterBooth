@@ -1,7 +1,7 @@
 import Item from "./pages/ItemDetail.vue";
 import Top from "./pages/Top.vue";
 import Howto from "./pages/Howto.vue";
-import { createRouter, createWebHistory, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [
     {

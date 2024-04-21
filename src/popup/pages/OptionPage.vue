@@ -11,11 +11,6 @@
         <div class="extension-setting">
             <extension-settings></extension-settings>
         </div>
-        <!-- <div v-if="extended_settings.save_item" class="d-flex justify-end ma-2">
-            <a target="_blank" href="/src/option/option.html#/">
-                <v-btn> {{ $t("gotoItemPage") }} </v-btn>
-            </a>
-        </div> -->
     </div>
 </template>
 
