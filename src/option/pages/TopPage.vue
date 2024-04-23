@@ -217,7 +217,6 @@ export default {
                         }
                     });
                 });
-                console.log(this.itemList);
             });
         },
         handleTagClicked(tag) {
@@ -236,8 +235,8 @@ export default {
         },
         handleCartClicked(cart) {
             console.log(cart);
-            cart ? (this.srchCart = 1) : (this.srchCart = 0);
-            this.page = 1;
+            const cart_command = cart ? "is:cart" : "!is:cart";
+            this.searchText += " " + cart_command;
         },
         handleItemImported(status) {
             if (!status) {

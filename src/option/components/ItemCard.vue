@@ -128,25 +128,11 @@ export default {
             this.$emit("shop-clicked", shop);
         },
         handleCartClick() {
-            // if (this.item.purchased) {
-            //     this.$emit("cart-clicked", this.item.purchased);
-            // } else {
-            //     this.$emit("cart-clicked", false);
-            // }
             if (this.item.purchased) {
-                this.item.purchased = !this.item.purchased;
-                const new_data = JSON.parse(JSON.stringify(this.item));
-                chrome.storage.local.set({
-                    [`items_${this.item.id}`]: new_data
-                });
+                this.$emit("cart-clicked", this.item.purchased);
             }
             else {
-                this.item.purchased = true;
-                const new_data = JSON.parse(JSON.stringify(this.item));
-                new_data.purchased = true;
-                chrome.storage.local.set({
-                    [`items_${this.item.id}`]: new_data
-                });
+                this.$emit("cart-clicked", false);
             }
         }
     },

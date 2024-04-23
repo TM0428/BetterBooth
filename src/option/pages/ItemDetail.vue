@@ -10,6 +10,7 @@
                         <v-carousel class="bg-grey-lighten-2">
                             <v-carousel-item
                                 v-for="image in data.images"
+                                :key="image.original"
                                 :src="image.original"
                                 @click="openPopup(image.original)"
                             ></v-carousel-item>
