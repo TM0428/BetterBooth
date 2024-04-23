@@ -4,7 +4,9 @@ import Option from "./pages/OptionPage.vue";
 
 <template>
     <main>
-        <Option></Option>
+        <v-app color="background">
+            <Option></Option>
+        </v-app>
     </main>
 </template>
 
