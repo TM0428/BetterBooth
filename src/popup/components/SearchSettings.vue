@@ -14,7 +14,7 @@
                                     class="d-flex justify-end"
                                     hide-details
                                     v-model="settings.disable"
-                                    @change="saveData"
+                                    @update:modelValue="saveData()"
                                 />
                             </v-col>
                         </v-row>
@@ -25,9 +25,7 @@
                 <v-list-item>
                     <v-list-item-content>
                         <v-row class="align-center">
-                            <v-col :cols="7" class="text-body-2">{{
-                                $t("ageLabel")
-                            }}</v-col>
+                            <v-col :cols="7" class="text-body-2">{{ $t("ageLabel") }}</v-col>
                             <v-col :cols="5">
                                 <v-select
                                     density="compact"
@@ -37,20 +35,20 @@
                                     :items="[
                                         {
                                             text: $t('includeOption'),
-                                            value: 'include',
+                                            value: 'include'
                                         },
                                         {
                                             text: $t('defaultOption'),
-                                            value: 'default',
+                                            value: 'default'
                                         },
                                         {
                                             text: $t('onlyOption'),
-                                            value: 'only',
-                                        },
+                                            value: 'only'
+                                        }
                                     ]"
                                     item-title="text"
                                     item-value="value"
-                                    @update:modelValue="saveData"
+                                    @update:modelValue="saveData()"
                                 ></v-select>
                             </v-col>
                         </v-row>
@@ -59,9 +57,7 @@
                 <v-list-item>
                     <v-list-item-content>
                         <v-row class="align-center">
-                            <v-col :cols="7" class="text-body-2">{{
-                                $t("sortLabel")
-                            }}</v-col>
+                            <v-col :cols="7" class="text-body-2">{{ $t("sortLabel") }}</v-col>
                             <v-col :cols="5">
                                 <v-select
                                     density="compact"
@@ -70,28 +66,28 @@
                                     :items="[
                                         {
                                             text: $t('popularOption'),
-                                            value: '',
+                                            value: ''
                                         },
                                         {
                                             text: $t('newOption'),
-                                            value: 'new',
+                                            value: 'new'
                                         },
                                         {
                                             text: $t('wishListOption'),
-                                            value: 'wish_lists',
+                                            value: 'wish_lists'
                                         },
                                         {
                                             text: $t('priceDescOption'),
-                                            value: 'price_desc',
+                                            value: 'price_desc'
                                         },
                                         {
                                             text: $t('priceAscOption'),
-                                            value: 'price_asc',
-                                        },
+                                            value: 'price_asc'
+                                        }
                                     ]"
                                     item-title="text"
                                     item-value="value"
-                                    @update:modelValue="saveData"
+                                    @update:modelValue="saveData()"
                                 ></v-select>
                             </v-col>
                         </v-row>
@@ -100,15 +96,13 @@
                 <v-list-item>
                     <v-list-item-content>
                         <v-row class="align-center">
-                            <v-col :cols="7" class="text-body-2">{{
-                                $t("stockLabel")
-                            }}</v-col>
+                            <v-col :cols="7" class="text-body-2">{{ $t("stockLabel") }}</v-col>
                             <v-col :cols="5">
                                 <v-checkbox
                                     class="d-flex justify-end"
                                     hide-details
                                     v-model="in_stock"
-                                    @change="saveData"
+                                    @update:modelValue="saveData()"
                                 />
                             </v-col>
                         </v-row>
@@ -117,15 +111,13 @@
                 <v-list-item>
                     <v-list-item-content>
                         <v-row class="align-center">
-                            <v-col :cols="7" class="text-body-2">{{
-                                $t("newArrivalLabel")
-                            }}</v-col>
+                            <v-col :cols="7" class="text-body-2">{{ $t("newArrivalLabel") }}</v-col>
                             <v-col :cols="5">
                                 <v-checkbox
                                     class="d-flex justify-end"
                                     hide-details
                                     v-model="settings.new_arrival"
-                                    @change="saveData"
+                                    @update:modelValue="saveData()"
                                 />
                             </v-col>
                         </v-row>
@@ -148,11 +140,11 @@ export default {
                 sort: "",
                 in_stock: false,
                 new_arrival: false,
-                disable: true,
+                disable: true
             },
             in_stock: true,
             notificationTimer: null,
-            notifText: "",
+            notifText: ""
         };
     },
     methods: {
@@ -173,7 +165,7 @@ export default {
                 this.notifText = "";
                 this.notificationTimer = null; // タイマーをクリア
             }, 2000);
-        },
+        }
     },
     created() {
         chrome.storage.sync.get("settings", (result) => {
@@ -181,15 +173,11 @@ export default {
             if (result.settings !== undefined) {
                 this.settings = result.settings;
                 this.settings.disable =
-                    this.settings.disable === undefined
-                        ? true
-                        : this.settings.disable;
+                    this.settings.disable === undefined ? true : this.settings.disable;
                 this.in_stock =
-                    this.settings.in_stock === undefined
-                        ? true
-                        : !this.settings.in_stock;
+                    this.settings.in_stock === undefined ? true : !this.settings.in_stock;
             }
         });
-    },
+    }
 };
 </script>

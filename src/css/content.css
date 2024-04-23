@@ -15,7 +15,11 @@
 }
 
 .item-card__title-anchor--multiline {
-    height: 35px;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* 表示したい最大行数 */
+    color: aqua;
 }
 
 .l-item-card-badge {
@@ -50,7 +54,11 @@ div.booth-description div.u-mb-300 div.description-contents {
     left: 0;
     width: 100%;
     height: 50px;
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--shop-theme-contents-color));
+    background-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        var(--shop-theme-contents-color)
+    );
 }
 
 .show-more {
@@ -61,7 +69,6 @@ div.booth-description div.u-mb-300 div.description-contents {
 div.w-full.shrink div.item-search-box form {
     display: none;
 }
-
 
 div.new-item-search-box {
     margin-left: 10px;

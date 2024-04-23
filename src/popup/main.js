@@ -16,15 +16,12 @@ const vuetify = createVuetify({
         defaultSet: "mdi",
         aliases: {
             ...aliases,
-            account: mdiAccount,
+            account: mdiAccount
         },
         sets: {
-            mdi,
-        },
-    },
+            mdi
+        }
+    }
 });
 
-createApp(App)
-    .use(vuetify)
-    .use(i18n)
-    .mount("#app");
+createApp(App).use(vuetify).use(i18n).mount("#app");

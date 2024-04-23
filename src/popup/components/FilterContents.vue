@@ -5,15 +5,8 @@
             <v-list class="filter-list mx-auto">
                 <template v-for="(filter, index) in filters" :key="filter">
                     <v-list-item>
-                        <v-list-item-content
-                            class="d-flex align-center justify-space-between"
-                        >
-                            <a
-                                :href="filter"
-                                target="_blank"
-                                class="text-body-2"
-                                >{{ filter }}</a
-                            >
+                        <v-list-item-content class="d-flex align-center justify-space-between">
+                            <a :href="filter" target="_blank" class="text-body-2">{{ filter }}</a>
                             <v-btn
                                 color="red"
                                 size="small"
@@ -37,7 +30,7 @@
 export default {
     data() {
         return {
-            filters: [],
+            filters: []
         };
     },
     methods: {
@@ -45,13 +38,13 @@ export default {
             this.filters.splice(index, 1);
             console.log(this.filters);
             chrome.storage.sync.set({ filters: Array.from(this.filters) });
-        },
+        }
     },
     created() {
         chrome.storage.sync.get("filters", (result) => {
             this.filters = result.filters || [];
         });
-    },
+    }
 };
 </script>
 

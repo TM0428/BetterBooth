@@ -26,7 +26,7 @@
                             sm="6"
                             md="4"
                             lg="3"
-                            v-for="(info, index) in downloadSaveList"
+                            v-for="info in downloadSaveList"
                             :key="info.value"
                         >
                             <v-checkbox
@@ -39,26 +39,18 @@
                             ></v-checkbox>
                         </v-col>
                     </v-row>
-                    <div
-                        v-if="downloadSaveInfoRules[0] != true"
-                        class="text-error"
-                    >
+                    <div v-if="downloadSaveInfoRules[0] != true" class="text-error">
                         {{ downloadSaveInfoRules[0] }}
                     </div>
                 </div>
 
                 <v-card-actions>
-                    <v-btn color="primary" @click="dialog_download = false">
-                        Close
-                    </v-btn>
+                    <v-btn color="primary" @click="dialog_download = false"> Close </v-btn>
                     <v-btn
                         type="submit"
                         color="primary"
                         @click="downloadItems()"
-                        v-bind:disabled="
-                            downloadSaveInfoRules[0] != true ||
-                            downloadSaveExt == ''
-                        "
+                        v-bind:disabled="downloadSaveInfoRules[0] != true || downloadSaveExt == ''"
                     >
                         Save
                     </v-btn>
@@ -74,15 +66,15 @@ export default {
     props: {
         filteredItemList: {
             type: Object,
-            required: true,
-        },
+            required: true
+        }
     },
     data() {
         return {
             dialog_download: false,
             downloadSaveExt: "CSV",
             downloadSaveList: [],
-            downloadSaveInfo: [],
+            downloadSaveInfo: []
         };
     },
     methods: {
@@ -114,11 +106,13 @@ export default {
                 fileContent = this.convertToCSV(dataToDownload);
                 mimeType = "text/csv;charset=utf-8;";
                 fileExtension = ".csv";
-            } else if (this.downloadSaveExt === "JSON") {
+            }
+            else if (this.downloadSaveExt === "JSON") {
                 fileContent = JSON.stringify(dataToDownload, null, 4);
                 mimeType = "application/json;charset=utf-8;";
                 fileExtension = ".json";
-            } else {
+            }
+            else {
                 console.error("Unknown download format:", this.downloadSaveExt);
                 return;
             }
@@ -136,8 +130,7 @@ export default {
         },
 
         convertToCSV(objArray) {
-            const array =
-                typeof objArray !== "object" ? JSON.parse(objArray) : objArray;
+            const array = typeof objArray !== "object" ? JSON.parse(objArray) : objArray;
             let str = "";
             let headers = this.downloadSaveInfo.join(",") + "\r\n";
             str += headers;
@@ -151,15 +144,12 @@ export default {
                 str += line + "\r\n";
             }
             return str;
-        },
+        }
     },
     computed: {
         downloadSaveInfoRules() {
-            return [
-                this.downloadSaveInfo.length > 0 ||
-                    "At least one item should be selected",
-            ];
-        },
+            return [this.downloadSaveInfo.length > 0 || "At least one item should be selected"];
+        }
     },
     created() {
         this.downloadSaveList = [
@@ -169,14 +159,14 @@ export default {
             { label: this.$t("downloadSaveList.price"), value: "price" },
             {
                 label: this.$t("downloadSaveList.downloaded"),
-                value: "download",
+                value: "download"
             },
             {
                 label: this.$t("downloadSaveList.purchased"),
-                value: "purchased",
-            },
+                value: "purchased"
+            }
         ];
         this.downloadSaveInfo = this.downloadSaveList.map((item) => item.value);
-    },
+    }
 };
 </script>

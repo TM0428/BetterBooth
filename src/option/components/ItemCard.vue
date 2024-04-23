@@ -6,12 +6,7 @@
         max-width="310px"
         min-width="270px"
     >
-        <v-img
-            :src="imageUrl"
-            alt="Item Image"
-            class="cover bg-grey-lighten-2"
-            aspect-ratio="1"
-        />
+        <v-img :src="imageUrl" alt="Item Image" class="cover bg-grey-lighten-2" aspect-ratio="1" />
         <div class="ma-2 text-h6 text-weight-regular two-line-title">
             <div class="ellipsis-2-lines inherit">
                 {{ item.name }}
@@ -19,11 +14,7 @@
         </div>
         <!--ショップ-->
         <div class="ma-1 d-flex flex-row">
-            <v-chip
-                color="info"
-                variant="outlined"
-                @click.stop="handleShopClick(item.shop)"
-            >
+            <v-chip color="info" variant="outlined" @click.stop="handleShopClick(item.shop)">
                 <v-avatar start>
                     <v-img :src="item.shop.thumbnail_url"></v-img>
                 </v-avatar>
@@ -101,7 +92,7 @@ import {
     mdiHeartOutline,
     mdiCartOutline,
     mdiCloudArrowDownOutline,
-    mdiEmailAlertOutline,
+    mdiEmailAlertOutline
 } from "@mdi/js";
 
 export default {
@@ -109,8 +100,8 @@ export default {
     props: {
         item: {
             type: Object,
-            required: true,
-        },
+            required: true
+        }
     },
     data() {
         return {
@@ -118,13 +109,13 @@ export default {
             mdiHeartOutlineIcon: mdiHeartOutline,
             mdiCartOutlineIcon: mdiCartOutline,
             mdiCloudArrowDownOutlineIcon: mdiCloudArrowDownOutline,
-            mdiEmailAlertOutlineIcon: mdiEmailAlertOutline,
+            mdiEmailAlertOutlineIcon: mdiEmailAlertOutline
         };
     },
     computed: {
         to() {
             return { name: "Item", params: { itemId: this.item.id } };
-        },
+        }
     },
     methods: {
         navigateToItem() {
@@ -137,30 +128,17 @@ export default {
             this.$emit("shop-clicked", shop);
         },
         handleCartClick() {
-            // if (this.item.purchased) {
-            //     this.$emit("cart-clicked", this.item.purchased);
-            // } else {
-            //     this.$emit("cart-clicked", false);
-            // }
             if (this.item.purchased) {
-                this.item.purchased = !this.item.purchased;
-                const new_data = JSON.parse(JSON.stringify(this.item));
-                chrome.storage.local.set({
-                    [`items_${this.item.id}`]: new_data,
-                });
-            } else {
-                this.item.purchased = true;
-                const new_data = JSON.parse(JSON.stringify(this.item));
-                new_data.purchased = true;
-                chrome.storage.local.set({
-                    [`items_${this.item.id}`]: new_data,
-                });
+                this.$emit("cart-clicked", this.item.purchased);
             }
-        },
+            else {
+                this.$emit("cart-clicked", false);
+            }
+        }
     },
     created() {
         this.imageUrl = this.item.images[0].original;
-    },
+    }
 };
 </script>
 

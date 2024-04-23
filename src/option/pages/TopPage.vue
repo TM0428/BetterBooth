@@ -4,7 +4,7 @@
             <v-toolbar color="primary" density="comfortable">
                 <v-toolbar-title class="d-flex flex-row">
                     {{ $t("topTitle") }}
-                    <div class="text-caption">v0.5.0</div>
+                    <div class="text-caption">v0.5.2</div>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <a
@@ -12,10 +12,7 @@
                     href="https://tm0428.github.io/BetterBooth/howto/#%E6%A4%9C%E7%B4%A2%E6%96%B9%E6%B3%95%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"
                 >
                     <v-btn icon>
-                        <v-icon
-                            :icon="mdiHelpCircleOutlineIcon"
-                            color="white"
-                        ></v-icon>
+                        <v-icon :icon="mdiHelpCircleOutlineIcon" color="white"></v-icon>
                         <v-tooltip activator="parent" location="bottom">{{
                             $t("topHowto")
                         }}</v-tooltip>
@@ -48,12 +45,8 @@
                             Search by {{ searchText }}
                         </div>
                         <v-spacer></v-spacer>
-                        <ItemImportPopup
-                            @item-imported="handleItemImported"
-                        ></ItemImportPopup>
-                        <ItemDownloadPopup
-                            :filtered-item-list="filteredItemList"
-                        >
+                        <ItemImportPopup @item-imported="handleItemImported"></ItemImportPopup>
+                        <ItemDownloadPopup :filtered-item-list="filteredItemList">
                         </ItemDownloadPopup>
                     </v-col>
                 </v-row>
@@ -70,9 +63,7 @@
                                 @click:close="removeShop()"
                             >
                                 <v-avatar start>
-                                    <v-img
-                                        :src="srchShop.thumbnail_url"
-                                    ></v-img>
+                                    <v-img :src="srchShop.thumbnail_url"></v-img>
                                 </v-avatar>
 
                                 {{ srchShop.name }}
@@ -124,11 +115,9 @@
                     @update:modelValue="updateQuery"
                 ></v-pagination>
 
-                <a
-                    class="page-title text-body-1 ml-4"
-                    href="/src/popup/popup.html"
-                    >{{ $t("topSetttings") }}</a
-                >
+                <a class="page-title text-body-1 ml-4" href="/src/popup/popup.html">{{
+                    $t("topSetttings")
+                }}</a>
             </v-container>
         </div>
     </v-app>
@@ -136,23 +125,16 @@
 
 <script>
 import ItemCard from "../components/ItemCard.vue";
-import ItemImportCard from "../components/ItemImportCard.vue";
 import ItemDownloadPopup from "../components/ItemDownloadPopup.vue";
 import ItemImportPopup from "../components/ItemImportPopup.vue";
 
-import {
-    mdiMagnify,
-    mdiCartOutline,
-    mdiHelpCircleOutline,
-    mdiCloseCircle,
-} from "@mdi/js";
+import { mdiMagnify, mdiCartOutline, mdiHelpCircleOutline, mdiCloseCircle } from "@mdi/js";
 
 export default {
     components: {
         ItemCard,
-        ItemImportCard,
         ItemDownloadPopup,
-        ItemImportPopup,
+        ItemImportPopup
     },
     data() {
         return {
@@ -167,7 +149,7 @@ export default {
             mdiMagnifyIcon: mdiMagnify,
             mdiCartOutlineIcon: mdiCartOutline,
             mdiHelpCircleOutlineIcon: mdiHelpCircleOutline,
-            mdiCloseCircleIcon: mdiCloseCircle,
+            mdiCloseCircleIcon: mdiCloseCircle
         };
     },
     computed: {
@@ -202,15 +184,13 @@ export default {
                 let tagsMatch = false;
                 if (this.srchTags.length === 0) {
                     tagsMatch = true;
-                } else if (item.tags) {
-                    tagsMatch = this.srchTags.every((stag) =>
-                        item.tags.includes(stag)
-                    );
+                }
+                else if (item.tags) {
+                    tagsMatch = this.srchTags.every((stag) => item.tags.includes(stag));
                 }
 
                 const shopMatch =
-                    this.srchShop.name === undefined ||
-                    this.srchShop.url === item.shop.url;
+                    this.srchShop.name === undefined || this.srchShop.url === item.shop.url;
 
                 return keywordMatch && tagsMatch && shopMatch;
             });
@@ -222,7 +202,7 @@ export default {
         },
         pageCount() {
             return Math.ceil(this.filteredItemList.length / this.itemsPerPage);
-        },
+        }
     },
     methods: {
         reloadList() {
@@ -237,7 +217,6 @@ export default {
                         }
                     });
                 });
-                console.log(this.itemList);
             });
         },
         handleTagClicked(tag) {
@@ -256,8 +235,8 @@ export default {
         },
         handleCartClicked(cart) {
             console.log(cart);
-            cart ? (this.srchCart = 1) : (this.srchCart = 0);
-            this.page = 1;
+            const cart_command = cart ? "is:cart" : "!is:cart";
+            this.searchText += " " + cart_command;
         },
         handleItemImported(status) {
             if (!status) {
@@ -299,9 +278,10 @@ export default {
                 this.srchShop = {
                     name: this.$route.query.shop_name,
                     thumbnail_url: this.$route.query.shop_icon,
-                    url: this.$route.query.shop_url,
+                    url: this.$route.query.shop_url
                 };
-            } else {
+            }
+            else {
                 this.srchShop = {};
             }
         },
@@ -314,8 +294,8 @@ export default {
                     tags: tags_str,
                     shop_url: this.srchShop.url,
                     shop_icon: this.srchShop.thumbnail_url,
-                    shop_name: this.srchShop.name,
-                },
+                    shop_name: this.srchShop.name
+                }
             });
         },
         updateAllQuery() {
@@ -324,7 +304,7 @@ export default {
             this.updateShopFromQuery();
             this.updatePageFromQuery();
             // this.updateQuery();
-        },
+        }
     },
     mounted() {
         this.updateAllQuery();
@@ -333,7 +313,7 @@ export default {
     watch: {
         $route: function () {
             this.updateAllQuery();
-        },
+        }
     },
     created() {
         // 言語ファイルが正しく読み込まれることを確認してください
@@ -361,6 +341,6 @@ export default {
                 });
             });
         });
-    },
+    }
 };
 </script>

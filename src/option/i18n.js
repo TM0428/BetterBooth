@@ -14,8 +14,8 @@ const i18n = createI18n({
         en,
         ko,
         "zh-CN": zh_cn,
-        "zh-TW": zh_tw,
-    },
+        "zh-TW": zh_tw
+    }
 });
 
 export default i18n;

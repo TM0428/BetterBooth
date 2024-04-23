@@ -10,6 +10,7 @@
                         <v-carousel class="bg-grey-lighten-2">
                             <v-carousel-item
                                 v-for="image in data.images"
+                                :key="image.original"
                                 :src="image.original"
                                 @click="openPopup(image.original)"
                             ></v-carousel-item>
@@ -38,9 +39,7 @@
                                     block
                                     :prepend-icon="mdiCartOutlineIcon"
                                     rounded="xl"
-                                    :variant="
-                                        data.purchased ? 'flat' : 'outlined'
-                                    "
+                                    :variant="data.purchased ? 'flat' : 'outlined'"
                                     size="large"
                                     color="info"
                                     @click="togglePurchased"
@@ -107,33 +106,15 @@
                             </v-btn>
                         </v-col>
                         <v-col cols="12" sm="6" md="4" lg="3" xl="3">
-                            <a
-                                :href="data.url"
-                                target="_blank"
-                                style="text-decoration: none"
-                            >
-                                <v-btn
-                                    block
-                                    rounded="xl"
-                                    size="large"
-                                    :prepend-icon="mdiLinkIcon"
-                                >
+                            <a :href="data.url" target="_blank" style="text-decoration: none">
+                                <v-btn block rounded="xl" size="large" :prepend-icon="mdiLinkIcon">
                                     {{ $t("itemGotoLink") }}
                                 </v-btn>
                             </a>
                         </v-col>
                         <v-col cols="12" sm="6" md="4" lg="3" xl="3">
-                            <a
-                                :href="data.shop.url"
-                                target="_blank"
-                                style="text-decoration: none"
-                            >
-                                <v-btn
-                                    block
-                                    rounded="xl"
-                                    size="large"
-                                    :prepend-icon="mdiLinkIcon"
-                                >
+                            <a :href="data.shop.url" target="_blank" style="text-decoration: none">
+                                <v-btn block rounded="xl" size="large" :prepend-icon="mdiLinkIcon">
                                     {{ $t("itemGotoShop") }}
                                 </v-btn>
                             </a>
@@ -180,7 +161,7 @@ import {
     mdiDelete,
     mdiCartOutline,
     mdiEmailAlertOutline,
-    mdiCloudArrowDownOutline,
+    mdiCloudArrowDownOutline
 } from "@mdi/js";
 
 export default {
@@ -193,8 +174,8 @@ export default {
                 description: "",
                 additionalDescription: "",
                 shop: {
-                    url: "",
-                },
+                    url: ""
+                }
             },
             popupImage: null,
             mdiArrowLeftIcon: mdiArrowLeft,
@@ -203,7 +184,7 @@ export default {
             mdiDeleteIcon: mdiDelete,
             mdiCartOutlineIcon: mdiCartOutline,
             mdiEmailAlertOutlineIcon: mdiEmailAlertOutline,
-            mdiCloudArrowDownOutlineIcon: mdiCloudArrowDownOutline,
+            mdiCloudArrowDownOutlineIcon: mdiCloudArrowDownOutline
         };
     },
 
@@ -212,11 +193,10 @@ export default {
             this.data = result[`items_${this.itemId}`];
             console.log(this.data);
             if (this.data.additionalDescription) {
-                this.data.additionalDescription =
-                    this.data.additionalDescription.replaceAll(
-                        "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
-                        "ma-1 pt-8"
-                    );
+                this.data.additionalDescription = this.data.additionalDescription.replaceAll(
+                    "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
+                    "ma-1 pt-8"
+                );
             }
         });
     },
@@ -257,17 +237,12 @@ export default {
                     console.log(updatedItems);
 
                     chrome.storage.local.set({ items: updatedItems }, () => {
-                        chrome.storage.local.remove(
-                            `items_${this.itemId}`,
-                            () => {
-                                console.log(
-                                    `Item with ID ${this.itemId} deleted successfully.`
-                                );
-                                // 削除が完了した後の処理をここに記述する
-                                window.alert(this.$t("itemDeleteComplete"));
-                                router.push({ name: "Top" }); // Topページにリダイレクト
-                            }
-                        );
+                        chrome.storage.local.remove(`items_${this.itemId}`, () => {
+                            console.log(`Item with ID ${this.itemId} deleted successfully.`);
+                            // 削除が完了した後の処理をここに記述する
+                            window.alert(this.$t("itemDeleteComplete"));
+                            router.push({ name: "Top" }); // Topページにリダイレクト
+                        });
                     });
                 });
             }
@@ -283,26 +258,26 @@ export default {
         saveData() {
             const new_data = JSON.parse(JSON.stringify(this.data));
             chrome.storage.local.set({
-                [`items_${this.itemId}`]: new_data,
+                [`items_${this.itemId}`]: new_data
             });
-        },
+        }
     },
     watch: {
         "data.tags": {
-            handler(n, old) {
+            handler() {
                 this.saveData();
             },
-            deep: true,
-        },
-    },
+            deep: true
+        }
+    }
 };
 </script>
 
 <style scoped>
 .content {
-    font-family: -apple-system, BlinkMacSystemFont, Avenir, "Helvetica Neue",
-        "Segoe UI", Arial, "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN",
-        メイリオ, Meiryo, "ＭＳ Ｐゴシック", sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, Avenir, "Helvetica Neue", "Segoe UI", Arial,
+        "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN", メイリオ, Meiryo, "ＭＳ Ｐゴシック",
+        sans-serif !important;
 }
 .center-margin {
     margin: 0 auto;
