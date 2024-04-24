@@ -11,21 +11,22 @@ export default defineConfig({
     plugins: [vue(), VueI18nPlugin({ compositionOnly: false })],
     resolve: {
         alias: {
-            "@": fileURLToPath(new URL("./src", import.meta.url)),
-        },
+            "@": fileURLToPath(new URL("./src", import.meta.url))
+        }
     },
     build: {
         rollupOptions: {
             input: {
                 popup: resolve(root, "popup", "popup.html"),
-                option: resolve(root, "option", "option.html"),
+                option: resolve(root, "option", "option.html")
             },
             output: {
                 // entry chunk assets それぞれの書き出し名の指定
                 entryFileNames: `assets/[name].js`,
                 chunkFileNames: `assets/[name].js`,
-                assetFileNames: `assets/[name].[ext]`,
-            },
+                assetFileNames: `assets/[name].[ext]`
+            }
         },
-    },
+        emptyOutDir: false
+    }
 });
