@@ -1,18 +1,13 @@
 <template>
-    <v-sheet class="ma-3 pa-0">
-        <h1 class="mb-2">{{ $t("filtersHeader") }}</h1>
-        <v-card max-width="430px" variant="tonal" color="grey-lighten-1">
+    <v-sheet class="pa-2" color="surfaceContainerLow" border="md" rounded="lg">
+        <h1>{{ $t("filtersHeader") }}</h1>
+        <v-card max-width="430px" variant="tonal" color="surface">
             <v-list class="filter-list mx-auto">
                 <template v-for="(filter, index) in filters" :key="filter">
                     <v-list-item>
                         <v-list-item-content class="d-flex align-center justify-space-between">
                             <a :href="filter" target="_blank" class="text-body-2">{{ filter }}</a>
-                            <v-btn
-                                color="red"
-                                size="small"
-                                variant="outlined"
-                                @click="removeFilter(index)"
-                            >
+                            <v-btn color="primary" size="small" @click="removeFilter(index)">
                                 {{ $t("removeButton") }}
                             </v-btn>
                         </v-list-item-content>
