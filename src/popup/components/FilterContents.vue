@@ -1,8 +1,8 @@
 <template>
-    <v-sheet class="pa-2" color="surfaceContainerLow" border="md" rounded="lg">
-        <h1>{{ $t("filtersHeader") }}</h1>
-        <v-card max-width="430px" variant="tonal" color="surface">
-            <v-list class="filter-list mx-auto">
+    <v-sheet color="surfaceContainerLow" border="sm" rounded="lg">
+        <h1 class="ma-4">{{ $t("filtersHeader") }}</h1>
+        <v-card class="mb-4" variant="tonal" color="surface">
+            <v-list class="filter-list py-0">
                 <template v-for="(filter, index) in filters" :key="filter">
                     <v-list-item>
                         <v-list-item-content class="d-flex align-center justify-space-between">
@@ -45,7 +45,6 @@ export default {
 
 <style lang="scss">
 .filter-list {
-    min-width: 350px;
     width: 100%;
     max-height: 200px;
     overflow: scroll;

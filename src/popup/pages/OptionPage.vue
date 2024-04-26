@@ -27,12 +27,15 @@ export default {
     }
 };
 </script>
-<style scoped>
+<style>
 .contents {
     width: 450px;
+    font-family: -apple-system, BlinkMacSystemFont, Avenir, "Helvetica Neue", "Segoe UI", Arial,
+        "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN", メイリオ, Meiryo, "ＭＳ Ｐゴシック",
+        sans-serif !important;
 }
 
 .content {
-    margin: 10px 4px;
+    margin: 8px 16px 8px 16px;
 }
 </style>
