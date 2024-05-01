@@ -1,114 +1,116 @@
 <template>
-    <v-container class="ma-3 pa-0">
-        <h1 class="mb-2">Extension Settings:</h1>
-        <v-card max-width="430px" variant="tonal" color="grey-lighten-1">
-            <v-list class="mb-0">
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-row class="align-center">
-                            <v-col :cols="7" class="text-body-2">Language</v-col>
-                            <v-col :cols="5">
-                                <v-select
-                                    density="compact"
-                                    size="small"
-                                    v-model="extended_settings.language"
-                                    @update:modelValue="
-                                        changeLanguage();
-                                        saveExtendedData();
-                                    "
-                                    hide-details
-                                    :items="lang_data"
-                                    item-title="text"
-                                    item-value="value"
-                                ></v-select>
-                            </v-col>
-                        </v-row>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-row class="align-center">
-                            <v-col :cols="7" class="text-body-2">
-                                <div>{{ $t("autoReloadLabel") }}</div>
-                                <div class="text-caption">
-                                    {{ $t("autoReloadWarning") }}
-                                </div>
-                            </v-col>
-                            <v-col :cols="5">
-                                <v-checkbox
-                                    class="d-flex justify-end"
-                                    hide-details
-                                    v-model="extended_settings.auto_reload"
-                                    @update:modelValue="saveExtendedData()"
-                                />
-                            </v-col>
-                        </v-row>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-row class="align-center">
-                            <v-col :cols="8" class="text-body-2">
-                                {{ $t("saveItemOption") }}
-                            </v-col>
-                            <v-col :cols="4">
-                                <v-checkbox
-                                    class="d-flex justify-end"
-                                    hide-details
-                                    v-model="extended_settings.save_item"
-                                    @update:modelValue="saveExtendedData()"
-                                />
-                            </v-col>
-                        </v-row>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                    <v-list-item-content>
-                        <a target="_blank" href="https://tm0428.github.io/BetterBooth/howto/">{{
-                            $t("linkToHelp")
-                        }}</a>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
-            <v-list class="my-0" v-bind:disabled="!extended_settings.save_item">
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-row class="align-center">
-                            <v-col :cols="8" class="text-body-2">{{
-                                $t("savePurchaseItem")
-                            }}</v-col>
-                            <v-col :cols="4">
-                                <v-checkbox
-                                    class="d-flex justify-end"
-                                    hide-details
-                                    v-model="extended_settings.save_purchase"
-                                    @update:modelValue="saveExtendedData()"
-                                />
-                            </v-col>
-                        </v-row>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
-            <v-list class="mt-0" v-if="extended_settings.save_item">
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-row class="align-center">
-                            <v-col cols="auto" class="ms-auto">
-                                <a target="_blank" href="/src/option/option.html#/">
-                                    <v-btn color="#ff4d50">
-                                        {{ $t("gotoItemPage") }}
-                                    </v-btn>
-                                </a>
-                            </v-col>
-                        </v-row>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
-            <div class="text-body-1">
+    <v-sheet color="surfaceContainerLow" border="sm" rounded="lg">
+        <h1 class="ma-4">Extension Settings:</h1>
+        <v-divider></v-divider>
+        <div class="settingsContents">
+            <v-sheet color="surface" border="sm" rounded="lg" class="my-4 mx-2">
+                <v-list class="pa-0 mx-2">
+                    <v-list-item height="64">
+                        <v-list-item-content>
+                            <v-row class="align-center">
+                                <v-col :cols="7" class="text-body-2">Language</v-col>
+                                <v-col :cols="5">
+                                    <v-select
+                                        density="comfortable"
+                                        size="small"
+                                        v-model="extended_settings.language"
+                                        @update:modelValue="
+                                            changeLanguage();
+                                            saveExtendedData();
+                                        "
+                                        hide-details
+                                        :items="lang_data"
+                                        item-title="text"
+                                        item-value="value"
+                                    ></v-select>
+                                </v-col>
+                            </v-row>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item height="64">
+                        <v-list-item-content>
+                            <v-row class="align-center">
+                                <v-col :cols="7" class="text-body-2">
+                                    <div>{{ $t("autoReloadLabel") }}</div>
+                                </v-col>
+                                <v-col :cols="5">
+                                    <v-checkbox
+                                        class="d-flex justify-end"
+                                        hide-details
+                                        color="primary"
+                                        base-color="on-surface-variant"
+                                        v-model="extended_settings.auto_reload"
+                                        @update:modelValue="saveExtendedData()"
+                                    />
+                                </v-col>
+                            </v-row>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item height="64">
+                        <v-list-item-content>
+                            <v-row class="align-center">
+                                <v-col :cols="8" class="text-body-2">
+                                    <div>{{ $t("saveItemOption") }}</div>
+                                    <a
+                                        target="_blank"
+                                        href="https://tm0428.github.io/BetterBooth/howto/"
+                                        >{{ $t("linkToHelp") }}</a
+                                    >
+                                </v-col>
+                                <v-col :cols="4">
+                                    <v-checkbox
+                                        class="d-flex justify-end"
+                                        hide-details
+                                        color="primary"
+                                        base-color="on-surface-variant"
+                                        v-model="extended_settings.save_item"
+                                        @update:modelValue="saveExtendedData()"
+                                    />
+                                </v-col>
+                            </v-row>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+                <v-list class="pa-0 mx-2" v-bind:disabled="!extended_settings.save_item">
+                    <v-list-item>
+                        <v-list-item-content>
+                            <v-row class="align-center">
+                                <v-col :cols="8" class="text-body-2">{{
+                                    $t("savePurchaseItem")
+                                }}</v-col>
+                                <v-col :cols="4">
+                                    <v-checkbox
+                                        class="d-flex justify-end"
+                                        hide-details
+                                        color="primary"
+                                        base-color="on-surface-variant"
+                                        v-model="extended_settings.save_purchase"
+                                        @update:modelValue="saveExtendedData()"
+                                    />
+                                </v-col>
+                            </v-row>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+                <v-list class="pa-0 mx-2" v-if="extended_settings.save_item">
+                    <v-list-item height="64">
+                        <v-list-item-content>
+                            <v-btn
+                                color="primary"
+                                block
+                                @click="open('/src/option/option.html#/', '_blank')"
+                            >
+                                {{ $t("gotoItemPage") }}
+                            </v-btn>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </v-sheet>
+            <div class="text-body-1 ma-2">
                 {{ exnotifText }}
             </div>
-        </v-card>
-    </v-container>
+        </div>
+    </v-sheet>
 </template>
 
 <script>
@@ -155,7 +157,7 @@ export default {
                     extended_settings: this.extended_settings
                 })
                 .then(() => {
-                    this.showExNotificationText("Saved!");
+                    this.showExNotificationText("Auto Saved!");
                     // debug
                     chrome.storage.sync.get("extended_settings", (result) => {
                         console.log(result.extended_settings);
@@ -177,6 +179,9 @@ export default {
         },
         changeLanguage() {
             this.$i18n.locale = this.extended_settings.language;
+        },
+        open(url, target) {
+            window.open(url, target);
         }
     },
     created() {

@@ -106,10 +106,5 @@
         "matches": [
           "*://*.booth.pm/*"
         ]
-    }],
-    "browser_specific_settings": {
-        "gecko": {
-            "id": "betterbooth@made.by.TM"
-        }
-    }
+    }]
 }

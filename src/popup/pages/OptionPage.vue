@@ -1,14 +1,14 @@
 <template>
-    <div class="content">
-        <div class="filter">
+    <div class="contents">
+        <div class="content filter">
             <filter-contents></filter-contents>
         </div>
 
-        <div class="search-setting">
+        <div class="content search-setting">
             <search-settings></search-settings>
         </div>
 
-        <div class="extension-setting">
+        <div class="content extension-setting">
             <extension-settings></extension-settings>
         </div>
     </div>
@@ -27,8 +27,15 @@ export default {
     }
 };
 </script>
-<style scoped>
-.content {
+<style>
+.contents {
     width: 450px;
+    font-family: -apple-system, BlinkMacSystemFont, Avenir, "Helvetica Neue", "Segoe UI", Arial,
+        "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN", メイリオ, Meiryo, "ＭＳ Ｐゴシック",
+        sans-serif !important;
+}
+
+.content {
+    margin: 8px;
 }
 </style>

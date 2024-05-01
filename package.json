@@ -1,10 +1,11 @@
 {
   "name": "betterbooth",
-  "version": "0.4.4",
+  "version": "0.5.2",
   "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build && cp -r src/js dist/js && cp -r src/css dist/css && cp -r _locales dist/_locales",
+    "build:watch": "cp -r src/js dist/js && cp -r src/css dist/css && cp -r _locales dist/_locales && vite build --watch",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
