@@ -1,6 +1,7 @@
 <template>
     <v-sheet color="surfaceContainerLow" border="sm" rounded="lg">
         <h1 class="ma-4">{{ $t("filtersHeader") }}</h1>
+        <v-divider></v-divider>
         <v-card class="mb-4" variant="tonal" color="surface">
             <v-list class="filter-list py-0">
                 <template v-for="(filter, index) in filters" :key="filter">

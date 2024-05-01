@@ -3,7 +3,7 @@
         <h1 class="ma-4">Search Settings:</h1>
         <v-divider></v-divider>
         <div class="settingsContents">
-            <v-sheet color="surface" border="sm" rounded="lg" class="ma-4">
+            <v-sheet color="surface" border="sm" rounded="lg" class="my-4 mx-2">
                 <v-list class="pa-0 mx-2">
                     <v-list-item>
                         <v-list-item-content>
@@ -102,7 +102,7 @@
                 </v-list>
             </v-sheet>
         </div>
-        <div class="text-body-1">
+        <div class="text-body-1 ma-2">
             {{ notifText }}
         </div>
     </v-sheet>
