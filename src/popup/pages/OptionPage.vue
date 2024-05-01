@@ -36,6 +36,6 @@ export default {
 }
 
 .content {
-    margin: 8px 16px 8px 16px;
+    margin: 16px;
 }
 </style>

@@ -1,134 +1,111 @@
 <template>
-    <v-container class="ma-3 pa-0">
-        <h1 class="mb-2">Search Settings:</h1>
-        <v-card max-width="430px" variant="tonal" color="grey-lighten-1">
-            <v-list class="mb-0">
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-row class="align-center">
-                            <v-col :cols="7" class="text-body-2">{{
-                                $t("toggleSearchSetting")
-                            }}</v-col>
-                            <v-col :cols="5">
-                                <v-checkbox
-                                    class="d-flex justify-end"
-                                    hide-details
-                                    v-model="settings.disable"
-                                    @update:modelValue="saveData()"
-                                />
-                            </v-col>
-                        </v-row>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
-            <v-list class="my-0" v-bind:disabled="settings.disable">
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-row class="align-center">
-                            <v-col :cols="7" class="text-body-2">{{ $t("ageLabel") }}</v-col>
-                            <v-col :cols="5">
-                                <v-select
-                                    density="compact"
-                                    size="small"
-                                    v-model="settings.age"
-                                    hide-details
-                                    :items="[
-                                        {
-                                            text: $t('includeOption'),
-                                            value: 'include'
-                                        },
-                                        {
-                                            text: $t('defaultOption'),
-                                            value: 'default'
-                                        },
-                                        {
-                                            text: $t('onlyOption'),
-                                            value: 'only'
-                                        }
-                                    ]"
-                                    item-title="text"
-                                    item-value="value"
-                                    @update:modelValue="saveData()"
-                                ></v-select>
-                            </v-col>
-                        </v-row>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-row class="align-center">
-                            <v-col :cols="7" class="text-body-2">{{ $t("sortLabel") }}</v-col>
-                            <v-col :cols="5">
-                                <v-select
-                                    density="compact"
-                                    v-model="settings.sort"
-                                    hide-details
-                                    :items="[
-                                        {
-                                            text: $t('popularOption'),
-                                            value: ''
-                                        },
-                                        {
-                                            text: $t('newOption'),
-                                            value: 'new'
-                                        },
-                                        {
-                                            text: $t('wishListOption'),
-                                            value: 'wish_lists'
-                                        },
-                                        {
-                                            text: $t('priceDescOption'),
-                                            value: 'price_desc'
-                                        },
-                                        {
-                                            text: $t('priceAscOption'),
-                                            value: 'price_asc'
-                                        }
-                                    ]"
-                                    item-title="text"
-                                    item-value="value"
-                                    @update:modelValue="saveData()"
-                                ></v-select>
-                            </v-col>
-                        </v-row>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-row class="align-center">
-                            <v-col :cols="7" class="text-body-2">{{ $t("stockLabel") }}</v-col>
-                            <v-col :cols="5">
-                                <v-checkbox
-                                    class="d-flex justify-end"
-                                    hide-details
-                                    v-model="in_stock"
-                                    @update:modelValue="saveData()"
-                                />
-                            </v-col>
-                        </v-row>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-row class="align-center">
-                            <v-col :cols="7" class="text-body-2">{{ $t("newArrivalLabel") }}</v-col>
-                            <v-col :cols="5">
-                                <v-checkbox
-                                    class="d-flex justify-end"
-                                    hide-details
-                                    v-model="settings.new_arrival"
-                                    @update:modelValue="saveData()"
-                                />
-                            </v-col>
-                        </v-row>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
-            <div class="text-body-1">
-                {{ notifText }}
-            </div>
-        </v-card>
-    </v-container>
+    <v-sheet color="surfaceContainerLow" border="sm" rounded="lg">
+        <h1 class="ma-4">Search Settings:</h1>
+        <v-divider></v-divider>
+        <div class="settingsContents">
+            <v-sheet color="surface" border="sm" rounded="lg" class="ma-4">
+                <v-list class="pa-0 mx-2">
+                    <v-list-item>
+                        <v-list-item-content>
+                            <v-row class="align-center">
+                                <v-col :cols="7" class="text-body-2">
+                                    {{ $t("toggleSearchSetting") }}
+                                </v-col>
+                                <v-col :cols="5">
+                                    <v-checkbox
+                                        class="d-flex justify-end"
+                                        color="primary"
+                                        base-color="on-surface-variant"
+                                        hide-details
+                                        v-model="settings.disable"
+                                        @update:modelValue="saveData()"
+                                    />
+                                </v-col>
+                            </v-row>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+                <v-divider></v-divider>
+                <v-list class="pa-0 mx-2" v-bind:disabled="settings.disable">
+                    <v-list-item height="64">
+                        <v-list-item-content>
+                            <v-row class="align-center">
+                                <v-col :cols="7" class="text-body-2">{{ $t("ageLabel") }}</v-col>
+                                <v-col :cols="5">
+                                    <v-select
+                                        density="comfortable"
+                                        v-model="settings.age"
+                                        hide-details
+                                        :items="ageLabelOptions"
+                                        item-title="text"
+                                        item-value="value"
+                                        @update:modelValue="saveData()"
+                                    ></v-select>
+                                </v-col>
+                            </v-row>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item height="64">
+                        <v-list-item-content>
+                            <v-row class="align-center">
+                                <v-col :cols="7" class="text-body-2">{{ $t("sortLabel") }}</v-col>
+                                <v-col :cols="5">
+                                    <v-select
+                                        density="comfortable"
+                                        v-model="settings.sort"
+                                        hide-details
+                                        :items="sortLabelOptions"
+                                        item-title="text"
+                                        item-value="value"
+                                        @update:modelValue="saveData()"
+                                    ></v-select>
+                                </v-col>
+                            </v-row>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-content>
+                            <v-row class="align-center">
+                                <v-col :cols="7" class="text-body-2">{{ $t("stockLabel") }}</v-col>
+                                <v-col :cols="5">
+                                    <v-checkbox
+                                        class="d-flex justify-end"
+                                        hide-details
+                                        color="primary"
+                                        base-color="on-surface-variant"
+                                        v-model="in_stock"
+                                        @update:modelValue="saveData()"
+                                    />
+                                </v-col>
+                            </v-row>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-content>
+                            <v-row class="align-center">
+                                <v-col :cols="7" class="text-body-2">{{
+                                    $t("newArrivalLabel")
+                                }}</v-col>
+                                <v-col :cols="5">
+                                    <v-checkbox
+                                        class="d-flex justify-end"
+                                        hide-details
+                                        color="primary"
+                                        base-color="on-surface-variant"
+                                        v-model="settings.new_arrival"
+                                        @update:modelValue="saveData()"
+                                    />
+                                </v-col>
+                            </v-row>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </v-sheet>
+        </div>
+        <div class="text-body-1">
+            {{ notifText }}
+        </div>
+    </v-sheet>
 </template>
 
 <script>
@@ -144,7 +121,43 @@ export default {
             },
             in_stock: true,
             notificationTimer: null,
-            notifText: ""
+            notifText: "",
+            ageLabelOptions: [
+                {
+                    text: this.$t("includeOption"),
+                    value: "include"
+                },
+                {
+                    text: this.$t("defaultOption"),
+                    value: "default"
+                },
+                {
+                    text: this.$t("onlyOption"),
+                    value: "only"
+                }
+            ],
+            sortLabelOptions: [
+                {
+                    text: this.$t("popularOption"),
+                    value: ""
+                },
+                {
+                    text: this.$t("newOption"),
+                    value: "new"
+                },
+                {
+                    text: this.$t("wishListOption"),
+                    value: "wish_lists"
+                },
+                {
+                    text: this.$t("priceDescOption"),
+                    value: "price_desc"
+                },
+                {
+                    text: this.$t("priceAscOption"),
+                    value: "price_asc"
+                }
+            ]
         };
     },
     methods: {
