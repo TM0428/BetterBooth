@@ -191,6 +191,46 @@ export default {
                     this.settings.in_stock === undefined ? true : !this.settings.in_stock;
             }
         });
+    },
+    watch: {
+        "$i18n.locale": function () {
+            this.ageLabelOptions = [
+                {
+                    text: this.$t("includeOption"),
+                    value: "include"
+                },
+                {
+                    text: this.$t("defaultOption"),
+                    value: "default"
+                },
+                {
+                    text: this.$t("onlyOption"),
+                    value: "only"
+                }
+            ];
+            this.sortLabelOptions = [
+                {
+                    text: this.$t("popularOption"),
+                    value: ""
+                },
+                {
+                    text: this.$t("newOption"),
+                    value: "new"
+                },
+                {
+                    text: this.$t("wishListOption"),
+                    value: "wish_lists"
+                },
+                {
+                    text: this.$t("priceDescOption"),
+                    value: "price_desc"
+                },
+                {
+                    text: this.$t("priceAscOption"),
+                    value: "price_asc"
+                }
+            ];
+        }
     }
 };
 </script>

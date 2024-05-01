@@ -308,7 +308,6 @@ export default {
     },
     mounted() {
         this.updateAllQuery();
-        // console.log(this.$t("topTitle"));
     },
     watch: {
         $route: function () {
