@@ -46,10 +46,10 @@
                             Search by {{ searchText }}
                         </div>
                     </v-col>
-                    <v-col cols="12" lg="2">
+                    <v-col cols="12" sm="6" md="6" lg="2">
                         <ItemImportPopup @item-imported="handleItemImported"></ItemImportPopup>
                     </v-col>
-                    <v-col cols="12" lg="2">
+                    <v-col cols="12" sm="6" md="6" lg="2">
                         <ItemDownloadPopup :filtered-item-list="filteredItemList">
                         </ItemDownloadPopup>
                     </v-col>
