@@ -2,7 +2,9 @@
 
 <template>
     <main>
-        <router-view />
+        <v-app color="background">
+            <router-view />
+        </v-app>
     </main>
 </template>
 

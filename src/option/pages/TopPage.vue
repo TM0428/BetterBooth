@@ -1,12 +1,13 @@
 <template>
-    <v-app class="pa-0 ma-0">
+    <div class="pa-0 ma-0">
         <div class="toolbar">
             <v-toolbar color="primary" density="comfortable">
-                <v-toolbar-title class="d-flex flex-row">
+                <v-app-bar-nav-icon></v-app-bar-nav-icon>
+                <v-toolbar-title class="d-flex flex-row" v-if="!$vuetify.display.xs">
                     {{ $t("topTitle") }}
-                    <div class="text-caption">v0.5.2</div>
+                    <div class="text-caption">v0.5.3</div>
                 </v-toolbar-title>
-                <v-spacer></v-spacer>
+                <v-spacer v-if="!$vuetify.display.xs"></v-spacer>
                 <a
                     target="_blank"
                     href="https://tm0428.github.io/BetterBooth/howto/#%E6%A4%9C%E7%B4%A2%E6%96%B9%E6%B3%95%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"
@@ -22,7 +23,7 @@
                     class="mr-4"
                     v-model="searchText"
                     :label="$t('topSearchText')"
-                    :prepend-icon="mdiMagnifyIcon"
+                    :append-inner-icon="mdiMagnifyIcon"
                     clearable
                     :clear-icon="mdiCloseCircleIcon"
                     @click:clear="
@@ -40,12 +41,15 @@
         <div class="content">
             <v-container fluid>
                 <v-row>
-                    <v-col class="pb-2 d-flex flex-row">
+                    <v-col cols="12" lg="8">
                         <div class="text-h4" v-if="searchText != ''">
                             Search by {{ searchText }}
                         </div>
-                        <v-spacer></v-spacer>
+                    </v-col>
+                    <v-col cols="12" lg="2">
                         <ItemImportPopup @item-imported="handleItemImported"></ItemImportPopup>
+                    </v-col>
+                    <v-col cols="12" lg="2">
                         <ItemDownloadPopup :filtered-item-list="filteredItemList">
                         </ItemDownloadPopup>
                     </v-col>
@@ -120,7 +124,7 @@
                 }}</a>
             </v-container>
         </div>
-    </v-app>
+    </div>
 </template>
 
 <script>
