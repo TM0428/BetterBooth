@@ -1,6 +1,7 @@
 import Item from "./pages/ItemDetail.vue";
 import Top from "./pages/TopPage.vue";
 import Howto from "./pages/HowtoPage.vue";
+import CustomShop from "./pages/CustomShop.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [
@@ -19,6 +20,11 @@ const routes = [
         path: "/howto",
         name: "Howto",
         component: Howto
+    },
+    {
+        path: "/customshop",
+        name: "CustomShop",
+        component: CustomShop
     }
 ];
 

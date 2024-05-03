@@ -1,129 +1,89 @@
 <template>
-    <div class="pa-0 ma-0">
-        <div class="toolbar">
-            <v-toolbar color="primary" density="comfortable">
-                <v-app-bar-nav-icon></v-app-bar-nav-icon>
-                <v-toolbar-title class="d-flex flex-row" v-if="!$vuetify.display.xs">
-                    {{ $t("topTitle") }}
-                    <div class="text-caption">v0.5.3</div>
-                </v-toolbar-title>
-                <v-spacer v-if="!$vuetify.display.xs"></v-spacer>
-                <a
-                    target="_blank"
-                    href="https://tm0428.github.io/BetterBooth/howto/#%E6%A4%9C%E7%B4%A2%E6%96%B9%E6%B3%95%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"
-                >
-                    <v-btn icon>
-                        <v-icon :icon="mdiHelpCircleOutlineIcon" color="white"></v-icon>
-                        <v-tooltip activator="parent" location="bottom">{{
-                            $t("topHowto")
-                        }}</v-tooltip>
-                    </v-btn>
-                </a>
-                <v-text-field
-                    class="mr-4"
-                    v-model="searchText"
-                    :label="$t('topSearchText')"
-                    :append-inner-icon="mdiMagnifyIcon"
-                    clearable
-                    :clear-icon="mdiCloseCircleIcon"
-                    @click:clear="
-                        searchText = '';
-                        updateQuery();
-                    "
-                    rounded="rounded-pill"
-                    density="compact"
-                    single-line
-                    hide-details
-                    @change="updateSearchText"
-                ></v-text-field>
-            </v-toolbar>
-        </div>
-        <div class="content">
-            <v-container fluid>
-                <v-row>
-                    <v-col cols="12" lg="8">
-                        <div class="text-h4" v-if="searchText != ''">
-                            Search by {{ searchText }}
-                        </div>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6" lg="2">
-                        <ItemImportPopup @item-imported="handleItemImported"></ItemImportPopup>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6" lg="2">
-                        <ItemDownloadPopup :filtered-item-list="filteredItemList">
-                        </ItemDownloadPopup>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col class="py-1">
-                        <div v-if="srchShop.name">
-                            <div class="text-caption">
-                                <p class="text-subtitle-1">shop:</p>
-                            </div>
-                            <v-chip
-                                color="info"
-                                variant="outlined"
-                                closable
-                                @click:close="removeShop()"
-                            >
-                                <v-avatar start>
-                                    <v-img :src="srchShop.thumbnail_url"></v-img>
-                                </v-avatar>
-
-                                {{ srchShop.name }}
-                            </v-chip>
-                        </div>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col class="py-1">
-                        <div v-if="srchTags.length != 0" class="text-caption">
-                            <p class="text-subtitle-1">tags:</p>
+    <div class="toolbar">
+        <AppBar></AppBar>
+    </div>
+    <div class="content">
+        <v-container fluid>
+            <v-row>
+                <v-col cols="12" lg="8">
+                    <div class="text-h4" v-if="searchText != ''">Search by {{ searchText }}</div>
+                </v-col>
+                <v-col cols="12" sm="6" md="6" lg="2">
+                    <ItemImportPopup @item-imported="handleItemImported"></ItemImportPopup>
+                </v-col>
+                <v-col cols="12" sm="6" md="6" lg="2">
+                    <ItemDownloadPopup :filtered-item-list="filteredItemList"> </ItemDownloadPopup>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="py-1">
+                    <div v-if="srchShop.name">
+                        <div class="text-caption">
+                            <p class="text-subtitle-1">shop:</p>
                         </div>
                         <v-chip
-                            v-for="(stag, index) in srchTags"
-                            :key="stag"
+                            color="info"
+                            variant="outlined"
                             closable
-                            @click:close="removeTag(index)"
-                            class="ma-1"
-                            style="text-align: right"
+                            @click:close="removeShop()"
                         >
-                            {{ stag }}
+                            <v-avatar start>
+                                <v-img :src="srchShop.thumbnail_url"></v-img>
+                            </v-avatar>
+
+                            {{ srchShop.name }}
                         </v-chip>
-                    </v-col>
-                </v-row>
-                <v-row class="mx-auto">
-                    <!-- アイテムカードを表示 -->
-                    <v-col
-                        v-for="item in paginatedItems"
-                        :key="item.id"
-                        cols="12"
-                        sm="6"
-                        md="4"
-                        lg="3"
-                        xl="2"
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="py-1">
+                    <div v-if="srchTags.length != 0" class="text-caption">
+                        <p class="text-subtitle-1">tags:</p>
+                    </div>
+                    <v-chip
+                        v-for="(stag, index) in srchTags"
+                        :key="stag"
+                        closable
+                        @click:close="removeTag(index)"
+                        class="ma-1"
+                        style="text-align: right"
                     >
-                        <ItemCard
-                            :item="item"
-                            @tag-clicked="handleTagClicked"
-                            @shop-clicked="handleShopClicked"
-                            @cart-clicked="handleCartClicked"
-                        />
-                    </v-col>
-                </v-row>
+                        {{ stag }}
+                    </v-chip>
+                </v-col>
+            </v-row>
+            <v-row class="mx-auto">
+                <!-- アイテムカードを表示 -->
+                <v-col
+                    v-for="item in paginatedItems"
+                    :key="item.id"
+                    cols="12"
+                    sm="6"
+                    md="4"
+                    lg="3"
+                    xl="2"
+                >
+                    <ItemCard
+                        :item="item"
+                        @tag-clicked="handleTagClicked"
+                        @shop-clicked="handleShopClicked"
+                        @cart-clicked="handleCartClicked"
+                    />
+                </v-col>
+            </v-row>
 
-                <v-pagination
-                    v-model="page"
-                    :length="pageCount"
-                    :total-visible="7"
-                    @update:modelValue="updateQuery"
-                ></v-pagination>
+            <v-pagination
+                v-model="page"
+                :length="pageCount"
+                :total-visible="7"
+                @update:modelValue="updateQuery"
+            ></v-pagination>
 
-                <a class="page-title text-body-1 ml-4" href="/src/popup/popup.html">{{
-                    $t("topSetttings")
-                }}</a>
-            </v-container>
-        </div>
+            <a class="page-title text-body-1 ml-4" href="/src/popup/popup.html">{{
+                $t("topSetttings")
+            }}</a>
+        </v-container>
     </div>
 </template>
 
@@ -131,6 +91,7 @@
 import ItemCard from "../components/ItemCard.vue";
 import ItemDownloadPopup from "../components/ItemDownloadPopup.vue";
 import ItemImportPopup from "../components/ItemImportPopup.vue";
+import AppBar from "../components/AppBar.vue";
 
 import { mdiMagnify, mdiCartOutline, mdiHelpCircleOutline, mdiCloseCircle } from "@mdi/js";
 
@@ -138,7 +99,8 @@ export default {
     components: {
         ItemCard,
         ItemDownloadPopup,
-        ItemImportPopup
+        ItemImportPopup,
+        AppBar
     },
     data() {
         return {
@@ -150,6 +112,7 @@ export default {
             inputKey: 0,
             page: 1,
             itemsPerPage: 24,
+            drawer: false,
             mdiMagnifyIcon: mdiMagnify,
             mdiCartOutlineIcon: mdiCartOutline,
             mdiHelpCircleOutlineIcon: mdiHelpCircleOutline,
@@ -347,3 +310,9 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.searchTextBox >>> input {
+    color: rgb(var(--v-theme-onSurface)) !important;
+}
+</style>
