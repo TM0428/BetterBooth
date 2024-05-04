@@ -30,8 +30,8 @@
                                 @click:close="removeCart()"
                                 :class="
                                     srchCart == 0
-                                        ? 'non-purchased-cart-chip'
-                                        : 'purchased-cart-chip'
+                                        ? 'ma-1 non-purchased-cart-chip'
+                                        : 'ma-1 purchased-cart-chip'
                                 "
                                 :variant="srchCart == 0 ? 'outlined' : 'flat'"
                             >
@@ -47,7 +47,7 @@
                         </span>
                         <span v-if="srchShop.name">
                             <v-chip
-                                class="shop-chip"
+                                class="ma-1 shop-chip"
                                 variant="outlined"
                                 closable
                                 @click:close="removeShop()"
