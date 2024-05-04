@@ -79,10 +79,6 @@
                 :total-visible="7"
                 @update:modelValue="updateQuery"
             ></v-pagination>
-
-            <a class="page-title text-body-1 ml-4" href="/src/popup/popup.html">{{
-                $t("topSetttings")
-            }}</a>
         </v-container>
     </div>
 </template>
