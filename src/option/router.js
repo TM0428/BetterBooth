@@ -1,7 +1,7 @@
-import Item from "./pages/ItemDetail.vue";
+import Item from "./pages/ItemDetailPage.vue";
 import Top from "./pages/TopPage.vue";
 import Howto from "./pages/HowtoPage.vue";
-import CustomShop from "./pages/CustomShop.vue";
+import CustomShop from "./pages/CustomShopPage.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [

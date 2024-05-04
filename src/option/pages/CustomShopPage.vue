@@ -4,6 +4,7 @@
     </div>
     <div class="content">
         <h1>Custom Shop!</h1>
+        <h1>WIP</h1>
     </div>
 </template>
 
