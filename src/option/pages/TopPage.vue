@@ -45,9 +45,13 @@
                         v-for="(stag, index) in srchTags"
                         :key="stag"
                         closable
+                        label
+                        rounded="lg"
                         @click:close="removeTag(index)"
-                        class="ma-1"
+                        class="ma-1 opacity-12"
                         style="text-align: right"
+                        color="onSurfaceVariant"
+                        variant="outlined"
                     >
                         {{ stag }}
                     </v-chip>
@@ -306,6 +310,12 @@ export default {
     }
 };
 </script>
+
+<style>
+.opacity-12 {
+    background-color: rgba(var(--v-theme-onSurfaceVariant), 0.12) !important;
+}
+</style>
 
 <style scoped>
 .searchTextBox >>> input {

@@ -1,10 +1,10 @@
 <template>
     <v-card
         @click="navigateToItem"
-        class="d-flex flex-column ma-auto pa-1"
+        class="d-flex flex-column"
         height="100%"
-        max-width="310px"
         min-width="270px"
+        color="surfaceContainerLow"
     >
         <v-img :src="imageUrl" alt="Item Image" class="cover bg-grey-lighten-2" aspect-ratio="1" />
         <div class="ma-2 text-h6 text-weight-regular two-line-title">
@@ -75,8 +75,12 @@
                     v-for="tag in item.tags"
                     :key="tag"
                     small
-                    class="ma-1"
+                    label
+                    rounded="lg"
+                    class="ma-1 opacity-12"
                     @click.stop="handleTagClick(tag)"
+                    color="onSurfaceVariant"
+                    variant="outlined"
                 >
                     <span class="d-inline-block text-truncate tag-name">
                         {{ tag }}
