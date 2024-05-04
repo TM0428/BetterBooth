@@ -1,63 +1,53 @@
 <template>
-    <v-app class="pa-0 ma-0">
-        <div class="toolbar">
-            <v-toolbar color="primary" density="comfortable">
-                <v-toolbar-title class="d-flex flex-row">
-                    {{ $t("topTitle") }}
-                    <div class="text-caption">v0.5.2</div>
-                </v-toolbar-title>
-                <v-spacer></v-spacer>
-                <a
-                    target="_blank"
-                    href="https://tm0428.github.io/BetterBooth/howto/#%E6%A4%9C%E7%B4%A2%E6%96%B9%E6%B3%95%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"
-                >
-                    <v-btn icon>
-                        <v-icon :icon="mdiHelpCircleOutlineIcon" color="white"></v-icon>
-                        <v-tooltip activator="parent" location="bottom">{{
-                            $t("topHowto")
-                        }}</v-tooltip>
-                    </v-btn>
-                </a>
-                <v-text-field
-                    class="mr-4"
-                    v-model="searchText"
-                    :label="$t('topSearchText')"
-                    :prepend-icon="mdiMagnifyIcon"
-                    clearable
-                    :clear-icon="mdiCloseCircleIcon"
-                    @click:clear="
-                        searchText = '';
-                        updateQuery();
-                    "
-                    rounded="rounded-pill"
-                    density="compact"
-                    single-line
-                    hide-details
-                    @change="updateSearchText"
-                ></v-text-field>
-            </v-toolbar>
-        </div>
-        <div class="content">
-            <v-container fluid>
-                <v-row>
-                    <v-col class="pb-2 d-flex flex-row">
-                        <div class="text-h4" v-if="searchText != ''">
-                            Search by {{ searchText }}
-                        </div>
-                        <v-spacer></v-spacer>
-                        <ItemImportPopup @item-imported="handleItemImported"></ItemImportPopup>
-                        <ItemDownloadPopup :filtered-item-list="filteredItemList">
-                        </ItemDownloadPopup>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col class="py-1">
-                        <div v-if="srchShop.name">
-                            <div class="text-caption">
-                                <p class="text-subtitle-1">shop:</p>
-                            </div>
+    <div class="toolbar">
+        <AppBar
+            ref="appbar"
+            active-text="Home"
+            @update-text="updateSearchText"
+            @clear-text="updateSearchText"
+        ></AppBar>
+    </div>
+    <div class="content">
+        <v-container fluid>
+            <v-row height="64">
+                <v-col cols="12" lg="8" height="64">
+                    <div
+                        class="text-h4"
+                        v-if="
+                            !(
+                                searchText == '' &&
+                                srchTags.length == 0 &&
+                                srchCart == -1 &&
+                                (srchShop.name == '' || srchShop.name == undefined)
+                            )
+                        "
+                    >
+                        Search by {{ searchText }}
+
+                        <span v-if="srchCart >= 0">
                             <v-chip
-                                color="info"
+                                closable
+                                @click:close="removeCart()"
+                                :class="
+                                    srchCart == 0
+                                        ? 'non-purchased-cart-chip'
+                                        : 'purchased-cart-chip'
+                                "
+                                :variant="srchCart == 0 ? 'outlined' : 'flat'"
+                            >
+                                <v-icon :icon="mdiCartOutlineIcon" class="mr-2"></v-icon>
+
+                                <div v-if="srchCart == 1">
+                                    {{ $t("purchased") }}
+                                </div>
+                                <div v-else>
+                                    {{ $t("notpurchased") }}
+                                </div>
+                            </v-chip>
+                        </span>
+                        <span v-if="srchShop.name">
+                            <v-chip
+                                class="shop-chip"
                                 variant="outlined"
                                 closable
                                 @click:close="removeShop()"
@@ -65,68 +55,69 @@
                                 <v-avatar start>
                                     <v-img :src="srchShop.thumbnail_url"></v-img>
                                 </v-avatar>
-
-                                {{ srchShop.name }}
+                                shop: {{ srchShop.name }}
                             </v-chip>
-                        </div>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col class="py-1">
-                        <div v-if="srchTags.length != 0" class="text-caption">
-                            <p class="text-subtitle-1">tags:</p>
-                        </div>
+                        </span>
                         <v-chip
                             v-for="(stag, index) in srchTags"
                             :key="stag"
                             closable
+                            label
+                            rounded="lg"
                             @click:close="removeTag(index)"
-                            class="ma-1"
-                            style="text-align: right"
+                            class="ma-1 tag-chip"
+                            variant="outlined"
                         >
-                            {{ stag }}
+                            tag: {{ stag }}
                         </v-chip>
-                    </v-col>
-                </v-row>
-                <v-row class="mx-auto">
-                    <!-- アイテムカードを表示 -->
-                    <v-col
-                        v-for="item in paginatedItems"
-                        :key="item.id"
-                        cols="12"
-                        sm="6"
-                        md="4"
-                        lg="3"
-                        xl="2"
-                    >
-                        <ItemCard
-                            :item="item"
-                            @tag-clicked="handleTagClicked"
-                            @shop-clicked="handleShopClicked"
-                            @cart-clicked="handleCartClicked"
-                        />
-                    </v-col>
-                </v-row>
+                    </div>
+                </v-col>
+                <v-col cols="12" sm="6" md="6" lg="2">
+                    <ItemImportPopup
+                        @item-imported="handleItemImported"
+                        class="ma-1"
+                    ></ItemImportPopup>
+                </v-col>
+                <v-col cols="12" sm="6" md="6" lg="2">
+                    <ItemDownloadPopup :filtered-item-list="filteredItemList" class="ma-1">
+                    </ItemDownloadPopup>
+                </v-col>
+            </v-row>
+            <v-row class="mx-auto">
+                <!-- アイテムカードを表示 -->
+                <v-col
+                    v-for="item in paginatedItems"
+                    :key="item.id"
+                    cols="12"
+                    sm="6"
+                    md="4"
+                    lg="3"
+                    xl="2"
+                >
+                    <ItemCard
+                        :item="item"
+                        @tag-clicked="handleTagClicked"
+                        @shop-clicked="handleShopClicked"
+                        @cart-clicked="handleCartClicked"
+                    />
+                </v-col>
+            </v-row>
 
-                <v-pagination
-                    v-model="page"
-                    :length="pageCount"
-                    :total-visible="7"
-                    @update:modelValue="updateQuery"
-                ></v-pagination>
-
-                <a class="page-title text-body-1 ml-4" href="/src/popup/popup.html">{{
-                    $t("topSetttings")
-                }}</a>
-            </v-container>
-        </div>
-    </v-app>
+            <v-pagination
+                v-model="page"
+                :length="pageCount"
+                :total-visible="7"
+                @update:modelValue="updateQuery"
+            ></v-pagination>
+        </v-container>
+    </div>
 </template>
 
 <script>
 import ItemCard from "../components/ItemCard.vue";
 import ItemDownloadPopup from "../components/ItemDownloadPopup.vue";
 import ItemImportPopup from "../components/ItemImportPopup.vue";
+import AppBar from "../components/AppBar.vue";
 
 import { mdiMagnify, mdiCartOutline, mdiHelpCircleOutline, mdiCloseCircle } from "@mdi/js";
 
@@ -134,18 +125,24 @@ export default {
     components: {
         ItemCard,
         ItemDownloadPopup,
-        ItemImportPopup
+        ItemImportPopup,
+        AppBar
     },
     data() {
         return {
             itemList: [],
             srchTags: Array(),
-            srchShop: {},
+            srchShop: {
+                name: "",
+                thumbnail_url: "",
+                url: ""
+            },
             srchCart: -1,
             searchText: "",
             inputKey: 0,
             page: 1,
             itemsPerPage: 24,
+            drawer: false,
             mdiMagnifyIcon: mdiMagnify,
             mdiCartOutlineIcon: mdiCartOutline,
             mdiHelpCircleOutlineIcon: mdiHelpCircleOutline,
@@ -159,13 +156,6 @@ export default {
             return this.itemList.filter((item) => {
                 // キーワードによるフィルタリング
                 const keywordMatch = searchTerms.every((term) => {
-                    // "is:cart" という単語の特別な処理
-                    if (term === "is:cart") {
-                        return item.purchased;
-                    }
-                    if (term === "!is:cart") {
-                        return !item.purchased;
-                    }
                     // "is:download" という単語の特別な処理
                     if (term === "is:download") {
                         return item.download;
@@ -180,6 +170,20 @@ export default {
                     );
                 });
 
+                // cartデータによるフィルタリング
+                let cartMatch = false;
+                if (item.purchased == undefined && this.srchCart >= 0) {
+                    cartMatch = false;
+                }
+                else if (this.srchCart == 0) {
+                    cartMatch = !item.purchased;
+                }
+                else if (this.srchCart == 1) {
+                    cartMatch = item.purchased;
+                }
+                else {
+                    cartMatch = true;
+                }
                 // srchTagsによるフィルタリング
                 let tagsMatch = false;
                 if (this.srchTags.length === 0) {
@@ -192,7 +196,7 @@ export default {
                 const shopMatch =
                     this.srchShop.name === undefined || this.srchShop.url === item.shop.url;
 
-                return keywordMatch && tagsMatch && shopMatch;
+                return keywordMatch && tagsMatch && shopMatch && cartMatch;
             });
         },
         paginatedItems() {
@@ -235,8 +239,16 @@ export default {
         },
         handleCartClicked(cart) {
             console.log(cart);
-            const cart_command = cart ? "is:cart" : "!is:cart";
-            this.searchText += " " + cart_command;
+            // const cart_command = cart ? "is:cart" : "!is:cart";
+            // this.$refs.appbar.addSearchText(cart_command);
+            if (cart) {
+                this.srchCart = 1;
+            }
+            else {
+                this.srchCart = 0;
+            }
+            this.page = 1;
+            this.updateQuery();
         },
         handleItemImported(status) {
             if (!status) {
@@ -258,7 +270,8 @@ export default {
             this.srchCart = -1;
             this.page = 1;
         },
-        updateSearchText() {
+        updateSearchText(text) {
+            this.searchText = text;
             this.page = 1;
             this.updateQuery();
         },
@@ -308,7 +321,6 @@ export default {
     },
     mounted() {
         this.updateAllQuery();
-        // console.log(this.$t("topTitle"));
     },
     watch: {
         $route: function () {
@@ -344,3 +356,38 @@ export default {
     }
 };
 </script>
+
+<style>
+.non-purchased-cart-chip {
+    color: rgb(var(--v-theme-outline)) !important;
+}
+
+.non-purchased-cart-chip * {
+    color: rgb(var(--v-theme-onSurfaceVariant)) !important;
+}
+
+.purchased-cart-chip {
+    color: rgb(var(--v-theme-primary)) !important;
+    background-color: rgb(var(--v-theme-secondaryContainer)) !important;
+}
+
+.purchased-cart-chip * {
+    color: rgb(var(--v-theme-onSecondaryContainer)) !important;
+}
+
+.tag-chip {
+    color: rgb(var(--v-theme-onSurfaceVariant)) !important;
+    background-color: rgba(var(--v-theme-onSurfaceVariant), 0.12) !important;
+}
+
+.shop-chip {
+    color: rgb(var(--v-theme-primary)) !important;
+    background-color: rgb(var(--v-theme-surfaceContainerLow)) !important;
+}
+</style>
+
+<style scoped>
+.searchTextBox >>> input {
+    color: rgb(var(--v-theme-onSurface)) !important;
+}
+</style>

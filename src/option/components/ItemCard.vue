@@ -1,10 +1,10 @@
 <template>
     <v-card
         @click="navigateToItem"
-        class="d-flex flex-column ma-auto pa-1"
+        class="d-flex flex-column"
         height="100%"
-        max-width="310px"
         min-width="270px"
+        color="surfaceContainerLow"
     >
         <v-img :src="imageUrl" alt="Item Image" class="cover bg-grey-lighten-2" aspect-ratio="1" />
         <div class="ma-2 text-h6 text-weight-regular two-line-title">
@@ -14,7 +14,7 @@
         </div>
         <!--ショップ-->
         <div class="ma-1 d-flex flex-row">
-            <v-chip color="info" variant="outlined" @click.stop="handleShopClick(item.shop)">
+            <v-chip color="primary" variant="outlined" @click.stop="handleShopClick(item.shop)">
                 <v-avatar start>
                     <v-img :src="item.shop.thumbnail_url"></v-img>
                 </v-avatar>
@@ -39,7 +39,7 @@
                     </v-chip>
                 </div>
                 <div v-if="item.download" class="mx-1">
-                    <v-chip :color="item.download ? 'info' : 'disable'">
+                    <v-chip :color="item.download ? 'primary' : 'disable'">
                         <v-icon :icon="mdiCloudArrowDownOutlineIcon"></v-icon>
                         <v-tooltip activator="parent" location="left">
                             {{ $t("isDLItem") }}
@@ -48,7 +48,9 @@
                 </div>
                 <div class="mx-1">
                     <v-chip
-                        :color="item.purchased ? 'info' : 'disable'"
+                        :class="item.purchased ? 'purchased-cart-chip' : 'non-purchased-cart-chip'"
+                        :variant="item.purchased ? 'flat' : 'outlined'"
+                        :disabled="item.purchased == undefined"
                         @click.stop="handleCartClick()"
                     >
                         <v-icon :icon="mdiCartOutlineIcon"></v-icon>
@@ -75,8 +77,11 @@
                     v-for="tag in item.tags"
                     :key="tag"
                     small
-                    class="ma-1"
+                    label
+                    rounded="lg"
+                    class="ma-1 tag-chip"
                     @click.stop="handleTagClick(tag)"
+                    variant="outlined"
                 >
                     <span class="d-inline-block text-truncate tag-name">
                         {{ tag }}
@@ -144,7 +149,6 @@ export default {
 
 <style>
 .ellipsis-2-lines {
-    height: 62px;
     text-overflow: ellipsis;
 }
 .cover {

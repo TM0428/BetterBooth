@@ -1,5 +1,5 @@
 <template>
-    <v-btn color="info" variant="outlined">
+    <v-btn color="info" variant="outlined" block>
         {{ $t("allDownloadButton") }}
         <v-dialog v-model="dialog_download" activator="parent" width="auto">
             <v-card>
