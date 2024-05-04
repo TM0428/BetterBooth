@@ -4,7 +4,7 @@
         <v-divider></v-divider>
         <v-card class="mb-4" variant="tonal" color="surface">
             <v-list class="filter-list py-0">
-                <template v-for="(filter, index) in filters" :key="filter">
+                <template v-for="(filter, index) in filters" :key="index">
                     <v-list-item>
                         <v-list-item-content class="d-flex align-center justify-space-between">
                             <a :href="filter" target="_blank" class="text-body-2">{{ filter }}</a>

@@ -9,8 +9,8 @@
                     <v-col cols="12" sm="12" md="12" lg="6" xl="6">
                         <v-carousel class="bg-grey-lighten-2">
                             <v-carousel-item
-                                v-for="image in data.images"
-                                :key="image.original"
+                                v-for="(image, i) in data.images"
+                                :key="i"
                                 :src="image.original"
                                 @click="openPopup(image.original)"
                             ></v-carousel-item>
@@ -40,8 +40,12 @@
                                     :prepend-icon="mdiCartOutlineIcon"
                                     rounded="xl"
                                     :variant="data.purchased ? 'flat' : 'outlined'"
+                                    :class="
+                                        data.purchased
+                                            ? 'purchased-cart-chip'
+                                            : 'non-purchased-cart-chip'
+                                    "
                                     size="large"
-                                    color="info"
                                     @click="togglePurchased"
                                 >
                                     <div v-if="data.purchased">
