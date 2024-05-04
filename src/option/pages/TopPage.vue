@@ -1,6 +1,10 @@
 <template>
     <div class="toolbar">
-        <AppBar></AppBar>
+        <AppBar
+            active-text="Home"
+            @update-text="updateSearchText"
+            @clear-text="updateSearchText"
+        ></AppBar>
     </div>
     <div class="content">
         <v-container fluid>
@@ -225,7 +229,8 @@ export default {
             this.srchCart = -1;
             this.page = 1;
         },
-        updateSearchText() {
+        updateSearchText(text) {
+            this.searchText = text;
             this.page = 1;
             this.updateQuery();
         },

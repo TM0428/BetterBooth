@@ -39,7 +39,7 @@
                     </v-chip>
                 </div>
                 <div v-if="item.download" class="mx-1">
-                    <v-chip :color="item.download ? 'info' : 'disable'">
+                    <v-chip :color="item.download ? 'primary' : 'disable'">
                         <v-icon :icon="mdiCloudArrowDownOutlineIcon"></v-icon>
                         <v-tooltip activator="parent" location="left">
                             {{ $t("isDLItem") }}
@@ -48,7 +48,7 @@
                 </div>
                 <div class="mx-1">
                     <v-chip
-                        :color="item.purchased ? 'info' : 'disable'"
+                        :color="item.purchased ? 'primary' : 'disable'"
                         @click.stop="handleCartClick()"
                     >
                         <v-icon :icon="mdiCartOutlineIcon"></v-icon>
@@ -148,7 +148,6 @@ export default {
 
 <style>
 .ellipsis-2-lines {
-    height: 62px;
     text-overflow: ellipsis;
 }
 .cover {

@@ -20,20 +20,20 @@
             v-model="searchText"
             :label="$t('topSearchText')"
             clearable
-            @click:clear="
-                searchText = ''
-                // updateQuery();
-            "
             rounded="rounded-pill"
             density="compact"
             bg-color="surfaceContainerHighest"
             color="primary"
             single-line
             hide-details
-            @change="updateSearchText"
+            @change="updateText"
         >
             <template v-slot:clear>
-                <v-icon color="onSurfaceVariant" :icon="mdiCloseCircleIcon"> </v-icon>
+                <v-icon
+                    color="onSurfaceVariant"
+                    :icon="mdiCloseCircleIcon"
+                    @click="clearText()"
+                ></v-icon>
             </template>
             <template v-slot:append-inner>
                 <v-icon color="onSurfaceVariant" :icon="mdiMagnifyIcon"> </v-icon>
@@ -53,6 +53,7 @@
                     :value="item"
                     color="primary"
                     :href="item.href"
+                    :active="item.text == activeText"
                 >
                     <template v-slot:prepend>
                         <v-icon :icon="item.icon"></v-icon>
@@ -76,6 +77,12 @@ import {
     mdiHome
 } from "@mdi/js";
 export default {
+    props: {
+        activeText: {
+            type: String,
+            required: false
+        }
+    },
     data() {
         return {
             drawer: false,
@@ -91,8 +98,18 @@ export default {
                     icon: mdiStore,
                     href: "/src/option/option.html#/customshop"
                 }
-            ]
+            ],
+            searchText: ""
         };
+    },
+    methods: {
+        updateText() {
+            this.$emit("update-text", this.searchText);
+        },
+        clearText() {
+            this.searchText = "";
+            this.$emit("clear-text", "");
+        }
     }
 };
 </script>
