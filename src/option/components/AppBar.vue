@@ -26,13 +26,13 @@
             color="primary"
             single-line
             hide-details
-            @change="updateText"
+            @change="handleUpdateText"
         >
             <template v-slot:clear>
                 <v-icon
                     color="onSurfaceVariant"
                     :icon="mdiCloseCircleIcon"
-                    @click="clearText()"
+                    @click="handleClearText()"
                 ></v-icon>
             </template>
             <template v-slot:append-inner>
@@ -92,21 +92,34 @@ export default {
             mdiCloseCircleIcon: mdiCloseCircle,
             navItems: [
                 { text: "Home", icon: mdiHome, href: "/src/option/option.html#/" },
-                { text: "settings", icon: mdiCog, href: "/src/popup/popup.html" },
                 {
                     text: "add shop link",
                     icon: mdiStore,
                     href: "/src/option/option.html#/customshop"
-                }
+                },
+                { text: "settings", icon: mdiCog, href: "/src/popup/popup.html" }
             ],
             searchText: ""
         };
     },
     methods: {
-        updateText() {
+        addSearchText(text) {
+            this.searchText += " " + text;
+            this.handleUpdateText();
+        },
+        validateText() {
+            // validate search text
+            // if same text is included, delete
+            const searchTerms = this.searchText.toLowerCase().split(" ");
+            const uniqueSearchTerms = [...new Set(searchTerms)];
+            const validatedSearchText = uniqueSearchTerms.join(" ");
+            this.searchText = validatedSearchText;
+        },
+        handleUpdateText() {
+            this.validateText();
             this.$emit("update-text", this.searchText);
         },
-        clearText() {
+        handleClearText() {
             this.searchText = "";
             this.$emit("clear-text", "");
         }

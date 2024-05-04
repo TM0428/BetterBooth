@@ -1,6 +1,6 @@
 <template>
     <div class="toolbar">
-        <AppBar></AppBar>
+        <AppBar active-text="add shop link"></AppBar>
     </div>
     <div class="content">
         <h1>Custom Shop!</h1>

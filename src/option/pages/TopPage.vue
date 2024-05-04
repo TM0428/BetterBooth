@@ -1,6 +1,7 @@
 <template>
     <div class="toolbar">
         <AppBar
+            ref="appbar"
             active-text="Home"
             @update-text="updateSearchText"
             @clear-text="updateSearchText"
@@ -205,7 +206,7 @@ export default {
         handleCartClicked(cart) {
             console.log(cart);
             const cart_command = cart ? "is:cart" : "!is:cart";
-            this.searchText += " " + cart_command;
+            this.$refs.appbar.addSearchText(cart_command);
         },
         handleItemImported(status) {
             if (!status) {
