@@ -40,8 +40,12 @@
                                     :prepend-icon="mdiCartOutlineIcon"
                                     rounded="xl"
                                     :variant="data.purchased ? 'flat' : 'outlined'"
+                                    :class="
+                                        data.purchased
+                                            ? 'purchased-cart-chip'
+                                            : 'non-purchased-cart-chip'
+                                    "
                                     size="large"
-                                    color="info"
                                     @click="togglePurchased"
                                 >
                                     <div v-if="data.purchased">
