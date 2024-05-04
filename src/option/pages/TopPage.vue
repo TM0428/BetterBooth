@@ -26,7 +26,7 @@
                             <p class="text-subtitle-1">shop:</p>
                         </div>
                         <v-chip
-                            color="info"
+                            class="shop-chip"
                             variant="outlined"
                             closable
                             @click:close="removeShop()"
@@ -52,9 +52,7 @@
                         label
                         rounded="lg"
                         @click:close="removeTag(index)"
-                        class="ma-1 opacity-12"
-                        style="text-align: right"
-                        color="onSurfaceVariant"
+                        class="ma-1 tag-chip"
                         variant="outlined"
                     >
                         {{ stag }}
@@ -317,8 +315,14 @@ export default {
 </script>
 
 <style>
-.opacity-12 {
+.tag-chip {
+    color: rgb(var(--v-theme-onSurfaceVariant)) !important;
     background-color: rgba(var(--v-theme-onSurfaceVariant), 0.12) !important;
+}
+
+.shop-chip {
+    color: rgb(var(--v-theme-primary)) !important;
+    background-color: rgb(var(--v-theme-surfaceContainerLow)) !important;
 }
 </style>
 

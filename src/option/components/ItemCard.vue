@@ -14,7 +14,7 @@
         </div>
         <!--ショップ-->
         <div class="ma-1 d-flex flex-row">
-            <v-chip color="info" variant="outlined" @click.stop="handleShopClick(item.shop)">
+            <v-chip color="primary" variant="outlined" @click.stop="handleShopClick(item.shop)">
                 <v-avatar start>
                     <v-img :src="item.shop.thumbnail_url"></v-img>
                 </v-avatar>
@@ -77,9 +77,8 @@
                     small
                     label
                     rounded="lg"
-                    class="ma-1 opacity-12"
+                    class="ma-1 tag-chip"
                     @click.stop="handleTagClick(tag)"
-                    color="onSurfaceVariant"
                     variant="outlined"
                 >
                     <span class="d-inline-block text-truncate tag-name">
