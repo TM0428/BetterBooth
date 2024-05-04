@@ -25,8 +25,17 @@
                         Search by {{ searchText }}
 
                         <span v-if="srchCart >= 0">
-                            <v-chip closable @click:close="removeCart()">
-                                <v-icon :icon="mdiCartOutlineIcon"></v-icon>
+                            <v-chip
+                                closable
+                                @click:close="removeCart()"
+                                :class="
+                                    srchCart == 0
+                                        ? 'non-purchased-cart-chip'
+                                        : 'purchased-cart-chip'
+                                "
+                                :variant="srchCart == 0 ? 'outlined' : 'flat'"
+                            >
+                                <v-icon :icon="mdiCartOutlineIcon" class="mr-2"></v-icon>
 
                                 <div v-if="srchCart == 1">
                                     {{ $t("purchased") }}
@@ -163,7 +172,10 @@ export default {
 
                 // cartデータによるフィルタリング
                 let cartMatch = false;
-                if (this.srchCart == 0) {
+                if (item.purchased == undefined && this.srchCart >= 0) {
+                    cartMatch = false;
+                }
+                else if (this.srchCart == 0) {
                     cartMatch = !item.purchased;
                 }
                 else if (this.srchCart == 1) {
@@ -346,6 +358,23 @@ export default {
 </script>
 
 <style>
+.non-purchased-cart-chip {
+    color: rgb(var(--v-theme-outline)) !important;
+}
+
+.non-purchased-cart-chip * {
+    color: rgb(var(--v-theme-onSurfaceVariant)) !important;
+}
+
+.purchased-cart-chip {
+    color: rgb(var(--v-theme-primary)) !important;
+    background-color: rgb(var(--v-theme-secondaryContainer)) !important;
+}
+
+.purchased-cart-chip * {
+    color: rgb(var(--v-theme-onSecondaryContainer)) !important;
+}
+
 .tag-chip {
     color: rgb(var(--v-theme-onSurfaceVariant)) !important;
     background-color: rgba(var(--v-theme-onSurfaceVariant), 0.12) !important;

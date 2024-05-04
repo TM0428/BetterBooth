@@ -48,7 +48,9 @@
                 </div>
                 <div class="mx-1">
                     <v-chip
-                        :color="item.purchased ? 'primary' : 'disable'"
+                        :class="item.purchased ? 'purchased-cart-chip' : 'non-purchased-cart-chip'"
+                        :variant="item.purchased ? 'flat' : 'outlined'"
+                        :disabled="item.purchased == undefined"
                         @click.stop="handleCartClick()"
                     >
                         <v-icon :icon="mdiCartOutlineIcon"></v-icon>
