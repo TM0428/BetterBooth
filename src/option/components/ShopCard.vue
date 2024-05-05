@@ -33,6 +33,7 @@
 <script>
 import LinkIcon from "./icons/LinkIcon.vue";
 import { mdiClose } from "@mdi/js";
+
 export default {
     props: {
         shop_name: {
