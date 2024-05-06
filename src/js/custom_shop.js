@@ -4,9 +4,14 @@
  */
 
 let filterData;
+let shopData;
 async function getFilterDataModule() {
     const src = chrome.runtime.getURL("./js/module/filter_data.js");
     filterData = await import(src);
+}
+async function getShopDataModule() {
+    const src = chrome.runtime.getURL("./js/module/shop_data.js");
+    shopData = await import(src);
 }
 
 const NOW_BLOCK = "shop__border--price";
@@ -88,9 +93,16 @@ async function addButton() {
     parentDiv.appendChild(button);
 }
 
+async function addLink() {
+    const shops = shopData.getShops();
+    console.log(shops);
+}
+
 async function main() {
     await getFilterDataModule();
+    await getShopDataModule();
     addButton();
+    addLink();
 }
 
 main();

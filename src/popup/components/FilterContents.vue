@@ -31,7 +31,7 @@ const filters = ref([]);
 
 const removeFilter = async (index) => {
     filters.value.splice(index, 1);
-    await setFilter(filters.value);
+    await setFilter(Array.from(filters.value));
 };
 
 onMounted(async () => {
