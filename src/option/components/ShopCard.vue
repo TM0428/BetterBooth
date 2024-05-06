@@ -31,12 +31,13 @@
 </template>
 
 <script>
+import { getShop, setShop } from "@/js/module/shop_data";
 import LinkIcon from "./icons/LinkIcon.vue";
 import { mdiClose } from "@mdi/js";
 
 export default {
     props: {
-        shop_name: {
+        shopId: {
             type: String,
             required: true
         }
@@ -45,32 +46,20 @@ export default {
         return {
             LinkIcon: LinkIcon,
             mdiClose: mdiClose,
-            shop: {
-                thumbnail_url:
-                    "https://booth.pximg.net/c/128x128/users/4312177/icon_image/73dd12b3-8562-4271-a4f9-1a4b57bce623_base_resized.jpg",
-                subdomain: "tm428",
-                name: "428tm",
-                url: "https://tm428.booth.pm/",
-                add_url: [
-                    {
-                        icon: "link",
-                        url: "twitter.com"
-                    },
-                    {
-                        icon: "link",
-                        url: "facebook.com"
-                    }
-                ]
-            }
+            shop: {}
         };
     },
+    async mounted() {
+        this.shop = await getShop(this.shopId);
+    },
     methods: {
-        deleteUrl(i, url) {
+        async deleteUrl(i, url) {
             if (this.shop.add_url[i].url != url) {
                 console.error("index and url is invalid.");
                 return;
             }
             this.shop.add_url.splice(i, 1);
+            await setShop(this.shop);
         }
     }
 };

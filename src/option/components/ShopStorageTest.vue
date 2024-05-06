@@ -57,8 +57,7 @@ export default {
             const shops = await getShops();
             console.log(shops);
             shops.forEach((element) => {
-                console.log(element);
-                getShop(element);
+                console.log(getShop(element));
             });
         },
         async resetShopsFromStorage() {

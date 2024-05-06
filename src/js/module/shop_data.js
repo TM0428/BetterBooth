@@ -27,7 +27,7 @@ export async function addShop(shop) {
         }
     }
     else {
-        console.log("init shop");
+        console.log("[shop_data] init shop");
         initShop(shop);
     }
 }
@@ -50,6 +50,12 @@ export async function getShop(shopId) {
     else {
         return {};
     }
+}
+
+export async function setShop(shop) {
+    const shopId = getShopId(shop);
+    await setToSyncStorage(shopId, shop);
+    console.log("[shop-data] shop data set");
 }
 
 /**
