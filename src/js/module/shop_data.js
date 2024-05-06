@@ -6,7 +6,12 @@ import {
 } from "./chrome_storage.js";
 
 export function getShopId(shop) {
-    return "shop-" + shop.subdomain;
+    if (typeof shop == "string") {
+        return "shop-" + shop;
+    }
+    else {
+        return "shop-" + shop.subdomain;
+    }
 }
 
 /**
@@ -37,16 +42,14 @@ export async function getShops() {
     }
 }
 
-export function getShop(shopId) {
-    chrome.storage.sync.get(shopId, (result) => {
-        var shop = result[shopId];
-        if (shop) {
-            return shop;
-        }
-        else {
-            return {};
-        }
-    });
+export async function getShop(shopId) {
+    const shop = await getFromSyncStorage(shopId);
+    if (shop) {
+        return shop;
+    }
+    else {
+        return {};
+    }
 }
 
 /**

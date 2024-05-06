@@ -94,8 +94,41 @@ async function addButton() {
 }
 
 async function addLink() {
-    const shops = shopData.getShops();
-    console.log(shops);
+    const shops = await shopData.getShops();
+    window.location.href;
+    const url = window.location.href;
+    const match = url.match(/^(?:https?:\/\/)?([^/]+)/);
+    const subdomain = match ? match[1].split(".")[0] : null;
+    const shopId = shopData.getShopId(subdomain);
+    if (shops.includes(shopId)) {
+        // add link
+        const shop = await shopData.getShop(shopId);
+        shop.add_url.forEach((element) => {
+            const aElement = document.createElement("a");
+            aElement.classList.add(
+                "border",
+                "flex",
+                "gap-4",
+                "items-center",
+                "no-underline",
+                "rounded-oval",
+                "shrink-0",
+                "shop__border--text40",
+                "!no-underline",
+                "p-8"
+            );
+            aElement.href = element.url;
+            aElement.setAttribute("target", "_blank");
+            aElement.setAttribute("rel", "noopener");
+            const pixivIconElement = document.createElement("pixiv-icon");
+            pixivIconElement.classList.add("shop__text--link");
+            pixivIconElement.setAttribute("name", "24/BoothGlobe");
+            pixivIconElement.setAttribute("unsafe-non-guideline-scale", "0.833333333");
+            aElement.appendChild(pixivIconElement);
+            const links = document.querySelector("div.booth-description div.flex");
+            links.appendChild(aElement);
+        });
+    }
 }
 
 async function main() {

@@ -19,11 +19,11 @@ export default {
                 add_url: [
                     {
                         icon: "link",
-                        url: "twitter.com"
+                        url: "https://twitter.com"
                     },
                     {
                         icon: "link",
-                        url: "facebook.com"
+                        url: "https://facebook.com"
                     }
                 ]
             };
@@ -39,15 +39,15 @@ export default {
                 add_url: [
                     {
                         icon: "link",
-                        url: "twitter.com"
+                        url: "https://twitter.com"
                     },
                     {
                         icon: "link",
-                        url: "facebook.com"
+                        url: "https://facebook.com"
                     },
                     {
                         icon: "link",
-                        url: "youtube.com"
+                        url: "https://youtube.com"
                     }
                 ]
             };
