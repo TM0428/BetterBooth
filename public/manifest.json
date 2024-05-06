@@ -83,6 +83,21 @@
         },
         {
             "matches": [
+                "*://*.booth.pm/*"
+            ],
+            "exclude_matches": [
+                "*://booth.pm/*",
+                "*://accounts.booth.pm/*",
+                "*://manage.booth.pm/*",
+                "*://checkout.booth.pm/*"
+            ],
+            "js": [
+                "js/custom_shop.js"
+            ],
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
                 "*://*.booth.pm/"
             ],
             "exclude_matches": [
@@ -109,7 +124,10 @@
     },
     {
         "resources": [
-            "js/module/chrome_storage.js"
+            "js/module/chrome_storage.js",
+            "js/module/shop_data.js",
+            "js/module/filter_data.js",
+            "js/module/item_data.js"
         ],
         "matches": ["<all_urls>"]
     }]

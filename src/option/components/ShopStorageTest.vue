@@ -5,7 +5,7 @@
     <v-btn @click="resetShopsFromStorage()"> reset </v-btn>
 </template>
 <script>
-import { addShop, getShops, getShop, resetShop } from "@/js/module/chrome_storage";
+import { addShop, getShops, getShop, resetShop } from "@/js/module/shop_data.js";
 
 export default {
     methods: {

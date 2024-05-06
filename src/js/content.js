@@ -1,17 +1,11 @@
-const NOW_BLOCK = "shop__border--price";
-const NOT_BLOCK = "shop__background--price";
 const contentJa = {
     keyword: "キーワードを入力",
     genre: "ジャンル、商品名など",
-    block: "ブロック",
-    blocking: "ブロック中",
     gotoExtension: "拡張機能のページへ"
 };
 const contentEn = {
     keyword: "Search",
     genre: "Genre, Item Name, etc.",
-    block: "block",
-    blocking: "blocking",
     gotoExtension: "Go to Extension Page"
 };
 var contentLang = contentJa;
@@ -20,41 +14,6 @@ if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP")
 }
 
 let reload_count = 0;
-
-/**
- * ショップのブロックを追加する関数
- * @param {*} word ショップのURL
- */
-function addFilter(word) {
-    chrome.storage.sync.get("filters", (result) => {
-        var filterArray = result.filters;
-        if (filterArray && !filterArray.includes(word)) {
-            filterArray.push(word);
-            chrome.storage.sync.set({ filters: filterArray });
-            console.log("filter add.");
-        }
-        else {
-            filterArray = [word];
-            chrome.storage.sync.set({ filters: filterArray });
-            console.log("filter add.");
-        }
-    });
-}
-
-/**
- * ショップのブロックを解除する関数
- * @param {*} word ショップのURL
- */
-function removeFilter(word) {
-    chrome.storage.sync.get("filters", (result) => {
-        var filterArray = result.filters;
-        if (filterArray && filterArray.includes(word)) {
-            const newfilterArray = filterArray.filter((n) => n !== word);
-            chrome.storage.sync.set({ filters: newfilterArray });
-            console.log("filter remove.");
-        }
-    });
-}
 
 /**
  * boothの検索において、自動でソート条件を追加する関数
@@ -377,77 +336,6 @@ function makeNewSPSearchTab() {
     }, 1000);
 }
 
-/**
- * ブロック機能用のボタンを作成する関数
- */
-function addButton() {
-    chrome.storage.sync.get("filters", (result) => {
-        // console.log(result);
-        var filterArray = result.filters;
-
-        var parentDiv = document.querySelector("div.js-shop-follow");
-        if (!parentDiv) return;
-        const button = document.createElement("button");
-        var icon = document.createElement("i");
-        icon.className = "icon-attention s-1x";
-        var text = document.createElement("span");
-        text.classList.add("u-align-middle");
-        // const htmlLang = document.documentElement.lang;
-        var block = contentLang.block;
-        var blocking = contentLang.blocking;
-        if (filterArray && filterArray.includes(window.location.origin + "/")) {
-            button.classList.add(
-                "btn",
-                "small-dense",
-                NOW_BLOCK,
-                "block-button",
-                "shop__background--contents",
-                "shop__text--price"
-            );
-            // ブロック中
-            text.textContent = blocking;
-            var contents = document.querySelector("main.modules");
-            contents.style.display = "none";
-        }
-        else {
-            button.classList.add(
-                "btn",
-                "small-dense",
-                NOT_BLOCK,
-                "block-button",
-                "shop__text--contents"
-            );
-            // ブロック
-            text.textContent = block;
-        }
-        button.appendChild(icon);
-        button.appendChild(text);
-        button.addEventListener("click", () => {
-            const url = window.location.origin + "/";
-            var module_contents = document.querySelector("main.modules");
-            if (button.classList.contains(NOW_BLOCK)) {
-                button.classList.remove(
-                    NOW_BLOCK,
-                    "shop__background--contents",
-                    "shop__text--price"
-                );
-                button.classList.add(NOT_BLOCK, "shop__text--contents");
-                module_contents.style.display = "block";
-                text.textContent = block;
-                removeFilter(url);
-            }
-            else {
-                button.classList.remove(NOT_BLOCK, "shop__text--contents");
-                button.classList.add(NOW_BLOCK, "shop__background--contents", "shop__text--price");
-                module_contents.style.display = "none";
-                text.textContent = blocking;
-                addFilter(url);
-            }
-        });
-        parentDiv.appendChild(button);
-    });
-}
-
 function toggleFade(content) {
     content.classList.toggle("fade");
 }
@@ -574,13 +462,16 @@ function notReload() {
     }
 }
 
-addButton();
-window.addEventListener("load", attachOptionURL);
-notReload();
-hideDescription();
+async function main() {
+    window.addEventListener("load", attachOptionURL);
+    notReload();
+    hideDescription();
 
-makeNewSearchTab();
-makeNewSPSearchTab();
-// testInit();
-// リンクをnav要素の子要素の2番目に挿入
-insertLinkIntoNav();
+    makeNewSearchTab();
+    makeNewSPSearchTab();
+    // testInit();
+    // リンクをnav要素の子要素の2番目に挿入
+    insertLinkIntoNav();
+}
+
+main();
