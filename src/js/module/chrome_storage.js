@@ -10,11 +10,13 @@ export async function addShop(shop) {
     const result = await getFromSyncStorage("shops");
     const shops = result.shops;
     if (shops) {
-        console.log(shops);
+        const shopId = getShopId(shop);
+        if (shops.includes(shopId)) {
+            await mergeToSyncStorage(shopId, shop);
+        }
     }
     else {
         console.log("init shop");
-        console.log(shop);
         initShop(shop);
     }
 }
@@ -23,7 +25,6 @@ export async function getShops() {
     const result = await getFromSyncStorage("shops");
     const shops = result.shops;
     if (shops) {
-        console.log(shops);
         return shops;
     }
     else {
@@ -35,8 +36,10 @@ export function getShop(shopId) {
     chrome.storage.sync.get(shopId, (result) => {
         var shop = result[shopId];
         if (shop) {
-            console.log(shop);
             return shop;
+        }
+        else {
+            return {};
         }
     });
 }
@@ -57,6 +60,41 @@ async function initShop(shop) {
     const shops = [shopId];
     await setToSyncStorage({ shops: shops });
     await setToSyncStorage({ [`${shopId}`]: shop });
+}
+
+export async function setItemData(data) {
+    const itemId = "items_" + String(data.id);
+    try {
+        const result = await getFromLocalStorage("items");
+        let items = result.items;
+
+        if (items && !items.includes(itemId)) {
+            // アイテムが存在しないとき
+            items.push(itemId);
+            await setToLocalStorage({ items: items });
+            await setToLocalStorage({ [`${itemId}`]: data });
+        }
+        else if (items) {
+            // 既にあるため、元のデータとのマージ
+            const oldDataResult = await getFromLocalStorage(itemId);
+            const oldData = oldDataResult[itemId];
+            // oldDataのtagを一時保存
+            data.tags = oldData.tags;
+
+            await mergeToLocalStorage(itemId, data);
+        }
+        else {
+            // リストの新規作成
+            items = [itemId];
+            await setToLocalStorage({ items: items });
+            await setToLocalStorage({ [`${itemId}`]: data });
+        }
+        return 0;
+    }
+    catch (err) {
+        console.error(err);
+        return 1;
+    }
 }
 
 function getFromSyncStorage(key) {
@@ -85,6 +123,31 @@ function setToSyncStorage(data) {
     });
 }
 
+function mergeToSyncStorage(key, data) {
+    return new Promise((resolve, reject) => {
+        chrome.storage.sync.get(key, (result) => {
+            if (chrome.runtime.lastError) {
+                reject(new Error(chrome.runtime.lastError));
+            }
+            else {
+                const oldData = result[key];
+                const mergedData = {
+                    ...oldData,
+                    ...data
+                };
+                chrome.storage.sync.set({ [`${key}`]: mergedData }, () => {
+                    if (chrome.runtime.lastError) {
+                        reject(new Error(chrome.runtime.lastError));
+                    }
+                    else {
+                        resolve();
+                    }
+                });
+            }
+        });
+    });
+}
+
 function removeFromSyncStorage(key) {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.remove(key, (result) => {
@@ -97,3 +160,69 @@ function removeFromSyncStorage(key) {
         });
     });
 }
+
+function getFromLocalStorage(key) {
+    return new Promise((resolve, reject) => {
+        chrome.storage.sync.get(key, (result) => {
+            if (chrome.runtime.lastError) {
+                reject(new Error(chrome.runtime.lastError));
+            }
+            else {
+                resolve(result);
+            }
+        });
+    });
+}
+
+function setToLocalStorage(data) {
+    return new Promise((resolve, reject) => {
+        chrome.storage.Local.set(data, () => {
+            if (chrome.runtime.lastError) {
+                reject(new Error(chrome.runtime.lastError));
+            }
+            else {
+                resolve();
+            }
+        });
+    });
+}
+
+function mergeToLocalStorage(key, data) {
+    return new Promise((resolve, reject) => {
+        chrome.storage.Local.get(key, (result) => {
+            if (chrome.runtime.lastError) {
+                reject(new Error(chrome.runtime.lastError));
+            }
+            else {
+                const oldData = result[key];
+                const mergedData = {
+                    ...oldData,
+                    ...data
+                };
+                chrome.storage.Local.set({ [`${key}`]: mergedData }, () => {
+                    if (chrome.runtime.lastError) {
+                        reject(new Error(chrome.runtime.lastError));
+                    }
+                    else {
+                        resolve();
+                    }
+                });
+            }
+        });
+    });
+}
+
+/*
+function removeFromLocalStorage(key) {
+    return new Promise((resolve, reject) => {
+        chrome.storage.Local.remove(key, (result) => {
+            if (chrome.runtime.lastError) {
+                reject(new Error(chrome.runtime.lastError));
+            }
+            else {
+                resolve(result);
+            }
+        });
+    });
+}
+*/

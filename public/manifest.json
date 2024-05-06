@@ -106,5 +106,11 @@
         "matches": [
           "*://*.booth.pm/*"
         ]
+    },
+    {
+        "resources": [
+            "js/module/chrome_storage.js"
+        ],
+        "matches": ["<all_urls>"]
     }]
 }

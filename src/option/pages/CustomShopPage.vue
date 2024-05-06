@@ -23,6 +23,7 @@
                     <ShopCard shop="test"></ShopCard>
                 </v-col>
             </v-row>
+            <ShopStorageTest></ShopStorageTest>
         </v-container>
     </div>
 </template>
@@ -30,11 +31,13 @@
 <script>
 import AppBar from "../components/AppBar.vue";
 import ShopCard from "../components/ShopCard.vue";
+import ShopStorageTest from "../components/ShopStorageTest.vue";
 
 export default {
     components: {
         AppBar,
-        ShopCard
+        ShopCard,
+        ShopStorageTest
     },
     data() {
         return {};
