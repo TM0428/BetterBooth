@@ -29,3 +29,7 @@ export async function removeFilter(word) {
         console.log("[filter_data] filter remove.");
     }
 }
+
+export async function getFilter() {
+    return await getFromSyncStorage("filters");
+}
