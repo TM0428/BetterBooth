@@ -1,3 +1,14 @@
+/**
+ * matches: "*://booth.pm/ja/browse/*", "*://booth.pm/ja/search/*", "*://booth.pm/ja/items*",
+ * このスクリプトはアイテムの検索ページに影響するものを記述します
+ */
+
+let filterData;
+async function getFilterDataModule() {
+    const src = chrome.runtime.getURL("./js/module/filter_data.js");
+    filterData = await import(src);
+}
+
 const filterJa = {
     confirmBlockFront: "ショップ「",
     confirmBlockBack: "」をブロックしますか？"
@@ -9,26 +20,6 @@ const filterEn = {
 var filterLang = filterJa;
 if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP") {
     filterLang = filterEn;
-}
-
-/**
- * フィルターを追加する関数
- * @param {string} word
- */
-function addFilter(word) {
-    chrome.storage.sync.get("filters", (result) => {
-        var filterArray = result.filters;
-        if (filterArray && !filterArray.includes(word)) {
-            filterArray.push(word);
-            chrome.storage.sync.set({ filters: filterArray });
-            console.log("filter add.");
-        }
-        else {
-            filterArray = [word];
-            chrome.storage.sync.set({ filters: filterArray });
-            console.log("filter add.");
-        }
-    });
 }
 
 /**
@@ -122,7 +113,7 @@ function attachBlockButton(liElement) {
             filterLang.confirmBlockFront + shopName + filterLang.confirmBlockBack
         );
         if (confirm) {
-            addFilter(aElement.href);
+            filterData.addFilter(aElement.href);
             filterReload(aElement.href);
         }
     });
@@ -131,59 +122,10 @@ function attachBlockButton(liElement) {
     liElement.querySelector("div.item-card__shop-info").classList.add("u-justify-content-between");
     liElement.querySelector("a.item-card__shop-name-anchor").display = "inline";
 }
-/*
-function hasParentItemCard(target) {
-    let currentElement = target;
-    while (currentElement) {
-        if (currentElement.classList.contains('item-card') && currentElement.classList.contains('l-card')) {
-            return true;
-        }
-        currentElement = currentElement.parentElement;
-    }
-    return false;
+
+async function main() {
+    await getFilterDataModule();
+    filterList();
 }
 
-*/
-
-/**
- * ページ上でコンテストメニューを表示した時に発生するイベント
- */
-/*
-document.addEventListener("contextmenu", function (event) {
-    // イベント発生時の要素を保存
-    clickedEl = event.target;
-    if (hasParentItemCard(event.target)) {
-        // li.item-card.l-cardの子孫要素がクリックされたときの処理
-        chrome.runtime.sendMessage({ type: "visibleContextMenu" });
-    }
-    else {
-        chrome.runtime.sendMessage({ type: "unvisibleContextMenu" });
-    }
-}, true);
-*/
-
-/**
- * Background Scriptからのメッセージを受け取るためのリスナー
- */
-/*
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    console.log(message);
-    if (message.type === "contextMenuClick") {
-        // メッセージから情報を取得
-        var target = message.target;
-        var pageUrl = message.pageUrl;
-
-        //alert("message pushed.");
-        // メッセージを受信した後の処理
-        // ...
-        addFilter("hoge");
-    }
-    else if (message.type === "add-filter") {
-        console.log("come here!!");
-        addFilter(message.name);
-    }
-});
-
-*/
-
-filterList();
+main();

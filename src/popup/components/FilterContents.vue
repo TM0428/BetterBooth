@@ -22,16 +22,16 @@
         </v-card>
     </v-sheet>
 </template>
+
 <script setup>
-import { getFilter } from "@/js/module/filter_data";
+import { getFilter, setFilter } from "@/js/module/filter_data";
 import { ref, onMounted } from "vue";
 
 const filters = ref([]);
 
-const removeFilter = (index) => {
+const removeFilter = async (index) => {
     filters.value.splice(index, 1);
-    console.log(filters.value);
-    chrome.storage.sync.set({ filters: Array.from(filters.value) });
+    await setFilter(filters.value);
 };
 
 onMounted(async () => {

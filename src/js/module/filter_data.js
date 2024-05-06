@@ -6,8 +6,14 @@ import { getFromSyncStorage, setToSyncStorage } from "./chrome_storage.js";
  */
 export async function addFilter(word) {
     let filterArray = await getFromSyncStorage("filters");
-    if (filterArray && !filterArray.includes(word)) {
-        filterArray.push(word);
+    if (filterArray) {
+        if (filterArray.includes(word)) {
+            console.error("[filter_data] already blocked.");
+            return;
+        }
+        else {
+            filterArray.push(word);
+        }
     }
     else {
         console.log("[filter_data] filter array init.");
@@ -32,4 +38,9 @@ export async function removeFilter(word) {
 
 export async function getFilter() {
     return await getFromSyncStorage("filters");
+}
+
+export async function setFilter(filter) {
+    await setToSyncStorage("filters", filter);
+    console.log("[filter_data] filter set.");
 }
