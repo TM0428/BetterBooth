@@ -8,7 +8,7 @@ export async function addFilter(word) {
     let filterArray = await getFromSyncStorage("filters");
     if (filterArray) {
         if (filterArray.includes(word)) {
-            console.error("[filter_data] already blocked.");
+            console.error("[filter_data] already blocked");
             return;
         }
         else {
@@ -16,11 +16,11 @@ export async function addFilter(word) {
         }
     }
     else {
-        console.log("[filter_data] filter array init.");
+        console.log("[filter_data] filter array init");
         filterArray = [word];
     }
     await setToSyncStorage("filters", filterArray);
-    console.log("[filter_data] filter add.");
+    console.log("[filter_data] filter add");
 }
 
 /**
@@ -32,7 +32,7 @@ export async function removeFilter(word) {
     if (filterArray && filterArray.includes(word)) {
         const newfilterArray = filterArray.filter((n) => n !== word);
         await setToSyncStorage("filters", newfilterArray);
-        console.log("[filter_data] filter remove.");
+        console.log("[filter_data] filter remove");
     }
 }
 
@@ -42,5 +42,5 @@ export async function getFilter() {
 
 export async function setFilter(filter) {
     await setToSyncStorage("filters", filter);
-    console.log("[filter_data] filter set.");
+    console.log("[filter_data] filter set");
 }
