@@ -12,6 +12,7 @@
                 </v-col>
             </v-row>
             <ShopStorageTest></ShopStorageTest>
+            <ShopAddPopup></ShopAddPopup>
         </v-container>
     </div>
 </template>
@@ -21,11 +22,13 @@ import { getShops } from "@/js/module/shop_data";
 import AppBar from "../components/AppBar.vue";
 import ShopCard from "../components/ShopCard.vue";
 import ShopStorageTest from "../components/ShopStorageTest.vue";
+import ShopAddPopup from "../components/ShopAddPopup.vue";
 
 export default {
     components: {
         AppBar,
         ShopCard,
+        ShopAddPopup,
         ShopStorageTest
     },
     data() {
