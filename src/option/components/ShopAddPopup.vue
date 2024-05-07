@@ -1,6 +1,6 @@
 <template>
     <v-fab :icon="mdiPencilIcon" @click="dialog = !dialog"> </v-fab>
-    <v-dialog v-model="dialog">
+    <v-dialog v-model="dialog" width="auto">
         <v-card>
             <v-card-title>
                 {{ $t("addShopTitle") }}
@@ -10,11 +10,51 @@
                     <v-col cols="12">
                         <v-text-field
                             placeholder="https://428tm.booth.pm"
+                            hide-details
                             label="Shop URL"
                             @change="getShopInfo()"
                             v-model="shop.url"
                         >
                         </v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                        <v-skeleton-loader :loading="loading" type="list-item-avatar-two-line">
+                            <v-card
+                                class="d-flex flex-column"
+                                height="100%"
+                                width="100%"
+                                min-width="300px"
+                                color="surfaceContainerLow"
+                                :title="shop.name"
+                                :subtitle="shop.url"
+                            >
+                                <template v-slot:prepend
+                                    ><v-avatar start>
+                                        <v-img :src="shop.thumbnail_url"></v-img>
+                                    </v-avatar>
+                                </template>
+                                <v-card-text>
+                                    <v-list>
+                                        <v-list-item v-for="(item, i) in shop.add_url" :key="i">
+                                            <template v-slot:prepend>
+                                                <v-icon :icon="LinkIcon"></v-icon>
+                                            </template>
+                                            <v-list-item-content append-icon="mdi-delete">
+                                                <v-list-item-title>
+                                                    {{ item.url }}</v-list-item-title
+                                                >
+                                            </v-list-item-content>
+                                            <template v-slot:append>
+                                                <v-icon
+                                                    :icon="mdiClose"
+                                                    @click="deleteUrl(i, item.url)"
+                                                ></v-icon>
+                                            </template>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-card-text>
+                            </v-card>
+                        </v-skeleton-loader>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -36,13 +76,14 @@ export default {
                 name: "",
                 url: "",
                 add_url: []
-            }
+            },
+            loading: true
         };
     },
     methods: {
         async getShopInfo() {
             if (!this.validateUrl(this.shop.url)) {
-                console.error("this is not booth shop url.");
+                console.warn("this is not booth shop url.");
                 return;
             }
             const response = await fetch(this.shop.url, {
@@ -83,6 +124,14 @@ export default {
             const match = this.shop.url.match(/^(?:https?:\/\/)?([^/]+)/);
             const subdomain = match ? match[1].split(".")[0] : null;
             console.log(subdomain);
+            this.shop = {
+                thumbnail_url: backgroundImageUrl,
+                subdomain: subdomain,
+                name: name,
+                url: this.shop.url,
+                add_url: []
+            };
+            this.loading = false;
         },
         validateUrl(url) {
             // 正規表現パターンを定義

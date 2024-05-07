@@ -10,8 +10,9 @@
     float: left;
 }
 
-.block-button {
-    margin-left: 10px;
+
+#shop_default .page-wrap .btn {
+    margin-right: 10px;
 }
 
 .item-card__title-anchor--multiline {
