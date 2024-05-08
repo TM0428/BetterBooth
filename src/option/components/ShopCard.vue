@@ -12,7 +12,7 @@
             </v-avatar>
         </template>
         <template v-slot:subtitle>
-            <a :href="shop.url">{{ shop.url }}</a>
+            <a :href="shop.url" target="_blank">{{ shop.url }}</a>
         </template>
         <v-card-text>
             <v-list>
