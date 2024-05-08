@@ -64,7 +64,7 @@ export function removeFromSyncStorage(key) {
 
 export function getFromLocalStorage(key) {
     return new Promise((resolve, reject) => {
-        chrome.storage.sync.get(key, (result) => {
+        chrome.storage.local.get(key, (result) => {
             if (chrome.runtime.lastError) {
                 reject(new Error(chrome.runtime.lastError));
             }

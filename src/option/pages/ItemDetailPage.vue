@@ -157,6 +157,7 @@
 </template>
 
 <script>
+import { getItem, getItemId } from "@/js/module/item_data";
 import router from "@/option/router"; // Vue Router インスタンスのインポート
 import {
     mdiArrowLeft,
@@ -172,15 +173,7 @@ export default {
     props: ["itemId"],
     data() {
         return {
-            data: {
-                name: "",
-                images: [""],
-                description: "",
-                additionalDescription: "",
-                shop: {
-                    url: ""
-                }
-            },
+            data: {},
             popupImage: null,
             mdiArrowLeftIcon: mdiArrowLeft,
             mdiLinkIcon: mdiLink,
@@ -191,18 +184,19 @@ export default {
             mdiCloudArrowDownOutlineIcon: mdiCloudArrowDownOutline
         };
     },
-
-    mounted() {
-        chrome.storage.local.get(`items_${this.itemId}`, (result) => {
-            this.data = result[`items_${this.itemId}`];
-            console.log(this.data);
-            if (this.data.additionalDescription) {
-                this.data.additionalDescription = this.data.additionalDescription.replaceAll(
-                    "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
-                    "ma-1 pt-8"
-                );
-            }
-        });
+    async created() {
+        const itemIdKey = getItemId(this.itemId);
+        this.data = await getItem(itemIdKey);
+        // error
+        if (!this.data) {
+            router.push({ name: "Top" });
+        }
+        if (this.data.additionalDescription) {
+            this.data.additionalDescription = this.data.additionalDescription.replaceAll(
+                "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
+                "ma-1 pt-8"
+            );
+        }
     },
 
     methods: {

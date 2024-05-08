@@ -128,7 +128,8 @@
             "js/module/shop_data.js",
             "js/module/shop.js",
             "js/module/filter_data.js",
-            "js/module/item_data.js"
+            "js/module/item_data.js",
+            "js/module/item.js"
         ],
         "matches": ["<all_urls>"]
     }]

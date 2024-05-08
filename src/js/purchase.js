@@ -1,3 +1,8 @@
+/**
+ * matches: "https://checkout.booth.pm/orders*",
+ * このスクリプトは購入情報を取得するものを記述します
+ */
+
 async function getPurchaseData() {
     // クラス名 "hidden" を持つすべての要素を取得
     let elements = document.querySelectorAll("div.hidden");
