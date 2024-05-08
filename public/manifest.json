@@ -32,7 +32,7 @@
                 "*://booth.pm/zh-tw"
             ],
             "js": [
-                "js/filter.js"
+                "js/search_item_filter.js"
             ],
             "css": [
                 "css/search.css"
@@ -83,6 +83,21 @@
         },
         {
             "matches": [
+                "*://*.booth.pm/*"
+            ],
+            "exclude_matches": [
+                "*://booth.pm/*",
+                "*://accounts.booth.pm/*",
+                "*://manage.booth.pm/*",
+                "*://checkout.booth.pm/*"
+            ],
+            "js": [
+                "js/custom_shop.js"
+            ],
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
                 "*://*.booth.pm/"
             ],
             "exclude_matches": [
@@ -106,5 +121,15 @@
         "matches": [
           "*://*.booth.pm/*"
         ]
+    },
+    {
+        "resources": [
+            "js/module/chrome_storage.js",
+            "js/module/shop_data.js",
+            "js/module/shop.js",
+            "js/module/filter_data.js",
+            "js/module/item_data.js"
+        ],
+        "matches": ["<all_urls>"]
     }]
 }

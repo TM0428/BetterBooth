@@ -22,26 +22,21 @@
         </v-card>
     </v-sheet>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            filters: []
-        };
-    },
-    methods: {
-        removeFilter(index) {
-            this.filters.splice(index, 1);
-            console.log(this.filters);
-            chrome.storage.sync.set({ filters: Array.from(this.filters) });
-        }
-    },
-    created() {
-        chrome.storage.sync.get("filters", (result) => {
-            this.filters = result.filters || [];
-        });
-    }
+
+<script setup>
+import { getFilter, setFilter } from "@/js/module/filter_data";
+import { ref, onMounted } from "vue";
+
+const filters = ref([]);
+
+const removeFilter = async (index) => {
+    filters.value.splice(index, 1);
+    await setFilter(Array.from(filters.value));
 };
+
+onMounted(async () => {
+    filters.value = (await getFilter()) || [];
+});
 </script>
 
 <style lang="scss">
