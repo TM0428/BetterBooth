@@ -4,6 +4,7 @@ import {
     removeFromSyncStorage,
     setToSyncStorage
 } from "./chrome_storage.js";
+import { makeShopFromObject } from "./shop.js";
 
 export function getShopId(shop) {
     if (typeof shop == "string") {
@@ -19,11 +20,18 @@ export function getShopId(shop) {
  * @param {*} shop ショップのオブジェクト
  */
 export async function addShop(shop) {
-    const shops = await getFromSyncStorage("shops");
+    let shops = await getFromSyncStorage("shops");
     if (shops) {
         const shopId = getShopId(shop);
         if (shops.includes(shopId)) {
+            console.log("[shop-data] shop data merge");
             await mergeToSyncStorage(shopId, shop);
+        }
+        else {
+            console.log("[shop-data] shop data add");
+            shops.push(shopId);
+            await setToSyncStorage("shops", shops);
+            await setToSyncStorage(shopId, shop);
         }
     }
     else {
@@ -43,19 +51,11 @@ export async function getShops() {
 }
 
 export async function getShop(shopId) {
-    const shop = await getFromSyncStorage(shopId);
-    if (shop) {
-        return shop;
-    }
-    else {
-        return {};
-    }
+    return makeShopFromObject(await getFromSyncStorage(shopId));
 }
 
 export async function setShop(shop) {
-    const shopId = getShopId(shop);
-    await setToSyncStorage(shopId, shop);
-    console.log("[shop-data] shop data set");
+    addShop(shop);
 }
 
 /**

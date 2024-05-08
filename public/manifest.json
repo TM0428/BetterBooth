@@ -126,6 +126,7 @@
         "resources": [
             "js/module/chrome_storage.js",
             "js/module/shop_data.js",
+            "js/module/shop.js",
             "js/module/filter_data.js",
             "js/module/item_data.js"
         ],
