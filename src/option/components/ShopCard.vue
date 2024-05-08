@@ -5,12 +5,14 @@
         min-width="300px"
         color="surfaceContainerLow"
         :title="shop.name"
-        :subtitle="shop.url"
     >
         <template v-slot:prepend
             ><v-avatar start>
                 <v-img :src="shop.thumbnail_url"></v-img>
             </v-avatar>
+        </template>
+        <template v-slot:subtitle>
+            <a :href="shop.url">{{ shop.url }}</a>
         </template>
         <v-card-text>
             <v-list>
@@ -19,7 +21,7 @@
                         <v-icon :icon="LinkIcon"></v-icon>
                     </template>
                     <v-list-item-content append-icon="mdi-delete">
-                        <v-list-item-title> {{ item.url }}</v-list-item-title>
+                        <v-list-item-title> {{ item.url }} </v-list-item-title>
                     </v-list-item-content>
                     <template v-slot:append>
                         <v-icon :icon="mdiClose" @click="deleteUrl(i, item.url)"></v-icon>

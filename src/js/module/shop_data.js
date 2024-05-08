@@ -8,10 +8,10 @@ import { makeShopFromObject } from "./shop.js";
 
 export function getShopId(shop) {
     if (typeof shop == "string") {
-        return "shop-" + shop;
+        return "shop_" + shop;
     }
     else {
-        return "shop-" + shop.subdomain;
+        return "shop_" + shop.subdomain;
     }
 }
 
@@ -35,7 +35,6 @@ export async function addShop(shop) {
         }
     }
     else {
-        console.log("[shop_data] init shop");
         initShop(shop);
     }
 }
@@ -62,16 +61,16 @@ export async function setShop(shop) {
  * ショップのデータをリセットする関数
  */
 export async function resetShop() {
-    const result = await getFromSyncStorage("shops");
-    const shops = result.shops;
+    const shops = await getFromSyncStorage("shops");
     await removeFromSyncStorage(shops);
     await removeFromSyncStorage("shops");
 }
 
 async function initShop(shop) {
     // リスト作成と登録
+    console.log("[shop_data] init shop");
     const shopId = getShopId(shop);
     const shops = [shopId];
-    await setToSyncStorage({ shops: shops });
-    await setToSyncStorage({ [`${shopId}`]: shop });
+    await setToSyncStorage("shops", shops);
+    await setToSyncStorage(shopId, shop);
 }

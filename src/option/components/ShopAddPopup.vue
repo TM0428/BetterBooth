@@ -12,7 +12,7 @@
                             placeholder="https://428tm.booth.pm"
                             label="Shop URL"
                             @input="getShopInfo()"
-                            v-model="shop.url"
+                            v-model="shopUrl"
                             :rules="boothUrlRules"
                         >
                         </v-text-field>
@@ -98,6 +98,7 @@ export default {
             mdiPencilIcon: mdiPencil,
             dialog: false,
             shop: {},
+            shopUrl: "",
             loading: true,
             newUrl: "",
             boothUrlRules: [(v) => this.validateUrl(v) || "invalidURL."],
@@ -111,10 +112,10 @@ export default {
     },
     methods: {
         async getShopInfo() {
-            if (!this.validateUrl(this.shop.url)) {
+            if (!this.validateUrl(this.shopUrl)) {
                 return;
             }
-            const response = await fetch(this.shop.url, {
+            const response = await fetch(this.shopUrl, {
                 credentials: "omit"
             });
             const text = await response.text();
@@ -136,7 +137,6 @@ export default {
                 // 上記以外の場合
                 name = shopNameElement.textContent.trim();
             }
-            console.log(name);
             // 要素を取得
             const avatarImageElement = doc.querySelector(".avatar-image");
 
@@ -147,12 +147,10 @@ export default {
             const backgroundImageUrl = backgroundImageStyle
                 .replace(/^url\(["']?/, "")
                 .replace(/["']?\)$/, "");
-            console.log(backgroundImageUrl);
 
-            const match = this.shop.url.match(/^(?:https?:\/\/)?([^/]+)/);
+            const match = this.shopUrl.match(/^(?:https?:\/\/)?([^/]+)/);
             const subdomain = match ? match[1].split(".")[0] : null;
-            console.log(subdomain);
-            this.shop = new Shop(backgroundImageUrl, subdomain, name, this.shop.url, []);
+            this.shop = new Shop(backgroundImageUrl, subdomain, name, []);
             this.loading = false;
         },
         validateUrl(url) {
