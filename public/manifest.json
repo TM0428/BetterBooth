@@ -41,7 +41,9 @@
         },
         {
             "matches": [
-                "*://*.booth.pm/items/*"
+                "*://*.booth.pm/items/*",
+                "*://*.booth.pm/*/items/*",
+                "*://booth.pm/*/items/*"
             ],
             "exclude_matches": [
                 "*://accounts.booth.pm/*",

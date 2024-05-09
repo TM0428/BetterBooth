@@ -146,7 +146,77 @@ function handleButtonClick(event, anchorElement, data) {
     addData(data);
 }
 
+function validateItemPage() {
+    if (document.body.children[0].className == "dialog") {
+        return false;
+    }
+    return true;
+}
+
+function redirectToEn() {
+    const url = window.location.href;
+    // リダイレクト
+    console.log(url);
+    // もし、*://*booth.pm/en/items/* の場合はそのまま
+    if (url.match(/.*booth\.pm\/en\/items\/.*/)) {
+        mountDeletedItem();
+    }
+    else {
+        // url候補:
+        // https://booth.pm/ja/items/xxxxxx to https://428_tm.booth.pm/en/items/xxxxxx
+        if (url.match(/.*booth\.pm\/ja\/items\/.*/)) {
+            window.location.href = url.replace(/booth\.pm\/ja/, "428_tm.booth.pm/en");
+        }
+        // https://hoge.booth.pm/items/xxxxxx to https://hoge.booth.pm/en/items/xxxxxx
+        if (url.match(/.*booth\.pm\/items\/.*/)) {
+            window.location.href = url.replace(/booth\.pm/, "booth.pm/en");
+        }
+    }
+}
+
+async function mountDeletedItem() {
+    // window.location.href から itemID を取得
+    var itemID = window.location.href.match(/\/items\/(\d+)/)[1];
+    if (itemData === undefined) {
+        await getItemDataModule();
+    }
+    const item = await itemData.getItem(itemID);
+    if (item == null || item == undefined) {
+        return;
+    }
+
+    // 動的な HTML 要素を作成
+    var div = document.createElement("div");
+    var warning = document.createElement("p");
+    var title_h1 = document.createElement("h1");
+    var image_img = document.createElement("img");
+    var description_p = document.createElement("p");
+
+    // テキストコンテンツを設定
+    title_h1.textContent = item.name;
+    title_h1.classList.add("font-bold", "leading-[32px]", "m-0", "text-[24px]");
+    var des = item.description.replace("\\n", "<br>");
+    console.log(des);
+    warning.textContent = '*このページは、拡張機能"Better BOOTH"によって作成されています。';
+    description_p.innerHTML = item.description.replace(/\n/g, "<br>");
+    image_img.src = item.images[0].original;
+
+    // bodyの直下のコンテンツを非表示にする
+    var bodyChildren = document.body.children;
+    for (var i = 0; i < bodyChildren.length; i++) {
+        bodyChildren[i].style.display = "none";
+    }
+
+    // 要素を追加
+    div.appendChild(warning);
+    div.appendChild(title_h1);
+    div.appendChild(image_img);
+    div.appendChild(description_p);
+    document.body.appendChild(div);
+}
+
 async function main() {
+    console.log("custom_item.js");
     await getItemDataModule();
     await getSettingsModule();
     const setting = await settingsData.getExtensionSettings();
@@ -154,9 +224,14 @@ async function main() {
         itemGetLang = itemGetEn;
     }
     if (setting.save_item) {
-        addSaveButton();
-        addDownloadedItem();
-        addRestockItem();
+        if (validateItemPage()) {
+            addSaveButton();
+            addDownloadedItem();
+            addRestockItem();
+        }
+        else {
+            redirectToEn();
+        }
     }
 }
 

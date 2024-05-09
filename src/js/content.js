@@ -404,72 +404,8 @@ function insertLinkIntoNav() {
     }, 1000);
 }
 
-async function addDeletedItem() {
-    // ここに実行したいコードを記述する
-    console.log("addDeletedItem 関数が実行されました");
-    // window.location.href から itemID を取得
-    var itemID = window.location.href.match(/\/items\/(\d+)/)[1];
-    chrome.storage.local.get(`items_${itemID}`, (result) => {
-        var itemdata = result[`items_${itemID}`];
-        console.log(itemdata);
-        if (itemdata === undefined) {
-            console.log(itemID);
-            return;
-        }
-
-        // 動的な HTML 要素を作成
-        var div = document.createElement("div");
-        var warning = document.createElement("p");
-        var title_h1 = document.createElement("h1");
-        var image_img = document.createElement("img");
-        var description_p = document.createElement("p");
-
-        // テキストコンテンツを設定
-        title_h1.textContent = itemdata.name;
-        title_h1.classList.add("font-bold", "leading-[32px]", "m-0", "text-[24px]");
-        var des = itemdata.description.replace("\\n", "<br>");
-        console.log(des);
-        warning.textContent = '*このページは、拡張機能"Better BOOTH"によって作成されています。';
-        description_p.innerHTML = itemdata.description.replace(/\n/g, "<br>");
-        image_img.src = itemdata.images[0].original;
-
-        // bodyの直下のコンテンツを非表示にする
-        var bodyChildren = document.body.children;
-        for (var i = 0; i < bodyChildren.length; i++) {
-            bodyChildren[i].style.display = "none";
-        }
-
-        // 要素を追加
-        div.appendChild(warning);
-        div.appendChild(title_h1);
-        div.appendChild(image_img);
-        div.appendChild(description_p);
-        document.body.appendChild(div);
-    });
-}
-
-function notReload() {
-    if (document.body.children.length === 1) {
-        // リダイレクト
-        const url = window.location.href;
-        // const regex = new RegExp('https?://(manage|checkout|accounts).*.booth.pm.*');
-        const regex = new RegExp("https?://(?!.*(manage|checkout|accounts)).*.booth.pm/items/.*");
-        if (regex.test(url)) {
-            console.log("reload");
-            window.location.href = window.location.href.replace(
-                "booth.pm/items/",
-                "booth.pm/en/items/"
-            );
-        }
-        else {
-            addDeletedItem();
-        }
-    }
-}
-
 async function main() {
     window.addEventListener("load", attachOptionURL);
-    notReload();
     hideDescription();
 
     makeNewSearchTab();

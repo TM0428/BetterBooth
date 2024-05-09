@@ -15,6 +15,12 @@ async function getItemModule() {
     item = await import(src);
 }
 
+let settings;
+async function getSettingsModule() {
+    const src = chrome.runtime.getURL("./js/module/settings_data.js");
+    settings = await import(src);
+}
+
 async function getPurchaseData() {
     // クラス名 "hidden" を持つすべての要素を取得
     let elements = document.querySelectorAll("div.hidden");
@@ -53,13 +59,11 @@ async function getPurchaseData() {
 async function main() {
     await getItemDataModule();
     await getItemModule();
-    await getPurchaseData();
+    await getSettingsModule();
+    const setting = await settings.getExtensionSettings();
+    if (setting && setting.save_item && setting.save_purchase) {
+        getPurchaseData();
+    }
 }
 
 main();
-// chrome.storage.sync.get("extended_settings", (result) => {
-//     const setting = result.extended_settings;
-//     if (setting && setting.save_item && setting.save_purchase) {
-//         getPurchaseData();
-//     }
-// });
