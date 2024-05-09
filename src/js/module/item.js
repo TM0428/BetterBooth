@@ -1,4 +1,4 @@
-import Shop, { makeShopFromObject } from "./shop";
+import Shop, { makeShopFromObject } from "./shop.js";
 
 class Item {
     constructor(

@@ -39,7 +39,7 @@ export async function addShop(shop) {
     }
 }
 
-export async function getShops() {
+export async function getShopsList() {
     const shops = await getFromSyncStorage("shops");
     if (shops) {
         return shops;
@@ -47,6 +47,15 @@ export async function getShops() {
     else {
         return [];
     }
+}
+
+export async function getShops() {
+    const shopList = await getShopsList();
+    const shops = [];
+    for (const shopId of shopList) {
+        shops.push(makeShopFromObject(await getFromSyncStorage(shopId)));
+    }
+    return shops;
 }
 
 export async function getShop(shopId) {

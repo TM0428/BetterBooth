@@ -3,8 +3,8 @@ import {
     mergeToLocalStorage,
     removeFromLocalStorage,
     setToLocalStorage
-} from "./chrome_storage";
-import { makeItemFromObject } from "./item";
+} from "./chrome_storage.js";
+import { makeItemFromObject } from "./item.js";
 
 export function getItemId(item) {
     if (typeof item == "string") {
@@ -48,7 +48,12 @@ export async function mergeItem(itemId, item) {
 }
 
 export async function getItems() {
-    return await getFromLocalStorage("items");
+    const itemList = await getFromLocalStorage("items");
+    const items = [];
+    for (const itemId of itemList) {
+        items.push(makeItemFromObject(await getFromLocalStorage(itemId)));
+    }
+    return items;
 }
 
 export async function getItem(itemId) {

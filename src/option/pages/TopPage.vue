@@ -120,6 +120,7 @@ import ItemImportPopup from "../components/ItemImportPopup.vue";
 import AppBar from "../components/AppBar.vue";
 
 import { mdiMagnify, mdiCartOutline, mdiHelpCircleOutline, mdiCloseCircle } from "@mdi/js";
+import { getItems } from "@/js/module/item_data";
 
 export default {
     components: {
@@ -209,19 +210,8 @@ export default {
         }
     },
     methods: {
-        reloadList() {
-            chrome.storage.local.get("items", (result) => {
-                const itemIdList = result.items || [];
-                this.itemList = [];
-                itemIdList.forEach((itemId) => {
-                    chrome.storage.local.get(`${itemId}`, (itemResult) => {
-                        const itemData = itemResult[itemId];
-                        if (itemData && itemData.name) {
-                            this.itemList.push(itemData);
-                        }
-                    });
-                });
-            });
+        async reloadList() {
+            this.itemList = await getItems();
         },
         handleTagClicked(tag) {
             console.log(tag);
@@ -327,7 +317,7 @@ export default {
             this.updateAllQuery();
         }
     },
-    created() {
+    async created() {
         // 言語ファイルが正しく読み込まれることを確認してください
         const userLocale = window.navigator.language;
         // console.log(userLocale);
@@ -342,17 +332,8 @@ export default {
                 this.$i18n.locale = extended_settings.language;
             }
         });
-        chrome.storage.local.get("items", (result) => {
-            const itemIdList = result.items || [];
-            itemIdList.forEach((itemId) => {
-                chrome.storage.local.get(`${itemId}`, (itemResult) => {
-                    const itemData = itemResult[itemId];
-                    if (itemData && itemData.name) {
-                        this.itemList.push(itemData);
-                    }
-                });
-            });
-        });
+
+        this.itemList = await getItems();
     }
 };
 </script>
