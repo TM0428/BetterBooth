@@ -7,7 +7,7 @@
             <div class="mx-lg-2 px-2 mx-sm-4">
                 <v-row class="mx-sm-4">
                     <v-col cols="12" sm="12" md="12" lg="6" xl="6">
-                        <v-carousel class="bg-grey-lighten-2">
+                        <v-carousel class="bg-grey-lighten-2" v-if="data.images.length > 0">
                             <v-carousel-item
                                 v-for="(image, i) in data.images"
                                 :key="i"
@@ -85,14 +85,11 @@
                 </v-row>
             </div>
 
-            <p
-                class="description text-body-1 mx-4"
-                v-html="formatDescription(data.description)"
-            ></p>
+            <p class="description text-body-1 mx-4" v-html="formatDescription"></p>
             <p
                 class="additional-description text-body-1 mx-4"
                 v-if="data.additionalDescription"
-                v-html="formatDescription(data.additionalDescription)"
+                v-html="formatAdditionalDescription"
             ></p>
 
             <div class="footer-buttons">
@@ -157,6 +154,7 @@
 </template>
 
 <script>
+import Item from "@/js/module/item";
 import { getItem, getItemId } from "@/js/module/item_data";
 import router from "@/option/router"; // Vue Router インスタンスのインポート
 import {
@@ -173,7 +171,7 @@ export default {
     props: ["itemId"],
     data() {
         return {
-            data: {},
+            data: new Item(),
             popupImage: null,
             mdiArrowLeftIcon: mdiArrowLeft,
             mdiLinkIcon: mdiLink,
@@ -184,9 +182,10 @@ export default {
             mdiCloudArrowDownOutlineIcon: mdiCloudArrowDownOutline
         };
     },
-    async created() {
+    async mounted() {
         const itemIdKey = getItemId(this.itemId);
         this.data = await getItem(itemIdKey);
+        console.log(this.data);
         // error
         if (!this.data) {
             router.push({ name: "Top" });
@@ -200,9 +199,6 @@ export default {
     },
 
     methods: {
-        formatDescription(description) {
-            return description.replace(/\n/g, "<br>");
-        },
         openPopup(imageUrl) {
             this.popupImage = imageUrl;
             document.body.style.overflow = "hidden";
@@ -258,6 +254,17 @@ export default {
             chrome.storage.local.set({
                 [`items_${this.itemId}`]: new_data
             });
+        }
+    },
+    computed: {
+        formatDescription() {
+            if (this.data.description) return this.data.description.replace(/\n/g, "<br>");
+            else return "";
+        },
+        formatAdditionalDescription() {
+            if (this.data.additionalDescription)
+                return this.data.additionalDescription.replace(/\n/g, "<br>");
+            else return "";
         }
     },
     watch: {
