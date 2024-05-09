@@ -131,7 +131,7 @@
             "js/module/item_data.js",
             "js/module/item.js",
             "js/module/settings_data.js",
-            "js/module/extension_settings.js",
+            "js/module/extended_settings.js",
             "js/module/search_settings.js"
         ],
         "matches": ["<all_urls>"]

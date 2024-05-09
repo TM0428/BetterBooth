@@ -1,4 +1,4 @@
-class ExtensionSettings {
+class ExtendedSettings {
     constructor(language = "ja", auto_reload, save_item, save_purchase) {
         this.language = language;
         this.auto_reload = auto_reload;
@@ -8,7 +8,7 @@ class ExtensionSettings {
 }
 
 export function makeExtensionSettingsFromObject(object) {
-    return new ExtensionSettings(
+    return new ExtendedSettings(
         object.language || object.lang,
         object.auto_reload,
         object.save_item,
@@ -16,4 +16,4 @@ export function makeExtensionSettingsFromObject(object) {
     );
 }
 
-export default ExtensionSettings;
+export default ExtendedSettings;

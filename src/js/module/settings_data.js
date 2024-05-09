@@ -1,5 +1,5 @@
 import { getFromSyncStorage, setToSyncStorage } from "./chrome_storage.js";
-import { makeExtensionSettingsFromObject } from "./extension_settings.js";
+import { makeExtensionSettingsFromObject } from "./extended_settings.js";
 import { makeSearchSettingsFromObject } from "./search_settings.js";
 
 export async function getSearchSettings() {
