@@ -1,3 +1,20 @@
+/**
+ * matches: "https://*.booth.pm/* /items/*",
+ * このスクリプトはアイテムページに関する処理を記述します
+ */
+
+let itemData;
+async function getItemDataModule() {
+    const src = chrome.runtime.getURL("./js/module/item_data.js");
+    itemData = await import(src);
+}
+
+let settingsData;
+async function getSettingsModule() {
+    const src = chrome.runtime.getURL("./js/module/settings_data.js");
+    settingsData = await import(src);
+}
+
 const itemGetJa = {
     saveItem: "Save",
     clicksaveItem: "データを保存しました。"
@@ -13,7 +30,6 @@ if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP")
 }
 
 async function addData(additionalData = {}) {
-    const itemId = "items_" + window.location.href.match(/\/items\/(\d+)/)[1];
     const url = window.location.href + ".json";
     const response = await fetch(url);
     const text = await response.text();
@@ -43,38 +59,7 @@ async function addData(additionalData = {}) {
         data.additionalDescription = additionalDescription;
     }
 
-    chrome.storage.local.get("items", (result) => {
-        var items = result.items;
-        if (items && !items.includes(itemId)) {
-            // 新たに登録
-            items.push(itemId);
-            chrome.storage.local.set({ items: items });
-            chrome.storage.local.set({ [`${itemId}`]: data });
-        }
-        else if (items) {
-            // 既に登録されているので更新
-
-            chrome.storage.local.get(itemId, (result) => {
-                const oldData = result[itemId];
-
-                // oldDataのtagを一時保存
-                const oldTag = oldData.tags;
-                const mergedData = {
-                    ...oldData,
-                    ...data,
-                    tags: oldTag
-                };
-                chrome.storage.local.set({ [`${itemId}`]: mergedData });
-            });
-        }
-        else {
-            // リスト作成と登録
-            items = [itemId];
-            console.log(items);
-            chrome.storage.local.set({ items: items });
-            chrome.storage.local.set({ [`${itemId}`]: data });
-        }
-    });
+    await itemData.addItem(data);
 }
 
 function addSaveButton() {
@@ -161,14 +146,18 @@ function handleButtonClick(event, anchorElement, data) {
     addData(data);
 }
 
-chrome.storage.sync.get("extended_settings", (result) => {
-    const setting = result.extended_settings;
-    if (setting && setting.language !== "ja") {
+async function main() {
+    await getItemDataModule();
+    await getSettingsModule();
+    const setting = await settingsData.getExtensionSettings();
+    if (setting.language !== "ja") {
         itemGetLang = itemGetEn;
     }
-    if (setting && setting.save_item) {
+    if (setting.save_item) {
         addSaveButton();
         addDownloadedItem();
         addRestockItem();
     }
-});
+}
+
+main();

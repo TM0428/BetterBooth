@@ -50,7 +50,7 @@
                 "*://*.booth.pm/items/*.json"
             ],
             "js": [
-                "js/item_get.js"
+                "js/custom_item.js"
             ],
             "css": [],
             "run_at": "document_end"
@@ -129,7 +129,10 @@
             "js/module/shop.js",
             "js/module/filter_data.js",
             "js/module/item_data.js",
-            "js/module/item.js"
+            "js/module/item.js",
+            "js/module/settings_data.js",
+            "js/module/extension_settings.js",
+            "js/module/search_settings.js"
         ],
         "matches": ["<all_urls>"]
     }]

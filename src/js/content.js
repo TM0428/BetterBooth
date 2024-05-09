@@ -1,3 +1,8 @@
+/**
+ * matches: "https://*.booth.pm/*",
+ * このスクリプトはbooth.pm全体に影響するものを記述します
+ */
+
 const contentJa = {
     keyword: "キーワードを入力",
     genre: "ジャンル、商品名など",
@@ -399,7 +404,7 @@ function insertLinkIntoNav() {
     }, 1000);
 }
 
-function addDeletedItem() {
+async function addDeletedItem() {
     // ここに実行したいコードを記述する
     console.log("addDeletedItem 関数が実行されました");
     // window.location.href から itemID を取得
