@@ -155,7 +155,7 @@
 
 <script>
 import Item from "@/js/module/item";
-import { deleteItem, getItem, getItemId } from "@/js/module/item_data";
+import { deleteItem, getItem, getItemId, mergeItem } from "@/js/module/item_data";
 import router from "@/option/router"; // Vue Router インスタンスのインポート
 import {
     mdiArrowLeft,
@@ -234,11 +234,8 @@ export default {
             this.data.wished = !this.data.wished;
             this.saveData();
         },
-        saveData() {
-            const new_data = JSON.parse(JSON.stringify(this.data));
-            chrome.storage.local.set({
-                [`items_${this.itemId}`]: new_data
-            });
+        async saveData() {
+            await mergeItem(this.itemIdKey, this.data);
         }
     },
     computed: {
