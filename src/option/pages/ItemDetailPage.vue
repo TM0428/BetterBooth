@@ -155,7 +155,7 @@
 
 <script>
 import Item from "@/js/module/item";
-import { getItem, getItemId } from "@/js/module/item_data";
+import { deleteItem, getItem, getItemId } from "@/js/module/item_data";
 import router from "@/option/router"; // Vue Router インスタンスのインポート
 import {
     mdiArrowLeft,
@@ -171,6 +171,7 @@ export default {
     props: ["itemId"],
     data() {
         return {
+            itemIdKey: "",
             data: new Item(),
             popupImage: null,
             mdiArrowLeftIcon: mdiArrowLeft,
@@ -183,18 +184,15 @@ export default {
         };
     },
     async mounted() {
-        const itemIdKey = getItemId(this.itemId);
-        this.data = await getItem(itemIdKey);
+        this.itemIdKey = getItemId(this.itemId);
+        this.data = await getItem(this.itemIdKey);
         console.log(this.data);
         // error
         if (!this.data) {
             router.push({ name: "Top" });
         }
         if (this.data.additionalDescription) {
-            this.data.additionalDescription = this.data.additionalDescription.replaceAll(
-                "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
-                "ma-1 pt-8"
-            );
+            // additionalDescriptionが存在する場合、クラスである"pb-16"を"pb-2"に変更する
         }
     },
 
@@ -221,24 +219,11 @@ export default {
 
             URL.revokeObjectURL(url);
         },
-        deleteItem() {
+        async deleteItem() {
             if (confirm(this.$t("itemDeleteConfirm"))) {
-                chrome.storage.local.get("items", (result) => {
-                    const items = result.items || [];
-                    const updatedItems = items.filter(
-                        (item) => item !== "items_" + String(this.itemId)
-                    );
-                    console.log(updatedItems);
-
-                    chrome.storage.local.set({ items: updatedItems }, () => {
-                        chrome.storage.local.remove(`items_${this.itemId}`, () => {
-                            console.log(`Item with ID ${this.itemId} deleted successfully.`);
-                            // 削除が完了した後の処理をここに記述する
-                            window.alert(this.$t("itemDeleteComplete"));
-                            router.push({ name: "Top" }); // Topページにリダイレクト
-                        });
-                    });
-                });
+                await deleteItem(this.itemIdKey);
+                window.alert(this.$t("itemDeleteComplete"));
+                router.push({ name: "Top" }); // Topページにリダイレクト
             }
         },
         togglePurchased() {
@@ -262,8 +247,7 @@ export default {
             else return "";
         },
         formatAdditionalDescription() {
-            if (this.data.additionalDescription)
-                return this.data.additionalDescription.replace(/\n/g, "<br>");
+            if (this.data.additionalDescription) return this.data.additionalDescription;
             else return "";
         }
     },
@@ -334,5 +318,10 @@ body {
 
 h2 {
     margin-top: 6px !important;
+}
+
+section.grid {
+    display: grid !important;
+    gap: 40px;
 }
 </style>

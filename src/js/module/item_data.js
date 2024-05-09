@@ -1,4 +1,9 @@
-import { getFromLocalStorage, mergeToLocalStorage, setToLocalStorage } from "./chrome_storage";
+import {
+    getFromLocalStorage,
+    mergeToLocalStorage,
+    removeFromLocalStorage,
+    setToLocalStorage
+} from "./chrome_storage";
 import { makeItemFromObject } from "./item";
 
 export function getItemId(item) {
@@ -84,6 +89,15 @@ export async function setItemData(data) {
         console.error(err);
         return 1;
     }
+}
+
+export async function deleteItem(itemId) {
+    const items = await getFromLocalStorage("items");
+    const newItems = items.filter((item) => item != itemId);
+    console.log(newItems);
+    await setToLocalStorage("items", newItems);
+    await removeFromLocalStorage(itemId);
+    console.log("[item_data] item data: " + itemId + " deleted");
 }
 
 async function initItem(item) {
