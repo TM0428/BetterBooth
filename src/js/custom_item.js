@@ -176,11 +176,11 @@ function redirectToEn() {
 
 async function mountDeletedItem() {
     // window.location.href から itemID を取得
-    var itemID = window.location.href.match(/\/items\/(\d+)/)[1];
+    var itemId = itemData.getItemId(window.location.href.match(/\/items\/(\d+)/)[1]);
     if (itemData === undefined) {
         await getItemDataModule();
     }
-    const item = await itemData.getItem(itemID);
+    const item = await itemData.getItem(itemId);
     if (item == null || item == undefined) {
         return;
     }
