@@ -10,10 +10,10 @@ export async function setSearchSettings(searchSettings) {
     return await setToSyncStorage("settings", searchSettings);
 }
 
-export async function getExtensionSettings() {
+export async function getExtendedSettings() {
     return await makeExtensionSettingsFromObject(await getFromSyncStorage("extended_settings"));
 }
 
-export async function setExtensionSettings(extensionSettings) {
+export async function setExtendedSettings(extensionSettings) {
     return await setToSyncStorage("extended_settings", extensionSettings);
 }

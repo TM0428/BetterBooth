@@ -219,7 +219,7 @@ async function main() {
     console.log("custom_item.js");
     await getItemDataModule();
     await getSettingsModule();
-    const setting = await settingsData.getExtensionSettings();
+    const setting = await settingsData.getExtendedSettings();
     if (setting.language !== "ja") {
         itemGetLang = itemGetEn;
     }

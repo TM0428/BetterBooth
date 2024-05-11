@@ -3,6 +3,7 @@ import Top from "./pages/TopPage.vue";
 import Howto from "./pages/HowtoPage.vue";
 import CustomShop from "./pages/CustomShopPage.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
+import { getExtendedSettings } from "@/js/module/settings_data";
 
 const routes = [
     {
@@ -31,6 +32,16 @@ const routes = [
 const router = createRouter({
     history: createWebHashHistory(),
     routes: routes
+});
+
+router.beforeEach(async () => {
+    const extended_settings = await getExtendedSettings();
+    if (extended_settings.save_item == false) {
+        window.location.href = "/src/popup/popup.html";
+        return false;
+    }
+
+    return true;
 });
 
 export default router;

@@ -1,5 +1,5 @@
 class ExtendedSettings {
-    constructor(language = "ja", auto_reload, save_item, save_purchase) {
+    constructor(language = "ja", auto_reload = false, save_item = false, save_purchase = false) {
         this.language = language;
         this.auto_reload = auto_reload;
         this.save_item = save_item;

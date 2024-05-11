@@ -121,6 +121,7 @@ import AppBar from "../components/AppBar.vue";
 
 import { mdiMagnify, mdiCartOutline, mdiHelpCircleOutline, mdiCloseCircle } from "@mdi/js";
 import { getItems } from "@/js/module/item_data";
+import { getExtendedSettings } from "@/js/module/settings_data";
 
 export default {
     components: {
@@ -322,16 +323,10 @@ export default {
         const userLocale = window.navigator.language;
         // console.log(userLocale);
         this.$i18n.locale = userLocale;
-        chrome.storage.sync.get("extended_settings", (result) => {
-            const extended_settings = result.extended_settings;
-            if (!(extended_settings && extended_settings.save_item)) {
-                window.location.href = "/src/popup/popup.html";
-                return;
-            }
-            if (extended_settings && extended_settings.language) {
-                this.$i18n.locale = extended_settings.language;
-            }
-        });
+        const extended_settings = await getExtendedSettings();
+        if (extended_settings.language) {
+            this.$i18n.locale = extended_settings.language;
+        }
 
         this.itemList = await getItems();
     }

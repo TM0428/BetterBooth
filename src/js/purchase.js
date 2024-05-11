@@ -60,7 +60,7 @@ async function main() {
     await getItemDataModule();
     await getItemModule();
     await getSettingsModule();
-    const setting = await settings.getExtensionSettings();
+    const setting = await settings.getExtendedSettings();
     if (setting && setting.save_item && setting.save_purchase) {
         getPurchaseData();
     }
