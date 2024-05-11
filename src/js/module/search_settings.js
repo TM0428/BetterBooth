@@ -1,5 +1,11 @@
 class SearchSettings {
-    constructor(disable, age, in_stock, new_arrival, sort) {
+    constructor(
+        disable = true,
+        age = "default",
+        in_stock = false,
+        new_arrival = false,
+        sort = "new"
+    ) {
         this.disable = disable;
         this.age = age;
         this.in_stock = in_stock;
@@ -9,6 +15,9 @@ class SearchSettings {
 }
 
 export function makeSearchSettingsFromObject(object) {
+    if (!object) {
+        return new SearchSettings();
+    }
     return new SearchSettings(
         object.disable,
         object.age,

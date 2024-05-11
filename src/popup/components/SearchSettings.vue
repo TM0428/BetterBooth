@@ -109,6 +109,8 @@
 </template>
 
 <script>
+import { setSearchSettings, getSearchSettings } from "@/js/module/settings_data";
+
 export default {
     data() {
         return {
@@ -161,11 +163,11 @@ export default {
         };
     },
     methods: {
-        saveData() {
+        async saveData() {
             this.settings.in_stock = !this.in_stock;
-            chrome.storage.sync.set({ settings: this.settings });
-            console.log(this.settings);
-            this.showNotificationText("Auto saved!  Please reload.");
+            await setSearchSettings(this.settings).then(() => {
+                this.showNotificationText("Auto saved!  Please reload.");
+            });
         },
         showNotificationText(txt) {
             this.notifText = txt;
@@ -180,15 +182,12 @@ export default {
             }, 2000);
         }
     },
-    created() {
-        chrome.storage.sync.get("settings", (result) => {
-            console.log(result.settings);
-            if (result.settings !== undefined) {
-                this.settings = result.settings;
-                this.settings.disable =
-                    this.settings.disable === undefined ? true : this.settings.disable;
-                this.in_stock =
-                    this.settings.in_stock === undefined ? true : !this.settings.in_stock;
+    async created() {
+        await getSearchSettings().then((result) => {
+            console.log(result);
+            if (result !== undefined) {
+                this.settings = result;
+                this.in_stock = !this.settings.in_stock;
             }
         });
     },

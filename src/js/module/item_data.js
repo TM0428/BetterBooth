@@ -49,6 +49,7 @@ export async function mergeItem(itemId, item) {
 
 export async function getItems() {
     const itemList = await getFromLocalStorage("items");
+    if (!itemList) return [];
     const items = [];
     for (const itemId of itemList) {
         items.push(makeItemFromObject(await getFromLocalStorage(itemId)));

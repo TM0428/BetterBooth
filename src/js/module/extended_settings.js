@@ -8,6 +8,9 @@ class ExtendedSettings {
 }
 
 export function makeExtensionSettingsFromObject(object) {
+    if (!object) {
+        return new ExtendedSettings();
+    }
     return new ExtendedSettings(
         object.language || object.lang,
         object.auto_reload,

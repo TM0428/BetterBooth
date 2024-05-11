@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import { getExtendedSettings } from "@/js/module/settings_data";
+import { getExtendedSettings, setExtendedSettings } from "@/js/module/settings_data";
 
 export default {
     data() {
@@ -152,19 +152,12 @@ export default {
         };
     },
     methods: {
-        saveExtendedData() {
+        async saveExtendedData() {
             console.log(this.extended_settings);
-            chrome.storage.sync
-                .set({
-                    extended_settings: this.extended_settings
-                })
-                .then(() => {
-                    this.showExNotificationText("Auto Saved!");
-                    // debug
-                    chrome.storage.sync.get("extended_settings", (result) => {
-                        console.log(result.extended_settings);
-                    });
-                });
+            await setExtendedSettings(this.extended_settings).then(() => {
+                this.showExNotificationText("Auto Saved!");
+            });
+
             // this.showExNotificationText("Saved!");
         },
         showExNotificationText(txt) {
@@ -189,6 +182,7 @@ export default {
     async created() {
         const userLocale = window.navigator.language;
         const extended_settings = await getExtendedSettings();
+        console.log(extended_settings);
         // this.extended_settingsに対して、extended_settingsを更新
         this.extended_settings.language = extended_settings.language || "ja";
         this.extended_settings.save_item = extended_settings.save_item || false;

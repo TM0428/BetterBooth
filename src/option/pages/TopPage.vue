@@ -329,6 +329,7 @@ export default {
         }
 
         this.itemList = await getItems();
+        console.log(this.itemList);
     }
 };
 </script>
