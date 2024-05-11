@@ -114,6 +114,8 @@
 </template>
 
 <script>
+import { getExtendedSettings } from "@/js/module/settings_data";
+
 export default {
     data() {
         return {
@@ -184,21 +186,19 @@ export default {
             window.open(url, target);
         }
     },
-    created() {
+    async created() {
         const userLocale = window.navigator.language;
-        chrome.storage.sync.get("extended_settings", (result) => {
-            console.log(result.extended_settings);
-            // this.extended_settingsに対して、result.extended_settingsを更新
-            this.extended_settings.language = result.extended_settings.language || "ja";
-            this.extended_settings.save_item = result.extended_settings.save_item || false;
-            this.extended_settings.save_purchase = result.extended_settings.save_purchase || false;
-            this.extended_settings.auto_reload = result.extended_settings.auto_reload || false;
+        const extended_settings = await getExtendedSettings();
+        // this.extended_settingsに対して、extended_settingsを更新
+        this.extended_settings.language = extended_settings.language || "ja";
+        this.extended_settings.save_item = extended_settings.save_item || false;
+        this.extended_settings.save_purchase = extended_settings.save_purchase || false;
+        this.extended_settings.auto_reload = extended_settings.auto_reload || false;
 
-            if (!(result.extended_settings && result.extended_settings.language)) {
-                this.extended_settings.language = userLocale;
-            }
-            this.$i18n.locale = this.extended_settings.language;
-        });
+        if (!extended_settings.language) {
+            this.extended_settings.language = userLocale;
+        }
+        this.$i18n.locale = this.extended_settings.language;
     }
 };
 </script>
