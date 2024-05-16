@@ -3,6 +3,12 @@
  * このスクリプトはbooth.pm全体に影響するものを記述します
  */
 
+let searchSettings;
+async function getSearchSettingsModule() {
+    const src = chrome.runtime.getURL("./js/module/settings_data.js");
+    searchSettings = await import(src);
+}
+
 const contentJa = {
     keyword: "キーワードを入力",
     genre: "ジャンル、商品名など",
@@ -23,80 +29,27 @@ let reload_count = 0;
 /**
  * boothの検索において、自動でソート条件を追加する関数
  */
-function attachOptionURL() {
-    console.log("attachOptionURL");
-    chrome.storage.sync.get("settings", (result) => {
-        const settings = result.settings;
-        // console.log(settings);
-        if (settings) {
-            // 設定から条件を指定しない場合は以下の処理を無視
-            if (result.settings.disable === true) {
-                return;
-            }
-            const age = settings.age;
-            const sort = settings.sort;
-            const in_stock = settings.in_stock;
-            const new_arrival = settings.new_arrival;
-            const aElements = document.querySelectorAll(`a`);
-            aElements.forEach((aElement) => {
-                // console.log(aElement);
-                // 下のナビゲーションに含まれる場合は、ソート条件を維持させる
-                if (aElement.classList.contains("nav-item")) return;
-                // console.log(aElement.href);
-                const regex = new RegExp("https?://booth.pm/.*/(search|browse)/.*");
-
-                if (regex.test(aElement.href)) {
-                    var url = new URL(aElement.href);
-                    // console.log(url.href);
-                    if (age) {
-                        url.searchParams.set("adult", age);
-                    }
-                    if (sort) {
-                        url.searchParams.set("sort", sort);
-                    }
-                    if (in_stock) {
-                        url.searchParams.set("in_stock", "true");
-                    }
-                    if (new_arrival) {
-                        url.searchParams.set("new_arrival", "true");
-                    }
-                    aElement.href = url.href;
-                }
-            });
-        }
-    });
-    if (reload_count < 3) {
-        reload_count++;
-        setTimeout(attachOptionURL, 1000);
+async function attachOptionURL() {
+    const settings = await searchSettings.getSearchSettings();
+    // 設定から条件を指定しない場合は以下の処理を無視
+    if (settings.disable === true) {
+        return;
     }
-}
+    const age = settings.age;
+    const sort = settings.sort;
+    const in_stock = settings.in_stock;
+    const new_arrival = settings.new_arrival;
+    const aElements = document.querySelectorAll(`a`);
+    aElements.forEach((aElement) => {
+        // console.log(aElement);
+        // 下のナビゲーションに含まれる場合は、ソート条件を維持させる
+        if (aElement.classList.contains("nav-item")) return;
+        // console.log(aElement.href);
+        const regex = new RegExp("https?://booth.pm/.*/(search|browse)/.*");
 
-/**
- * 入力されたクエリから、検索URLを出力する関数
- */
-function setSearchOption(search_input) {
-    chrome.storage.sync.get("settings", (result) => {
-        var value = search_input;
-        if (search_input === "") {
-            const input = document.getElementById("new-input-txtbox");
-            value = input.value;
-        }
-        if (value === "") return;
-        var url = new URL("https://booth.pm/ja/search/" + value);
-        const settings = result.settings;
-        // console.log(settings);
-        if (settings) {
-            // 設定から条件を指定しない場合は以下の処理を無視
-            if (result.settings.disable === true) {
-                document.location.href = url.href;
-                return;
-            }
-            console.log(settings);
-            const age = settings.age;
-            const sort = settings.sort;
-            const in_stock = settings.in_stock;
-            const new_arrival = settings.new_arrival;
-
+        if (regex.test(aElement.href)) {
+            var url = new URL(aElement.href);
+            // console.log(url.href);
             if (age) {
                 url.searchParams.set("adult", age);
             }
@@ -109,9 +62,52 @@ function setSearchOption(search_input) {
             if (new_arrival) {
                 url.searchParams.set("new_arrival", "true");
             }
+            aElement.href = url.href;
         }
-        document.location.href = url.href;
     });
+    if (reload_count < 3) {
+        reload_count++;
+        setTimeout(attachOptionURL, 1000);
+    }
+}
+
+/**
+ * 入力されたクエリから、検索URLを出力する関数
+ */
+async function setSearchOption(search_input) {
+    const settings = await searchSettings.getSearchSettings();
+    var value = search_input;
+    if (search_input === "") {
+        const input = document.getElementById("new-input-txtbox");
+        value = input.value;
+    }
+    if (value === "") return;
+    var url = new URL("https://booth.pm/ja/search/" + value);
+    // console.log(settings);
+    // 設定から条件を指定しない場合は以下の処理を無視
+    if (settings.disable === true) {
+        document.location.href = url.href;
+        return;
+    }
+    console.log(settings);
+    const age = settings.age;
+    const sort = settings.sort;
+    const in_stock = settings.in_stock;
+    const new_arrival = settings.new_arrival;
+
+    if (age) {
+        url.searchParams.set("adult", age);
+    }
+    if (sort) {
+        url.searchParams.set("sort", sort);
+    }
+    if (in_stock) {
+        url.searchParams.set("in_stock", "true");
+    }
+    if (new_arrival) {
+        url.searchParams.set("new_arrival", "true");
+    }
+    document.location.href = url.href;
 }
 
 /**
@@ -405,6 +401,7 @@ function insertLinkIntoNav() {
 }
 
 async function main() {
+    await getSearchSettingsModule();
     window.addEventListener("load", attachOptionURL);
     hideDescription();
 
