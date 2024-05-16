@@ -216,7 +216,6 @@ async function mountDeletedItem() {
 }
 
 async function main() {
-    console.log("custom_item.js");
     await getItemDataModule();
     await getSettingsModule();
     const setting = await settingsData.getExtendedSettings();
