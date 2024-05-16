@@ -64,7 +64,7 @@ export function removeFromSyncStorage(key) {
 
 export function getFromLocalStorage(key) {
     return new Promise((resolve, reject) => {
-        chrome.storage.sync.get(key, (result) => {
+        chrome.storage.local.get(key, (result) => {
             if (chrome.runtime.lastError) {
                 reject(new Error(chrome.runtime.lastError));
             }
@@ -90,7 +90,7 @@ export function setToLocalStorage(key, data) {
 
 export function mergeToLocalStorage(key, data) {
     return new Promise((resolve, reject) => {
-        chrome.storage.Local.get(key, (result) => {
+        chrome.storage.local.get(key, (result) => {
             if (chrome.runtime.lastError) {
                 reject(new Error(chrome.runtime.lastError));
             }
@@ -100,7 +100,7 @@ export function mergeToLocalStorage(key, data) {
                     ...oldData,
                     ...data
                 };
-                chrome.storage.Local.set({ [`${key}`]: mergedData }, () => {
+                chrome.storage.local.set({ [`${key}`]: mergedData }, () => {
                     if (chrome.runtime.lastError) {
                         reject(new Error(chrome.runtime.lastError));
                     }
@@ -115,7 +115,7 @@ export function mergeToLocalStorage(key, data) {
 
 export function removeFromLocalStorage(key) {
     return new Promise((resolve, reject) => {
-        chrome.storage.Local.remove(key, () => {
+        chrome.storage.local.remove(key, () => {
             if (chrome.runtime.lastError) {
                 reject(new Error(chrome.runtime.lastError));
             }

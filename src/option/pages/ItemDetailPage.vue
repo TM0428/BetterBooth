@@ -7,7 +7,7 @@
             <div class="mx-lg-2 px-2 mx-sm-4">
                 <v-row class="mx-sm-4">
                     <v-col cols="12" sm="12" md="12" lg="6" xl="6">
-                        <v-carousel class="bg-grey-lighten-2">
+                        <v-carousel class="bg-grey-lighten-2" v-if="data.images.length > 0">
                             <v-carousel-item
                                 v-for="(image, i) in data.images"
                                 :key="i"
@@ -85,14 +85,11 @@
                 </v-row>
             </div>
 
-            <p
-                class="description text-body-1 mx-4"
-                v-html="formatDescription(data.description)"
-            ></p>
+            <p class="description text-body-1 mx-4" v-html="formatDescription"></p>
             <p
                 class="additional-description text-body-1 mx-4"
                 v-if="data.additionalDescription"
-                v-html="formatDescription(data.additionalDescription)"
+                v-html="formatAdditionalDescription"
             ></p>
 
             <div class="footer-buttons">
@@ -157,6 +154,8 @@
 </template>
 
 <script>
+import Item from "@/js/module/item";
+import { deleteItem, getItem, getItemId, mergeItem } from "@/js/module/item_data";
 import router from "@/option/router"; // Vue Router インスタンスのインポート
 import {
     mdiArrowLeft,
@@ -172,15 +171,8 @@ export default {
     props: ["itemId"],
     data() {
         return {
-            data: {
-                name: "",
-                images: [""],
-                description: "",
-                additionalDescription: "",
-                shop: {
-                    url: ""
-                }
-            },
+            itemIdKey: "",
+            data: new Item(),
             popupImage: null,
             mdiArrowLeftIcon: mdiArrowLeft,
             mdiLinkIcon: mdiLink,
@@ -191,24 +183,20 @@ export default {
             mdiCloudArrowDownOutlineIcon: mdiCloudArrowDownOutline
         };
     },
-
-    mounted() {
-        chrome.storage.local.get(`items_${this.itemId}`, (result) => {
-            this.data = result[`items_${this.itemId}`];
-            console.log(this.data);
-            if (this.data.additionalDescription) {
-                this.data.additionalDescription = this.data.additionalDescription.replaceAll(
-                    "break-words font-bold leading-[32px] !m-0 pb-16 text-[24px] desktop:pb-8",
-                    "ma-1 pt-8"
-                );
-            }
-        });
+    async mounted() {
+        this.itemIdKey = getItemId(this.itemId);
+        this.data = await getItem(this.itemIdKey);
+        console.log(this.data);
+        // error
+        if (!this.data) {
+            router.push({ name: "Top" });
+        }
+        if (this.data.additionalDescription) {
+            // additionalDescriptionが存在する場合、クラスである"pb-16"を"pb-2"に変更する
+        }
     },
 
     methods: {
-        formatDescription(description) {
-            return description.replace(/\n/g, "<br>");
-        },
         openPopup(imageUrl) {
             this.popupImage = imageUrl;
             document.body.style.overflow = "hidden";
@@ -231,24 +219,11 @@ export default {
 
             URL.revokeObjectURL(url);
         },
-        deleteItem() {
+        async deleteItem() {
             if (confirm(this.$t("itemDeleteConfirm"))) {
-                chrome.storage.local.get("items", (result) => {
-                    const items = result.items || [];
-                    const updatedItems = items.filter(
-                        (item) => item !== "items_" + String(this.itemId)
-                    );
-                    console.log(updatedItems);
-
-                    chrome.storage.local.set({ items: updatedItems }, () => {
-                        chrome.storage.local.remove(`items_${this.itemId}`, () => {
-                            console.log(`Item with ID ${this.itemId} deleted successfully.`);
-                            // 削除が完了した後の処理をここに記述する
-                            window.alert(this.$t("itemDeleteComplete"));
-                            router.push({ name: "Top" }); // Topページにリダイレクト
-                        });
-                    });
-                });
+                await deleteItem(this.itemIdKey);
+                window.alert(this.$t("itemDeleteComplete"));
+                router.push({ name: "Top" }); // Topページにリダイレクト
             }
         },
         togglePurchased() {
@@ -259,11 +234,18 @@ export default {
             this.data.wished = !this.data.wished;
             this.saveData();
         },
-        saveData() {
-            const new_data = JSON.parse(JSON.stringify(this.data));
-            chrome.storage.local.set({
-                [`items_${this.itemId}`]: new_data
-            });
+        async saveData() {
+            await mergeItem(this.itemIdKey, this.data);
+        }
+    },
+    computed: {
+        formatDescription() {
+            if (this.data.description) return this.data.description.replace(/\n/g, "<br>");
+            else return "";
+        },
+        formatAdditionalDescription() {
+            if (this.data.additionalDescription) return this.data.additionalDescription;
+            else return "";
         }
     },
     watch: {
@@ -333,5 +315,10 @@ body {
 
 h2 {
     margin-top: 6px !important;
+}
+
+section.grid {
+    display: grid !important;
+    gap: 40px;
 }
 </style>

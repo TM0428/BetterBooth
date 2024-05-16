@@ -1,3 +1,9 @@
+let settingsData;
+async function getSettingsModule() {
+    const src = chrome.runtime.getURL("./js/module/settings_data.js");
+    settingsData = await import(src);
+}
+
 let next_page = 2;
 let max_page = 2;
 let ul_height = 0;
@@ -466,45 +472,46 @@ function filter_content() {
     }
 }
 
-chrome.storage.sync.get("extended_settings", (result) => {
-    const setting = result.extended_settings;
-    if (setting && setting.auto_reload) {
-        // define max page
-        // query select div.shop-pager > nav > ul > li:last-child > a
-        const last_page = document.querySelector("div.shop-pager > nav > ul > li:last-child > a");
-        // if last_page is null, max_page is 1
-        if (last_page == null) {
-            max_page = 1;
-            return;
-        }
-        // href has "/items?page=2" format
-        const href = last_page.href;
-        // split href by "="
-        const href_split = href.split("=");
-        // get last page number
-        max_page = parseInt(href_split[href_split.length - 1]);
-        // add event listener
-        window.addEventListener("scroll", () => {
-            // const scrollHeight = document.documentElement.scrollHeight;
-            const scrollTop = document.documentElement.scrollTop;
-            // get height from ul.item-list's bottom
-            const item_list = document.querySelector("ul.item-list");
-            ul_height = item_list.getBoundingClientRect().height;
-            // console.log(scrollHeight - scrollTop);
-            // console.log(item_list.getBoundingClientRect());
-            if (scrollTop >= ul_height && not_adding) {
-                // console.log(item_list.getBoundingClientRect());
-                // console.log(scrollTop);
-                load_more_items();
-            }
-        });
-
-        // disable shop-pager
-        const shop_pager = document.querySelector("div.shop-pager");
-        shop_pager.style.display = "none";
-        // make_filter_section();
-        window.addEventListener("load", make_filter_section());
+function reload_init() {
+    // define max page
+    // query select div.shop-pager > nav > ul > li:last-child > a
+    const last_page = document.querySelector("div.shop-pager > nav > ul > li:last-child > a");
+    // if last_page is null, max_page is 1
+    if (last_page == null) {
+        max_page = 1;
+        return;
     }
-});
+    // href has "/items?page=2" format
+    const href = last_page.href;
+    // split href by "="
+    const href_split = href.split("=");
+    // get last page number
+    max_page = parseInt(href_split[href_split.length - 1]);
+    // add event listener
+    window.addEventListener("scroll", () => {
+        // const scrollHeight = document.documentElement.scrollHeight;
+        const scrollTop = document.documentElement.scrollTop;
+        // get height from ul.item-list's bottom
+        const item_list = document.querySelector("ul.item-list");
+        ul_height = item_list.getBoundingClientRect().height;
+        if (scrollTop >= ul_height && not_adding) {
+            load_more_items();
+        }
+    });
 
-// load_more_items();
+    // disable shop-pager
+    const shop_pager = document.querySelector("div.shop-pager");
+    shop_pager.style.display = "none";
+    // make_filter_section();
+    window.addEventListener("load", make_filter_section());
+}
+
+async function main() {
+    await getSettingsModule();
+    const extended_settings = await settingsData.getExtendedSettings();
+    if (extended_settings.auto_reload) {
+        reload_init();
+    }
+}
+
+main();

@@ -5,7 +5,7 @@
     <v-btn @click="resetShopsFromStorage()"> reset </v-btn>
 </template>
 <script>
-import { addShop, getShops, getShop, resetShop } from "@/js/module/shop_data.js";
+import { addShop, getShopsList, getShop, resetShop } from "@/js/module/shop_data.js";
 
 export default {
     methods: {
@@ -54,7 +54,7 @@ export default {
             await addShop(shop);
         },
         async getShopsFromStorage() {
-            const shops = await getShops();
+            const shops = await getShopsList();
             console.log(shops);
             shops.forEach((element) => {
                 console.log(getShop(element));

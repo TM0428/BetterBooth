@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { getShops } from "@/js/module/shop_data";
+import { getShopsList } from "@/js/module/shop_data";
 import AppBar from "../components/AppBar.vue";
 import ShopCard from "../components/ShopCard.vue";
 import ShopAddPopup from "../components/ShopAddPopup.vue";
@@ -33,7 +33,7 @@ export default {
         };
     },
     async mounted() {
-        this.shops = await getShops();
+        this.shops = await getShopsList();
     }
 };
 </script>

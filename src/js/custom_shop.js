@@ -94,8 +94,7 @@ async function addButton() {
 }
 
 async function addLink() {
-    const shops = await shopData.getShops();
-    window.location.href;
+    const shops = await shopData.getShopsList();
     const url = window.location.href;
     const match = url.match(/^(?:https?:\/\/)?([^/]+)/);
     const subdomain = match ? match[1].split(".")[0] : null;
