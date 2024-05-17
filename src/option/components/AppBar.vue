@@ -3,7 +3,7 @@
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-app-bar-title class="d-flex flex-row" v-if="!$vuetify.display.xs">
             {{ $t("topTitle") }}
-            <div class="text-caption">v0.5.3</div>
+            <div class="text-caption">v0.5.4</div>
         </v-app-bar-title>
         <v-spacer v-if="!$vuetify.display.xs"></v-spacer>
         <a

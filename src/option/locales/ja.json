@@ -32,5 +32,6 @@
     "restockRequest": "メールをリクエスト済み",
     "isDLItem": "ダウンロード商品",
     "itemDeleteConfirm": "このアイテムを削除しますか？",
-    "itemDeleteComplete": "削除しました。"
+    "itemDeleteComplete": "削除しました。",
+    "addShopTitle": "ショップの追加"
 }

@@ -40,8 +40,8 @@
     </v-btn>
 </template>
 <script>
+import { addItem } from "@/js/module/item_data";
 import { mdiFileImport } from "@mdi/js";
-import { setItemData } from "../js/localStorage";
 
 export default {
     props: {
@@ -137,7 +137,7 @@ export default {
             );
         },
         async addStorage(data) {
-            const result = await setItemData(data);
+            const result = await addItem(data);
             if (result != 0) {
                 window.alert("Some error occured!");
             }

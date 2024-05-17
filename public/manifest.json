@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "__MSG_Name__",
     "default_locale": "ja",
-    "version": "0.5.3",
+    "version": "0.5.4",
     "description": "__MSG_Description__",
     "icons": {
         "128": "icon/icon-128.png",
@@ -32,7 +32,7 @@
                 "*://booth.pm/zh-tw"
             ],
             "js": [
-                "js/filter.js"
+                "js/search_item_filter.js"
             ],
             "css": [
                 "css/search.css"
@@ -41,7 +41,9 @@
         },
         {
             "matches": [
-                "*://*.booth.pm/items/*"
+                "*://*.booth.pm/items/*",
+                "*://*.booth.pm/*/items/*",
+                "*://booth.pm/*/items/*"
             ],
             "exclude_matches": [
                 "*://accounts.booth.pm/*",
@@ -50,7 +52,7 @@
                 "*://*.booth.pm/items/*.json"
             ],
             "js": [
-                "js/item_get.js"
+                "js/custom_item.js"
             ],
             "css": [],
             "run_at": "document_end"
@@ -83,6 +85,21 @@
         },
         {
             "matches": [
+                "*://*.booth.pm/*"
+            ],
+            "exclude_matches": [
+                "*://booth.pm/*",
+                "*://accounts.booth.pm/*",
+                "*://manage.booth.pm/*",
+                "*://checkout.booth.pm/*"
+            ],
+            "js": [
+                "js/custom_shop.js"
+            ],
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
                 "*://*.booth.pm/"
             ],
             "exclude_matches": [
@@ -105,6 +122,22 @@
         ],
         "matches": [
           "*://*.booth.pm/*"
+        ]
+    },
+    {
+        "resources": [
+            "js/module/chrome_storage.js",
+            "js/module/shop_data.js",
+            "js/module/shop.js",
+            "js/module/filter_data.js",
+            "js/module/item_data.js",
+            "js/module/item.js",
+            "js/module/settings_data.js",
+            "js/module/extended_settings.js",
+            "js/module/search_settings.js"
+        ],
+        "matches": [
+            "*://*.booth.pm/*"
         ]
     }]
 }

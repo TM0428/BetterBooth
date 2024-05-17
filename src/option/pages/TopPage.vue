@@ -30,8 +30,8 @@
                                 @click:close="removeCart()"
                                 :class="
                                     srchCart == 0
-                                        ? 'non-purchased-cart-chip'
-                                        : 'purchased-cart-chip'
+                                        ? 'ma-1 non-purchased-cart-chip'
+                                        : 'ma-1 purchased-cart-chip'
                                 "
                                 :variant="srchCart == 0 ? 'outlined' : 'flat'"
                             >
@@ -47,7 +47,7 @@
                         </span>
                         <span v-if="srchShop.name">
                             <v-chip
-                                class="shop-chip"
+                                class="ma-1 shop-chip"
                                 variant="outlined"
                                 closable
                                 @click:close="removeShop()"
@@ -120,6 +120,8 @@ import ItemImportPopup from "../components/ItemImportPopup.vue";
 import AppBar from "../components/AppBar.vue";
 
 import { mdiMagnify, mdiCartOutline, mdiHelpCircleOutline, mdiCloseCircle } from "@mdi/js";
+import { getItems } from "@/js/module/item_data";
+import { getExtendedSettings } from "@/js/module/settings_data";
 
 export default {
     components: {
@@ -209,19 +211,8 @@ export default {
         }
     },
     methods: {
-        reloadList() {
-            chrome.storage.local.get("items", (result) => {
-                const itemIdList = result.items || [];
-                this.itemList = [];
-                itemIdList.forEach((itemId) => {
-                    chrome.storage.local.get(`${itemId}`, (itemResult) => {
-                        const itemData = itemResult[itemId];
-                        if (itemData && itemData.name) {
-                            this.itemList.push(itemData);
-                        }
-                    });
-                });
-            });
+        async reloadList() {
+            this.itemList = await getItems();
         },
         handleTagClicked(tag) {
             console.log(tag);
@@ -327,32 +318,18 @@ export default {
             this.updateAllQuery();
         }
     },
-    created() {
+    async created() {
         // 言語ファイルが正しく読み込まれることを確認してください
         const userLocale = window.navigator.language;
         // console.log(userLocale);
         this.$i18n.locale = userLocale;
-        chrome.storage.sync.get("extended_settings", (result) => {
-            const extended_settings = result.extended_settings;
-            if (!(extended_settings && extended_settings.save_item)) {
-                window.location.href = "/src/popup/popup.html";
-                return;
-            }
-            if (extended_settings && extended_settings.language) {
-                this.$i18n.locale = extended_settings.language;
-            }
-        });
-        chrome.storage.local.get("items", (result) => {
-            const itemIdList = result.items || [];
-            itemIdList.forEach((itemId) => {
-                chrome.storage.local.get(`${itemId}`, (itemResult) => {
-                    const itemData = itemResult[itemId];
-                    if (itemData && itemData.name) {
-                        this.itemList.push(itemData);
-                    }
-                });
-            });
-        });
+        const extended_settings = await getExtendedSettings();
+        if (extended_settings.language) {
+            this.$i18n.locale = extended_settings.language;
+        }
+
+        this.itemList = await getItems();
+        console.log(this.itemList);
     }
 };
 </script>
