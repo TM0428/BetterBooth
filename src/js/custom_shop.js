@@ -24,9 +24,9 @@ const customShopEn = {
     block: "block",
     blocking: "blocking"
 };
-var contentLang = customShopJa;
+var customShopLang = customShopJa;
 if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP") {
-    contentLang = customShopEn;
+    customShopLang = customShopEn;
 }
 
 /**
@@ -43,8 +43,8 @@ async function addButton() {
     var text = document.createElement("span");
     text.classList.add("u-align-middle");
     // const htmlLang = document.documentElement.lang;
-    var block = contentLang.block;
-    var blocking = contentLang.blocking;
+    var block = customShopLang.block;
+    var blocking = customShopLang.blocking;
     if (filterArray && filterArray.includes(window.location.origin + "/")) {
         button.classList.add(
             "btn",
