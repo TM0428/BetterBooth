@@ -136,6 +136,8 @@
             "js/module/extended_settings.js",
             "js/module/search_settings.js"
         ],
-        "matches": ["<all_urls>"]
+        "matches": [
+            "*://*.booth.pm/*"
+        ]
     }]
 }
