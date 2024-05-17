@@ -7,14 +7,9 @@
             <div class="mx-lg-2 px-2 mx-sm-4">
                 <v-row class="mx-sm-4">
                     <v-col cols="12" sm="12" md="12" lg="6" xl="6">
-                        <v-carousel class="bg-grey-lighten-2" v-if="data.images.length > 0">
-                            <v-carousel-item
-                                v-for="(image, i) in data.images"
-                                :key="i"
-                                :src="image.original"
-                                @click="openPopup(image.original)"
-                            ></v-carousel-item>
-                        </v-carousel>
+                        <div v-if="data.images.length > 0">
+                            <image-carousel :data="data"></image-carousel>
+                        </div>
                     </v-col>
                     <v-col cols="12" sm="12" md="12" lg="6" xl="6">
                         <!--タグの追加-->
@@ -145,10 +140,6 @@
                     </v-row>
                 </v-container>
             </div>
-            <div class="popup" v-if="popupImage" @click="closePopup">
-                <span class="popup-close" @click="closePopup">&times;</span>
-                <img :src="popupImage" alt="Popup Image" class="popup-image" />
-            </div>
         </div>
     </v-app>
 </template>
@@ -156,6 +147,7 @@
 <script>
 import Item from "@/js/module/item";
 import { deleteItem, getItem, getItemId, mergeItem } from "@/js/module/item_data";
+import ImageCarousel from "@/option/components/ImageCarousel.vue";
 import router from "@/option/router"; // Vue Router インスタンスのインポート
 import {
     mdiArrowLeft,
@@ -169,6 +161,9 @@ import {
 
 export default {
     props: ["itemId"],
+    components: {
+        ImageCarousel
+    },
     data() {
         return {
             itemIdKey: "",
@@ -275,42 +270,8 @@ export default {
     font-weight: 700 !important;
 }
 
-.popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
-
-.popup-image {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
-}
-
-.popup-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    color: white;
-    font-size: 36px;
-    cursor: pointer;
-}
-
 body {
     overflow: auto;
-}
-
-.popup ~ * {
-    pointer-events: none;
-    user-select: none;
-    filter: brightness(40%);
 }
 
 h2 {
