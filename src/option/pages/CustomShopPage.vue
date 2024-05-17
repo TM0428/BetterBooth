@@ -4,7 +4,6 @@
     </div>
     <div class="content">
         <v-container fluid>
-            <h1>Custom Shop!</h1>
             <v-row>
                 <v-col cols="12" sm="6" md="6" lg="3" v-for="(shop, i) in shops" :key="i">
                     <ShopCard :shopId="shop"></ShopCard>
