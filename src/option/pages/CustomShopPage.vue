@@ -2,15 +2,17 @@
     <div class="toolbar">
         <AppBar active-text="add shop link"></AppBar>
     </div>
-    <div class="content">
-        <v-container fluid>
-            <v-row>
-                <v-col cols="12" sm="6" md="6" lg="3" v-for="(shop, i) in shops" :key="i">
+    <div class="content" style="height: 100%">
+        <v-container>
+            <v-row class="fill-height">
+                <v-col cols="12" sm="6" md="6" lg="4" xl="3" v-for="(shop, i) in shops" :key="i">
                     <ShopCard :shopId="shop"></ShopCard>
                 </v-col>
             </v-row>
-            <ShopAddPopup></ShopAddPopup>
         </v-container>
+    </div>
+    <div class="fab">
+        <ShopAddPopup></ShopAddPopup>
     </div>
 </template>
 

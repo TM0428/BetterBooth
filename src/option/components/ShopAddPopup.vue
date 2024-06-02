@@ -1,5 +1,16 @@
 <template>
-    <v-fab :icon="mdiPencilIcon" @click="dialog = !dialog"> </v-fab>
+    <v-btn
+        @click="dialog = !dialog"
+        class="mr-4 mb-4 fab-c"
+        max-width="64"
+        height="64"
+        position="absolute"
+        rounded="xl"
+    >
+        <template v-slot:default>
+            <v-icon :icon="mdiPencilIcon" color="primary" size="30"></v-icon>
+        </template>
+    </v-btn>
     <v-dialog v-model="dialog" max-width="600px">
         <v-card>
             <v-card-title>
@@ -185,3 +196,11 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.fab-c {
+    right: 0;
+    bottom: 0;
+    background-color: rgb(var(--v-theme-surfaceContainerLow)) !important;
+}
+</style>

@@ -1,11 +1,5 @@
 <template>
-    <v-card
-        class="d-flex flex-column"
-        height="100%"
-        min-width="300px"
-        color="surfaceContainerLow"
-        :title="shop.name"
-    >
+    <v-card class="d-flex flex-column" height="100%" color="surfaceContainerLow" :title="shop.name">
         <template v-slot:prepend
             ><v-avatar start>
                 <v-img :src="shop.thumbnail_url"></v-img>
@@ -13,6 +7,9 @@
         </template>
         <template v-slot:subtitle>
             <a :href="shop.url" target="_blank">{{ shop.url }}</a>
+        </template>
+        <template v-slot:append>
+            <v-icon :icon="mdiClose" @click="deleteShop"></v-icon>
         </template>
         <v-card-text>
             <v-list>
