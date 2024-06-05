@@ -70,6 +70,7 @@
                                                 label="Add Link"
                                                 v-model="newUrl"
                                                 hide-details
+                                                @change="addUrl()"
                                             >
                                                 <template v-slot:prepend-inner>
                                                     <v-icon :icon="LinkIcon"></v-icon>
@@ -77,7 +78,7 @@
                                                 <template v-slot:append-inner>
                                                     <v-icon
                                                         :icon="mdiPlusIcon"
-                                                        @click="addUrl()"
+                                                        @change="addUrl()"
                                                     ></v-icon>
                                                 </template>
                                             </v-text-field>
