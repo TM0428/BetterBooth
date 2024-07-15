@@ -21,28 +21,35 @@
                 <v-card variant="outlined" color="outlineVariant" rounded="lg">
                     <v-list bg-color="surface" class="list-container">
                         <div class="scrollable-list">
-                            <v-list-item v-for="(item, i) in shop.add_url" :key="i">
-                                <template v-slot:prepend>
-                                    <v-icon :icon="LinkIcon"></v-icon>
-                                </template>
-                                <v-list-item-content>
-                                    <v-list-item-title> {{ item.url }} </v-list-item-title>
-                                </v-list-item-content>
-                                <template v-slot:append>
-                                    <v-icon
-                                        :icon="mdiCloseIcon"
-                                        @click="deleteUrl(i, item.url)"
-                                    ></v-icon>
-                                </template>
-                            </v-list-item>
+                            <div v-for="(item, i) in shop.add_url" :key="i">
+                                <v-list-item>
+                                    <template v-slot:prepend>
+                                        <v-icon :icon="LinkIcon"></v-icon>
+                                    </template>
+                                    <v-list-item-content>
+                                        <v-list-item-title> {{ item.url }} </v-list-item-title>
+                                    </v-list-item-content>
+                                    <template v-slot:append>
+                                        <v-icon
+                                            :icon="mdiCloseIcon"
+                                            @click="deleteUrl(i, item.url)"
+                                        ></v-icon>
+                                    </template>
+                                </v-list-item>
+                                <div v-if="i != shop.add_url.length - 1">
+                                    <v-divider></v-divider>
+                                </div>
+                            </div>
                         </div>
-                        <v-list-item class="px-2">
+                        <v-divider></v-divider>
+                        <v-list-item class="px-2 pb-0">
                             <v-list-item-content>
                                 <v-text-field
                                     placeholder="https://428_tm.twitter.com"
                                     label="Add Link"
                                     v-model="newUrl"
                                     @change="addUrl()"
+                                    variant="underlined"
                                     hide-details
                                 >
                                     <template v-slot:prepend-inner>
