@@ -1,7 +1,7 @@
 <template>
     <v-btn
         @click="dialog = !dialog"
-        class="mr-4 mb-4 fab-c"
+        class="mr-6 mb-6 fab-c"
         max-width="64"
         height="64"
         position="absolute"
@@ -70,6 +70,7 @@
                                                 label="Add Link"
                                                 v-model="newUrl"
                                                 hide-details
+                                                @change="addUrl()"
                                             >
                                                 <template v-slot:prepend-inner>
                                                     <v-icon :icon="LinkIcon"></v-icon>
@@ -77,7 +78,7 @@
                                                 <template v-slot:append-inner>
                                                     <v-icon
                                                         :icon="mdiPlusIcon"
-                                                        @click="addUrl()"
+                                                        @change="addUrl()"
                                                     ></v-icon>
                                                 </template>
                                             </v-text-field>
@@ -137,17 +138,22 @@ export default {
             const homeLinkNicknameElement = doc.querySelector(".home-link-container__nickname");
 
             let name = "";
-            if (
-                shopNameElement.classList.contains("display_title") &&
-                shopNameElement.classList.contains("no-display")
-            ) {
-                // display_title no-display クラスがある場合
-                name = homeLinkNicknameElement.textContent.trim();
+            // 名前の取得方法
+            // 1. homeLinkNicknameElementが存在する場合、そのテキストを取得
+            // 2. 存在しない場合、shopNameElementが存在する場合、そのテキストを取得
+            // 3. それも存在しない場合、サブドメインを取得
+            if (homeLinkNicknameElement) {
+                name = homeLinkNicknameElement.textContent;
+            }
+            else if (shopNameElement) {
+                name = shopNameElement.textContent;
             }
             else {
-                // 上記以外の場合
-                name = shopNameElement.textContent.trim();
+                const match = this.shopUrl.match(/^(?:https?:\/\/)?([^/]+)/);
+                const subdomain = match ? match[1].split(".")[0] : null;
+                name = subdomain;
             }
+
             // 要素を取得
             const avatarImageElement = doc.querySelector(".avatar-image");
 

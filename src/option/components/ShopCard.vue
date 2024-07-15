@@ -9,7 +9,7 @@
             <a :href="shop.url" target="_blank">{{ shop.url }}</a>
         </template>
         <template v-slot:append>
-            <v-icon :icon="mdiClose" @click="deleteShop"></v-icon>
+            <shop-edit-popup :shopId="shopId"></shop-edit-popup>
         </template>
         <v-card-text>
             <v-list>
@@ -33,6 +33,7 @@
 import { getShop, setShop } from "@/js/module/shop_data";
 import LinkIcon from "./icons/LinkIcon.vue";
 import { mdiClose } from "@mdi/js";
+import ShopEditPopup from "./ShopEditPopup.vue";
 
 export default {
     props: {
@@ -40,6 +41,9 @@ export default {
             type: String,
             required: true
         }
+    },
+    components: {
+        ShopEditPopup
     },
     data() {
         return {
