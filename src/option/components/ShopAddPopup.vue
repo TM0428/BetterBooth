@@ -1,7 +1,7 @@
 <template>
     <v-btn
         @click="dialog = !dialog"
-        class="mr-4 mb-4 fab-c"
+        class="mr-6 mb-6 fab-c"
         max-width="64"
         height="64"
         position="absolute"

@@ -6,7 +6,7 @@
             <v-card-title>
                 {{ $t("editShopTitle") }}
             </v-card-title>
-            <v-card-text>
+            <v-card-text class="pa-2">
                 <v-skeleton-loader v-if="loading" type="list-item-avatar-two-line">
                 </v-skeleton-loader>
                 <v-list v-else>
@@ -18,37 +18,44 @@
                         </template>
                     </v-list-item>
                 </v-list>
-                <v-list bg-color="surface" border rounded="lg">
-                    <v-list-item v-for="(item, i) in shop.add_url" :key="i">
-                        <template v-slot:prepend>
-                            <v-icon :icon="LinkIcon"></v-icon>
-                        </template>
-                        <v-list-item-content>
-                            <v-list-item-title> {{ item.url }} </v-list-item-title>
-                        </v-list-item-content>
-                        <template v-slot:append>
-                            <v-icon :icon="mdiCloseIcon" @click="deleteUrl(i, item.url)"></v-icon>
-                        </template>
-                    </v-list-item>
-                    <v-list-item class="px-2">
-                        <v-list-item-content>
-                            <v-text-field
-                                placeholder="https://428_tm.twitter.com"
-                                label="Add Link"
-                                v-model="newUrl"
-                                @change="addUrl()"
-                                hide-details
-                            >
-                                <template v-slot:prepend-inner>
+                <v-card variant="outlined" color="outlineVariant" rounded="lg">
+                    <v-list bg-color="surface" class="list-container">
+                        <div class="scrollable-list">
+                            <v-list-item v-for="(item, i) in shop.add_url" :key="i">
+                                <template v-slot:prepend>
                                     <v-icon :icon="LinkIcon"></v-icon>
                                 </template>
-                                <template v-slot:append-inner>
-                                    <v-icon :icon="mdiPlusIcon" @click="addUrl()"></v-icon>
+                                <v-list-item-content>
+                                    <v-list-item-title> {{ item.url }} </v-list-item-title>
+                                </v-list-item-content>
+                                <template v-slot:append>
+                                    <v-icon
+                                        :icon="mdiCloseIcon"
+                                        @click="deleteUrl(i, item.url)"
+                                    ></v-icon>
                                 </template>
-                            </v-text-field>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
+                            </v-list-item>
+                        </div>
+                        <v-list-item class="px-2">
+                            <v-list-item-content>
+                                <v-text-field
+                                    placeholder="https://428_tm.twitter.com"
+                                    label="Add Link"
+                                    v-model="newUrl"
+                                    @change="addUrl()"
+                                    hide-details
+                                >
+                                    <template v-slot:prepend-inner>
+                                        <v-icon :icon="LinkIcon"></v-icon>
+                                    </template>
+                                    <template v-slot:append-inner>
+                                        <v-icon :icon="mdiPlusIcon" @click="addUrl()"></v-icon>
+                                    </template>
+                                </v-text-field>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+                </v-card>
             </v-card-text>
             <v-card-actions>
                 <v-btn @click="updateShop()">update</v-btn>
@@ -113,3 +120,17 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.list-container {
+    max-height: 450px; /* Adjust the total height of the container */
+    display: flex;
+    flex-direction: column;
+}
+
+.scrollable-list {
+    max-height: 400px; /* Height for the scrollable part */
+    overflow-y: auto;
+    flex: 1;
+}
+</style>
