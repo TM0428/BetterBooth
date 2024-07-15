@@ -2,14 +2,14 @@
     <v-icon :icon="mdiPencilIcon" @click="dialog = !dialog"></v-icon>
 
     <v-dialog v-model="dialog" max-width="600px">
-        <v-card color="surfaceContainerLow">
+        <v-card>
             <v-card-title>
                 {{ $t("editShopTitle") }}
             </v-card-title>
             <v-card-text>
                 <v-skeleton-loader v-if="loading" type="list-item-avatar-two-line">
                 </v-skeleton-loader>
-                <v-list bg-color="surfaceContainerLow" v-else>
+                <v-list v-else>
                     <v-list-item :title="shop.name" :subtitle="shop.url">
                         <template v-slot:prepend>
                             <v-avatar start>
@@ -18,7 +18,7 @@
                         </template>
                     </v-list-item>
                 </v-list>
-                <v-list bg-color="surface">
+                <v-list bg-color="surface" border rounded="lg">
                     <v-list-item v-for="(item, i) in shop.add_url" :key="i">
                         <template v-slot:prepend>
                             <v-icon :icon="LinkIcon"></v-icon>
