@@ -33,5 +33,6 @@
     "isDLItem": "ダウンロード商品",
     "itemDeleteConfirm": "このアイテムを削除しますか？",
     "itemDeleteComplete": "削除しました。",
-    "addShopTitle": "ショップの追加"
+    "addShopTitle": "ショップの追加",
+    "editShopTitle": "ショップの編集"
 }

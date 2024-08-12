@@ -53,7 +53,9 @@
                         :disabled="item.purchased == undefined"
                         @click.stop="handleCartClick()"
                     >
-                        <v-icon :icon="mdiCartOutlineIcon"></v-icon>
+                        <v-icon
+                            :icon="item.purchased ? mdiCartCheckIcon : mdiCartOutlineIcon"
+                        ></v-icon>
                         <v-tooltip activator="parent" location="left">
                             <div v-if="item.purchased">
                                 {{ $t("purchased") }}
@@ -96,6 +98,7 @@
 import {
     mdiHeartOutline,
     mdiCartOutline,
+    mdiCartCheck,
     mdiCloudArrowDownOutline,
     mdiEmailAlertOutline
 } from "@mdi/js";
@@ -113,6 +116,7 @@ export default {
             imageUrl: "",
             mdiHeartOutlineIcon: mdiHeartOutline,
             mdiCartOutlineIcon: mdiCartOutline,
+            mdiCartCheckIcon: mdiCartCheck,
             mdiCloudArrowDownOutlineIcon: mdiCloudArrowDownOutline,
             mdiEmailAlertOutlineIcon: mdiEmailAlertOutline
         };

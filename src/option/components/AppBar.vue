@@ -3,7 +3,7 @@
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-app-bar-title class="d-flex flex-row" v-if="!$vuetify.display.xs">
             {{ $t("topTitle") }}
-            <div class="text-caption">v0.5.4</div>
+            <div class="text-caption">v{{ version }}</div>
         </v-app-bar-title>
         <v-spacer v-if="!$vuetify.display.xs"></v-spacer>
         <a
@@ -76,6 +76,8 @@ import {
     mdiStore,
     mdiHome
 } from "@mdi/js";
+import packageJson from "../../../package.json";
+
 export default {
     props: {
         activeText: {
@@ -99,7 +101,8 @@ export default {
                 },
                 { text: "settings", icon: mdiCog, href: "/src/popup/popup.html" }
             ],
-            searchText: ""
+            searchText: "",
+            version: packageJson.version
         };
     },
     methods: {
