@@ -96,6 +96,9 @@
             "js": [
                 "js/custom_shop.js"
             ],
+            "css": [
+                "css/custom_shop.css"
+            ],
             "run_at": "document_end"
         },
         {
