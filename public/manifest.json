@@ -9,7 +9,8 @@
         "400": "icon/icon-400.png"
     },
     "permissions": [
-        "storage"
+        "storage",
+        "unlimitedStorage"
     ],
     "options_ui": {
         "page": "/src/option/option.html",
