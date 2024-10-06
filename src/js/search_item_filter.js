@@ -11,11 +11,13 @@ async function getFilterDataModule() {
 
 const filterJa = {
     confirmBlockFront: "ショップ「",
-    confirmBlockBack: "」をブロックしますか？"
+    confirmBlockBack: "」をブロックしますか？",
+    errorBlockShop: "ショップの保存数が上限に達しています。設定を変更してください。"
 };
 const filterEn = {
     confirmBlockFront: 'Will you block the shop "',
-    confirmBlockBack: '"?'
+    confirmBlockBack: '"?',
+    errorBlockShop: "The number of shops saved has reached the limit. Please change the settings."
 };
 var filterLang = filterJa;
 if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP") {
@@ -108,13 +110,18 @@ function attachBlockButton(liElement) {
     icon.classList.add("block-btn_margin");
 
     const shopName = aElement.querySelector("div.item-card__shop-name").textContent;
-    icon.addEventListener("click", () => {
+    icon.addEventListener("click", async () => {
         var confirm = window.confirm(
             filterLang.confirmBlockFront + shopName + filterLang.confirmBlockBack
         );
         if (confirm) {
-            filterData.addFilter(aElement.href);
-            filterReload(aElement.href);
+            try {
+                await filterData.addFilter(aElement.href);
+                filterReload(aElement.href);
+            }
+            catch (error) {
+                alert(filterLang.errorBlockShop);
+            }
         }
     });
 

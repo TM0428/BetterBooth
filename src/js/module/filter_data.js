@@ -19,8 +19,13 @@ export async function addFilter(word) {
         console.log("[filter_data] filter array init");
         filterArray = [word];
     }
-    await setToSyncStorage("filters", filterArray);
-    console.log("[filter_data] filter add");
+    try {
+        await setToSyncStorage("filters", filterArray);
+        console.log("[filter_data] filter add");
+    }
+    catch (error) {
+        throw new Error("Failed to set filters to storage");
+    }
 }
 
 /**
