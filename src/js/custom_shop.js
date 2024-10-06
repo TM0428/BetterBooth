@@ -22,11 +22,13 @@ const NOW_BLOCK = "shop__border--price";
 const NOT_BLOCK = "shop__background--price";
 const customShopJa = {
     block: "ブロック",
-    blocking: "ブロック中"
+    blocking: "ブロック中",
+    errorBlockShop: "ショップの保存数が上限に達しています。設定を変更してください。"
 };
 const customShopEn = {
     block: "block",
-    blocking: "blocking"
+    blocking: "blocking",
+    errorBlockShop: "The number of shops saved has reached the limit. Please change the settings."
 };
 var customShopLang = customShopJa;
 if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP") {
@@ -79,7 +81,7 @@ async function addButton(settingsData) {
 
     const extended_settings = await settingsData.getExtendedSettings();
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
         const url = window.location.origin + "/";
         var module_contents = document.querySelector("main.modules");
         if (button.classList.contains(NOW_BLOCK)) {
@@ -90,15 +92,15 @@ async function addButton(settingsData) {
             filterData.removeFilter(url, extended_settings.getFilterMode);
         }
         else {
-            button.classList.remove(NOT_BLOCK, "shop__text--contents");
-            button.classList.add(NOW_BLOCK, "shop__background--contents", "shop__text--price");
-            module_contents.style.display = "none";
-            text.textContent = blocking;
             try {
-                filterData.addFilter(url, extended_settings.getFilterMode);
+                await filterData.addFilter(url, extended_settings.getFilterMode);
+                button.classList.remove(NOT_BLOCK, "shop__text--contents");
+                button.classList.add(NOW_BLOCK, "shop__background--contents", "shop__text--price");
+                module_contents.style.display = "none";
+                text.textContent = blocking;
             }
             catch (error) {
-                alert("Failed to block shop");
+                alert(customShopLang.errorBlockShop);
             }
         }
     });
