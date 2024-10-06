@@ -13,6 +13,10 @@ async function getShopDataModule() {
     const src = chrome.runtime.getURL("./js/module/shop_data.js");
     shopData = await import(src);
 }
+async function getSettingsModule() {
+    const src = chrome.runtime.getURL("./js/module/settings_data.js");
+    return await import(src);
+}
 
 const NOW_BLOCK = "shop__border--price";
 const NOT_BLOCK = "shop__background--price";
@@ -32,7 +36,7 @@ if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP")
 /**
  * ブロック機能用のボタンを作成する関数
  */
-async function addButton() {
+async function addButton(settingsData) {
     var filterArray = await filterData.getFilter();
 
     var parentDiv = document.querySelector("div.js-shop-follow");
@@ -72,6 +76,9 @@ async function addButton() {
     }
     button.appendChild(icon);
     button.appendChild(text);
+
+    const extended_settings = await settingsData.getExtendedSettings();
+
     button.addEventListener("click", () => {
         const url = window.location.origin + "/";
         var module_contents = document.querySelector("main.modules");
@@ -80,14 +87,19 @@ async function addButton() {
             button.classList.add(NOT_BLOCK, "shop__text--contents");
             module_contents.style.display = "block";
             text.textContent = block;
-            filterData.removeFilter(url);
+            filterData.removeFilter(url, extended_settings.getFilterMode);
         }
         else {
             button.classList.remove(NOT_BLOCK, "shop__text--contents");
             button.classList.add(NOW_BLOCK, "shop__background--contents", "shop__text--price");
             module_contents.style.display = "none";
             text.textContent = blocking;
-            filterData.addFilter(url);
+            try {
+                filterData.addFilter(url, extended_settings.getFilterMode);
+            }
+            catch (error) {
+                alert("Failed to block shop");
+            }
         }
     });
     parentDiv.appendChild(button);
@@ -133,7 +145,9 @@ async function addLink() {
 async function main() {
     await getFilterDataModule();
     await getShopDataModule();
-    addButton();
+
+    const settingsData = await getSettingsModule();
+    await addButton(settingsData);
     addLink();
 }
 
