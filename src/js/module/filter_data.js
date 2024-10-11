@@ -78,6 +78,20 @@ export async function removeFilter(word, storageMode = mode.sync) {
     }
 }
 
+export async function convertStorageMode(fromstorageMode, toStorageMode) {
+    const filterArray = await getFilter(fromstorageMode);
+    if (toStorageMode === mode.sync) {
+        // fromから削除
+        await setFilter([], fromstorageMode);
+        await setFilter([], toStorageMode);
+    }
+    else if (toStorageMode === mode.local) {
+        // コピーしてから削除
+        await setFilter(filterArray, toStorageMode);
+        await setFilter([], fromstorageMode);
+    }
+}
+
 export async function getFilter(storageMode = mode.sync) {
     if (storageMode === mode.sync) {
         return await getFromSyncStorage("filters");

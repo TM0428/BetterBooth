@@ -24,7 +24,8 @@
 </template>
 
 <script setup>
-import { getFilter, setFilter } from "@/js/module/filter_data";
+import { getFilter, setFilter, mode } from "@/js/module/filter_data";
+import { getExtendedSettings } from "@/js/module/settings_data";
 import { ref, onMounted } from "vue";
 
 const filters = ref([]);
@@ -35,6 +36,11 @@ const removeFilter = async (index) => {
 };
 
 onMounted(async () => {
+    const settings = await getExtendedSettings();
+    if (settings.getFilterMode === mode.local) {
+        filters.value = (await getFilter(mode.local)) || [];
+        return;
+    }
     filters.value = (await getFilter()) || [];
 });
 </script>
