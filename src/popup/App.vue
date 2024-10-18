@@ -3,15 +3,17 @@ import Option from "./pages/OptionPage.vue";
 </script>
 
 <template>
-    <main>
+    <div class="main">
         <v-app color="background">
-            <Option></Option>
+            <v-main>
+                <Option></Option>
+            </v-main>
         </v-app>
-    </main>
+    </div>
 </template>
 
 <style scoped>
-main {
+.main {
     margin-left: auto;
     margin-right: auto;
     min-width: 300px;

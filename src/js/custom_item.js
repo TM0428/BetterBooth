@@ -9,10 +9,9 @@ async function getItemDataModule() {
     itemData = await import(src);
 }
 
-let settingsData;
 async function getSettingsModule() {
     const src = chrome.runtime.getURL("./js/module/settings_data.js");
-    settingsData = await import(src);
+    return await import(src);
 }
 
 const itemGetJa = {
@@ -217,7 +216,7 @@ async function mountDeletedItem() {
 
 async function main() {
     await getItemDataModule();
-    await getSettingsModule();
+    const settingsData = await getSettingsModule();
     const setting = await settingsData.getExtendedSettings();
     if (setting.language !== "ja") {
         itemGetLang = itemGetEn;

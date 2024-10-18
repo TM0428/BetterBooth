@@ -1,5 +1,5 @@
 <template>
-    <v-sheet color="surfaceContainerLow" border="sm" rounded="lg">
+    <v-sheet color="surfaceContainerLow" border="sm" rounded="lg" style="position: relative">
         <h1 class="ma-4">Extension Settings:</h1>
         <v-divider></v-divider>
         <div class="settingsContents">
@@ -23,6 +23,20 @@
                                         item-title="text"
                                         item-value="value"
                                     ></v-select>
+                                </v-col>
+                            </v-row>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item height="64">
+                        <v-list-item-content>
+                            <v-row class="align-center">
+                                <v-col :cols="8" class="text-body-2">
+                                    <div>{{ $t("changeFilterLabel") }}</div>
+                                </v-col>
+                                <v-col :cols="4">
+                                    <v-btn color="primary" block @click="confirmDialog = true">
+                                        {{ $t("changeFilterButtonLabel") }}
+                                    </v-btn>
                                 </v-col>
                             </v-row>
                         </v-list-item-content>
@@ -110,11 +124,34 @@
                 {{ exnotifText }}
             </div>
         </div>
+        <v-dialog v-model="confirmDialog" contained>
+            <v-card>
+                <v-card-title class="headline">{{ $t("confirmFilterChangeTitle") }}</v-card-title>
+                <v-card-text>
+                    <div v-if="extended_settings.filter_mode == mode.sync">
+                        {{ $t("confirmFilterChangeMessage") }}
+                    </div>
+                    <div v-else>
+                        {{ $t("confirmFilterDeleteMessage") }}
+                    </div>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="confirmDialog = false">
+                        {{ $t("cancel") }}
+                    </v-btn>
+                    <v-btn color="blue darken-1" text @click="saveFilterMode()">
+                        {{ $t("ok") }}
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-sheet>
 </template>
 
 <script>
 import { getExtendedSettings, setExtendedSettings } from "@/js/module/settings_data";
+import { mode, convertStorageMode } from "@/js/module/filter_data";
 
 export default {
     data() {
@@ -123,7 +160,8 @@ export default {
                 language: "ja",
                 save_item: false,
                 save_purchase: false,
-                auto_reload: false
+                auto_reload: false,
+                filter_mode: mode.sync
             },
             notificationTimer: null,
             exnotifText: "",
@@ -148,7 +186,9 @@ export default {
                     text: "中文（繁體）",
                     value: "zh-TW"
                 }
-            ]
+            ],
+            confirmDialog: false,
+            mode: mode
         };
     },
     methods: {
@@ -159,6 +199,23 @@ export default {
             });
 
             // this.showExNotificationText("Saved!");
+        },
+        async saveFilterMode() {
+            if (this.extended_settings.filter_mode == mode.sync) {
+                this.extended_settings.filter_mode = mode.local;
+                await convertStorageMode(mode.sync, mode.local);
+            }
+            else if (this.extended_settings.filter_mode == mode.local) {
+                this.extended_settings.filter_mode = mode.sync;
+                await convertStorageMode(mode.local, mode.sync);
+            }
+            else {
+                console.warn("Invalid mode");
+                return;
+            }
+
+            await this.saveExtendedData();
+            this.confirmDialog = false;
         },
         showExNotificationText(txt) {
             this.exnotifText = txt;
@@ -188,6 +245,7 @@ export default {
         this.extended_settings.save_item = extended_settings.save_item || false;
         this.extended_settings.save_purchase = extended_settings.save_purchase || false;
         this.extended_settings.auto_reload = extended_settings.auto_reload || false;
+        this.extended_settings.filter_mode = extended_settings.getFilterMode || mode.sync;
 
         if (!extended_settings.language) {
             this.extended_settings.language = userLocale;

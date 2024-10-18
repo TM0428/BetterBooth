@@ -25,6 +25,7 @@
 
 <script setup>
 import { getFilter, setFilter } from "@/js/module/filter_data";
+import { getExtendedSettings } from "@/js/module/settings_data";
 import { ref, onMounted } from "vue";
 
 const filters = ref([]);
@@ -35,7 +36,8 @@ const removeFilter = async (index) => {
 };
 
 onMounted(async () => {
-    filters.value = (await getFilter()) || [];
+    const settings = await getExtendedSettings();
+    filters.value = (await getFilter(settings.getFilterMode)) || [];
 });
 </script>
 
