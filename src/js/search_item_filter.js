@@ -3,10 +3,13 @@
  * このスクリプトはアイテムの検索ページに影響するものを記述します
  */
 
-let filterData;
 async function getFilterDataModule() {
     const src = chrome.runtime.getURL("./js/module/filter_data.js");
-    filterData = await import(src);
+    return await import(src);
+}
+async function getSettingsModule() {
+    const src = chrome.runtime.getURL("./js/module/settings_data.js");
+    return await import(src);
 }
 
 const filterJa = {
@@ -27,11 +30,12 @@ if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP")
 /**
  * フィルター情報を用いて、リストからブロックされているショップのアイテムを表示しないようにする関数
  */
-async function filterList() {
+async function filterList(settingsData, filterData) {
     const marketGrid = document.querySelector("div.l-row.l-market-grid");
     const liElements = document.querySelectorAll(`li.item-card.l-card`);
+    const extended_settings = await settingsData.getExtendedSettings();
 
-    const filterArray = await filterData.getFilter();
+    const filterArray = await filterData.getFilter(extended_settings.getFilterMode);
 
     if (filterArray) {
         // li要素の中から、指定された条件に一致する要素を取得する
@@ -55,7 +59,7 @@ async function filterList() {
     // li要素の中から、指定された条件に一致する要素を取得する
     liElements.forEach((liElement) => {
         attachShopURL(liElement);
-        attachBlockButton(liElement);
+        attachBlockButton(liElement, extended_settings, filterData);
     });
 }
 
@@ -96,7 +100,7 @@ function attachShopURL(liElement) {
     });
 }
 
-function attachBlockButton(liElement) {
+function attachBlockButton(liElement, extended_settings, filterData) {
     const itemCardSummaryElement = liElement.querySelector("div.item-card__summary");
     const itemCardShopInfoElement = itemCardSummaryElement.querySelector(
         "div.item-card__shop-info"
@@ -116,7 +120,7 @@ function attachBlockButton(liElement) {
         );
         if (confirm) {
             try {
-                await filterData.addFilter(aElement.href);
+                await filterData.addFilter(aElement.href, extended_settings.getFilterMode);
                 filterReload(aElement.href);
             }
             catch (error) {
@@ -131,8 +135,9 @@ function attachBlockButton(liElement) {
 }
 
 async function main() {
-    await getFilterDataModule();
-    await filterList();
+    const filterData = await getFilterDataModule();
+    const settingsData = await getSettingsModule();
+    await filterList(settingsData, filterData);
 }
 
 main();

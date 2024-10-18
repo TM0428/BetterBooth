@@ -24,7 +24,7 @@ export async function addFilter(word, storageMode = mode.sync) {
     }
     if (filterArray) {
         if (filterArray.includes(word)) {
-            console.error("[filter_data] already blocked");
+            console.warn("[filter_data] already blocked");
             return;
         }
         else {

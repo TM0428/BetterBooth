@@ -39,7 +39,9 @@ if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP")
  * ブロック機能用のボタンを作成する関数
  */
 async function addButton(settingsData) {
-    var filterArray = await filterData.getFilter();
+    const extended_settings = await settingsData.getExtendedSettings();
+
+    var filterArray = await filterData.getFilter(extended_settings.getFilterMode);
 
     var parentDiv = document.querySelector("div.js-shop-follow");
     if (!parentDiv) return;
@@ -78,8 +80,6 @@ async function addButton(settingsData) {
     }
     button.appendChild(icon);
     button.appendChild(text);
-
-    const extended_settings = await settingsData.getExtendedSettings();
 
     button.addEventListener("click", async () => {
         const url = window.location.origin + "/";
