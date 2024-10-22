@@ -1,3 +1,4 @@
+const DEFAULT_STORAGE_CAPACITY = 70;
 export function getFromSyncStorage(key) {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get(key, (result) => {
@@ -11,7 +12,31 @@ export function getFromSyncStorage(key) {
     });
 }
 
-export function setToSyncStorage(key, data) {
+function cionfirmSyncStorageCapacity(key) {
+    return new Promise((resolve, reject) => {
+        chrome.storage.sync.getBytesInUse(key, (bytesInUse) => {
+            if (chrome.runtime.lastError) {
+                reject(new Error(chrome.runtime.lastError));
+            }
+            else {
+                if (bytesInUse >= DEFAULT_STORAGE_CAPACITY) {
+                    reject(new Error("The storage capacity is full."));
+                }
+                else {
+                    resolve();
+                }
+            }
+        });
+    });
+}
+
+export async function setToSyncStorage(key, data) {
+    try {
+        await cionfirmSyncStorageCapacity(key);
+    }
+    catch (error) {
+        return Promise.reject(error);
+    }
     return new Promise((resolve, reject) => {
         chrome.storage.sync.set({ [`${key}`]: data }, () => {
             if (chrome.runtime.lastError) {
@@ -24,7 +49,14 @@ export function setToSyncStorage(key, data) {
     });
 }
 
-export function mergeToSyncStorage(key, data) {
+export async function mergeToSyncStorage(key, data) {
+    try {
+        await cionfirmSyncStorageCapacity(key);
+    }
+    catch (error) {
+        console.log(error);
+        return new Error(error);
+    }
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get(key, (result) => {
             if (chrome.runtime.lastError) {

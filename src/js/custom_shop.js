@@ -13,16 +13,23 @@ async function getShopDataModule() {
     const src = chrome.runtime.getURL("./js/module/shop_data.js");
     shopData = await import(src);
 }
+async function getSettingsModule() {
+    const src = chrome.runtime.getURL("./js/module/settings_data.js");
+    return await import(src);
+}
 
 const NOW_BLOCK = "shop__border--price";
 const NOT_BLOCK = "shop__background--price";
 const customShopJa = {
     block: "ブロック",
-    blocking: "ブロック中"
+    blocking: "ブロック中",
+    errorBlockShop:
+        "ショップの保存数が上限に達しています。設定からFilterの保存方法を変更してください。"
 };
 const customShopEn = {
     block: "block",
-    blocking: "blocking"
+    blocking: "blocking",
+    errorBlockShop: "The number of shops saved has reached the limit. Please change the settings."
 };
 var customShopLang = customShopJa;
 if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP") {
@@ -32,8 +39,10 @@ if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP")
 /**
  * ブロック機能用のボタンを作成する関数
  */
-async function addButton() {
-    var filterArray = await filterData.getFilter();
+async function addButton(settingsData) {
+    const extended_settings = await settingsData.getExtendedSettings();
+
+    var filterArray = await filterData.getFilter(extended_settings.getFilterMode);
 
     var parentDiv = document.querySelector("div.js-shop-follow");
     if (!parentDiv) return;
@@ -72,7 +81,8 @@ async function addButton() {
     }
     button.appendChild(icon);
     button.appendChild(text);
-    button.addEventListener("click", () => {
+
+    button.addEventListener("click", async () => {
         const url = window.location.origin + "/";
         var module_contents = document.querySelector("main.modules");
         if (button.classList.contains(NOW_BLOCK)) {
@@ -80,14 +90,19 @@ async function addButton() {
             button.classList.add(NOT_BLOCK, "shop__text--contents");
             module_contents.style.display = "block";
             text.textContent = block;
-            filterData.removeFilter(url);
+            filterData.removeFilter(url, extended_settings.getFilterMode);
         }
         else {
-            button.classList.remove(NOT_BLOCK, "shop__text--contents");
-            button.classList.add(NOW_BLOCK, "shop__background--contents", "shop__text--price");
-            module_contents.style.display = "none";
-            text.textContent = blocking;
-            filterData.addFilter(url);
+            try {
+                await filterData.addFilter(url, extended_settings.getFilterMode);
+                button.classList.remove(NOT_BLOCK, "shop__text--contents");
+                button.classList.add(NOW_BLOCK, "shop__background--contents", "shop__text--price");
+                module_contents.style.display = "none";
+                text.textContent = blocking;
+            }
+            catch (error) {
+                alert(customShopLang.errorBlockShop);
+            }
         }
     });
     parentDiv.appendChild(button);
@@ -133,7 +148,9 @@ async function addLink() {
 async function main() {
     await getFilterDataModule();
     await getShopDataModule();
-    addButton();
+
+    const settingsData = await getSettingsModule();
+    await addButton(settingsData);
     addLink();
 }
 

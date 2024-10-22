@@ -3,19 +3,25 @@
  * このスクリプトはアイテムの検索ページに影響するものを記述します
  */
 
-let filterData;
 async function getFilterDataModule() {
     const src = chrome.runtime.getURL("./js/module/filter_data.js");
-    filterData = await import(src);
+    return await import(src);
+}
+async function getSettingsModule() {
+    const src = chrome.runtime.getURL("./js/module/settings_data.js");
+    return await import(src);
 }
 
 const filterJa = {
     confirmBlockFront: "ショップ「",
-    confirmBlockBack: "」をブロックしますか？"
+    confirmBlockBack: "」をブロックしますか？",
+    errorBlockShop:
+        "ショップの保存数が上限に達しています。設定からFilterの保存方法を変更してください。"
 };
 const filterEn = {
     confirmBlockFront: 'Will you block the shop "',
-    confirmBlockBack: '"?'
+    confirmBlockBack: '"?',
+    errorBlockShop: "The number of shops saved has reached the limit. Please change the settings."
 };
 var filterLang = filterJa;
 if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP") {
@@ -25,11 +31,12 @@ if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP")
 /**
  * フィルター情報を用いて、リストからブロックされているショップのアイテムを表示しないようにする関数
  */
-async function filterList() {
+async function filterList(settingsData, filterData) {
     const marketGrid = document.querySelector("div.l-row.l-market-grid");
     const liElements = document.querySelectorAll(`li.item-card.l-card`);
+    const extended_settings = await settingsData.getExtendedSettings();
 
-    const filterArray = await filterData.getFilter();
+    const filterArray = await filterData.getFilter(extended_settings.getFilterMode);
 
     if (filterArray) {
         // li要素の中から、指定された条件に一致する要素を取得する
@@ -53,7 +60,7 @@ async function filterList() {
     // li要素の中から、指定された条件に一致する要素を取得する
     liElements.forEach((liElement) => {
         attachShopURL(liElement);
-        attachBlockButton(liElement);
+        attachBlockButton(liElement, extended_settings, filterData);
     });
 }
 
@@ -94,7 +101,7 @@ function attachShopURL(liElement) {
     });
 }
 
-function attachBlockButton(liElement) {
+function attachBlockButton(liElement, extended_settings, filterData) {
     const itemCardSummaryElement = liElement.querySelector("div.item-card__summary");
     const itemCardShopInfoElement = itemCardSummaryElement.querySelector(
         "div.item-card__shop-info"
@@ -108,13 +115,18 @@ function attachBlockButton(liElement) {
     icon.classList.add("block-btn_margin");
 
     const shopName = aElement.querySelector("div.item-card__shop-name").textContent;
-    icon.addEventListener("click", () => {
+    icon.addEventListener("click", async () => {
         var confirm = window.confirm(
             filterLang.confirmBlockFront + shopName + filterLang.confirmBlockBack
         );
         if (confirm) {
-            filterData.addFilter(aElement.href);
-            filterReload(aElement.href);
+            try {
+                await filterData.addFilter(aElement.href, extended_settings.getFilterMode);
+                filterReload(aElement.href);
+            }
+            catch (error) {
+                alert(filterLang.errorBlockShop);
+            }
         }
     });
 
@@ -124,8 +136,9 @@ function attachBlockButton(liElement) {
 }
 
 async function main() {
-    await getFilterDataModule();
-    await filterList();
+    const filterData = await getFilterDataModule();
+    const settingsData = await getSettingsModule();
+    await filterList(settingsData, filterData);
 }
 
 main();

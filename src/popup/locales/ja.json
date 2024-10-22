@@ -24,5 +24,10 @@
     "saveItemOption": "商品の情報を保存する",
     "linkToHelp": "商品の保存とは？",
     "savePurchaseItem": "購入した商品の情報を自動で保存する",
-    "gotoItemPage": "商品一覧ページへ"
+    "gotoItemPage": "商品一覧ページへ",
+    "changeFilterLabel": "Filterの保存方法を変更",
+    "changeFilterButtonLabel": "変更する",
+    "confirmFilterChangeTitle": "フィルターの保存方法の変更",
+    "confirmFilterDeleteMessage": "フィルターの保存方法を変更すると、今まで保存したショップリストの情報が全て消えてしまいます。よろしいですか？",
+    "confirmFilterChangeMessage": "フィルターの保存方法を変更すると、アカウント内で共有されなくなります。よろしいですか？(拡張機能から設定変更を促された場合にのみ推奨します)"
 }

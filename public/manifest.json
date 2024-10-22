@@ -2,14 +2,15 @@
     "manifest_version": 3,
     "name": "__MSG_Name__",
     "default_locale": "ja",
-    "version": "0.5.6",
+    "version": "0.5.7",
     "description": "__MSG_Description__",
     "icons": {
         "128": "icon/icon-128.png",
         "400": "icon/icon-400.png"
     },
     "permissions": [
-        "storage"
+        "storage",
+        "unlimitedStorage"
     ],
     "options_ui": {
         "page": "/src/option/option.html",
