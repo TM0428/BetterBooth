@@ -15,7 +15,8 @@ async function getSettingsModule() {
 const filterJa = {
     confirmBlockFront: "ショップ「",
     confirmBlockBack: "」をブロックしますか？",
-    errorBlockShop: "ショップの保存数が上限に達しています。設定を変更してください。"
+    errorBlockShop:
+        "ショップの保存数が上限に達しています。設定からFilterの保存方法を変更してください。"
 };
 const filterEn = {
     confirmBlockFront: 'Will you block the shop "',

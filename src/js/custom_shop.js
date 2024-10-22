@@ -23,7 +23,8 @@ const NOT_BLOCK = "shop__background--price";
 const customShopJa = {
     block: "ブロック",
     blocking: "ブロック中",
-    errorBlockShop: "ショップの保存数が上限に達しています。設定を変更してください。"
+    errorBlockShop:
+        "ショップの保存数が上限に達しています。設定からFilterの保存方法を変更してください。"
 };
 const customShopEn = {
     block: "block",
