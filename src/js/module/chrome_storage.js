@@ -1,4 +1,4 @@
-const DEFAULT_STORAGE_CAPACITY = 70;
+const DEFAULT_STORAGE_CAPACITY = 7500;
 export function getFromSyncStorage(key) {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get(key, (result) => {
