@@ -190,7 +190,17 @@ function makeNewSearchTab() {
 
     // button要素を作成
     const buttonElement = document.createElement("button");
-    buttonElement.classList.add("btn", "search");
+    buttonElement.classList.add(
+        "btn",
+        "search",
+        "top-[10%]",
+        "absolute",
+        "right-8",
+        "w-auto",
+        "p-4",
+        "bg-transparent",
+        "border-none"
+    );
     buttonElement.setAttribute("aria-label", "検索");
     const iElement = document.createElement("i");
     iElement.classList.add("icon-search", "s-1x");
