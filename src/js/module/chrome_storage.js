@@ -1,18 +1,6 @@
 const DEFAULT_STORAGE_CAPACITY = 7500;
-export function getFromSyncStorage(key) {
-    return new Promise((resolve, reject) => {
-        chrome.storage.sync.get(key, (result) => {
-            if (chrome.runtime.lastError) {
-                reject(new Error(chrome.runtime.lastError));
-            }
-            else {
-                resolve(result[key]);
-            }
-        });
-    });
-}
 
-function cionfirmSyncStorageCapacity(key) {
+function checkSyncStorageCapacity(key) {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.getBytesInUse(key, (bytesInUse) => {
             if (chrome.runtime.lastError) {
@@ -30,9 +18,33 @@ function cionfirmSyncStorageCapacity(key) {
     });
 }
 
+/**
+ * SyncStorageからデータを取得する関数
+ * @param {*} key key
+ * @returns data
+ */
+export function getFromSyncStorage(key) {
+    return new Promise((resolve, reject) => {
+        chrome.storage.sync.get(key, (result) => {
+            if (chrome.runtime.lastError) {
+                reject(new Error(chrome.runtime.lastError));
+            }
+            else {
+                resolve(result[key]);
+            }
+        });
+    });
+}
+
+/**
+ * SyncStorageにデータを保存する関数
+ * @param {*} key key
+ * @param {*} data data
+ * @returns Promise(保存上限に達している場合はエラー)
+ */
 export async function setToSyncStorage(key, data) {
     try {
-        await cionfirmSyncStorageCapacity(key);
+        await checkSyncStorageCapacity(key);
     }
     catch (error) {
         return Promise.reject(error);
@@ -51,7 +63,7 @@ export async function setToSyncStorage(key, data) {
 
 export async function mergeToSyncStorage(key, data) {
     try {
-        await cionfirmSyncStorageCapacity(key);
+        await checkSyncStorageCapacity(key);
     }
     catch (error) {
         console.log(error);

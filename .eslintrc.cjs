@@ -15,6 +15,7 @@ module.exports = {
         document: true,
         window: true,
         chrome: true,
-        __dirname: true
+        __dirname: true,
+        global: "readonly"
     }
 };

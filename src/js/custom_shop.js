@@ -3,11 +3,10 @@
  * このスクリプトはそれぞれのショップページの全体に影響するものを記述します
  */
 
-let filterData;
 let shopData;
 async function getFilterDataModule() {
     const src = chrome.runtime.getURL("./js/module/filter_data.js");
-    filterData = await import(src);
+    return await import(src);
 }
 async function getShopDataModule() {
     const src = chrome.runtime.getURL("./js/module/shop_data.js");
@@ -39,7 +38,7 @@ if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP")
 /**
  * ブロック機能用のボタンを作成する関数
  */
-async function addButton(settingsData) {
+async function addButton(settingsData, filterData) {
     const extended_settings = await settingsData.getExtendedSettings();
 
     var filterArray = await filterData.getFilter(extended_settings.getFilterMode);
@@ -146,11 +145,11 @@ async function addLink() {
 }
 
 async function main() {
-    await getFilterDataModule();
+    const filterData = await getFilterDataModule();
     await getShopDataModule();
 
     const settingsData = await getSettingsModule();
-    await addButton(settingsData);
+    await addButton(settingsData, filterData);
     addLink();
 }
 

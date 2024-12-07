@@ -418,12 +418,14 @@ function insertLinkIntoNav() {
  * ページ内のおすすめショップにある、ブロック済みのショップを非表示にする関数
  */
 function blockRecommendShop(filterModule) {
+    console.log(filterModule);
     var intervalId = setInterval(() => {
         const Shops = document.querySelectorAll("div.shop-card");
         if (Shops.length > 0) {
             clearInterval(intervalId);
             Shops.forEach((shop) => {
                 const shopUrl = shop.querySelector("a.text-ui").href;
+                console.log(filterModule);
                 filterModule.getFilter().then((filterArray) => {
                     if (filterArray && filterArray.includes(shopUrl)) {
                         shop.style.display = "none";
