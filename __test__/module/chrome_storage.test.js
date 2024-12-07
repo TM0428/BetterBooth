@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, jest } from "@jest/globals";
 import {
     getFromSyncStorage,
     setToSyncStorage,
+    mergeToSyncStorage,
     removeFromSyncStorage,
     removeFromLocalStorage
 } from "../../src/js/module/chrome_storage";
@@ -86,6 +87,64 @@ describe("setToSyncStorage", () => {
         });
 
         await expect(setToSyncStorage(key, value)).rejects.toThrow(errorMessage);
+        expect(chrome.storage.sync.set).not.toHaveBeenCalled();
+    });
+});
+
+describe("mergeToSyncStorage", () => {
+    beforeEach(() => {
+        global.chrome = {
+            storage: {
+                sync: {
+                    set: jest.fn(),
+                    get: jest.fn(),
+                    getBytesInUse: jest.fn()
+                }
+            },
+            runtime: {
+                lastError: null
+            }
+        };
+    });
+
+    it("should resolve when chrome.storage.sync.set succeeds", async () => {
+        const key = "testKey";
+        const value1 = { existingKey: "existingValue" };
+        const value2 = { newKey: "newValue" };
+        chrome.storage.sync.getBytesInUse.mockImplementation((key, callback) => {
+            callback(0);
+        });
+        chrome.storage.sync.get.mockImplementation((key, callback) => {
+            callback({ [key]: value1 });
+        });
+        chrome.storage.sync.set.mockImplementation((data, callback) => {
+            callback();
+        });
+
+        await expect(mergeToSyncStorage(key, value2)).resolves.toBeUndefined();
+        expect(chrome.storage.sync.set).toHaveBeenCalledWith(
+            { [key]: { ...value1, ...value2 } },
+            expect.any(Function)
+        );
+    });
+
+    it("should reject when chrome.runtime.lastError is set", async () => {
+        const key = "testKey";
+        const value1 = { existingKey: "existingValue" };
+        const value2 = { newKey: "newValue" };
+        const errorMessage = "An error occurred";
+        chrome.runtime.lastError = new Error(errorMessage);
+        chrome.storage.sync.getBytesInUse.mockImplementation((key, callback) => {
+            callback(0);
+        });
+        chrome.storage.sync.get.mockImplementation((key, callback) => {
+            callback({ [key]: value1 });
+        });
+        chrome.storage.sync.set.mockImplementation((data, callback) => {
+            callback();
+        });
+
+        await expect(mergeToSyncStorage(key, value2)).rejects.toThrow(errorMessage);
         expect(chrome.storage.sync.set).not.toHaveBeenCalled();
     });
 });
