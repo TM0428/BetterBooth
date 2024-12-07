@@ -1,3 +1,8 @@
+/**
+ * matches: "*://checkout.booth.pm/orders*",
+ * このスクリプトは購入済みアイテムのページに影響するものを記述します
+ */
+
 function attachShippingInfo() {
     /**
      * https://accounts.booth.pm/ordersの内容に対して、配送情報を付与する

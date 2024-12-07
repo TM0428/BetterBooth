@@ -1,0 +1,20 @@
+name: Test Check
+
+on:
+    pull_request:
+        branches:
+            - master # PR が master ブランチに送信されたときに実行
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Run test
+              run: npm run test
