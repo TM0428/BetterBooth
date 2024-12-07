@@ -14,7 +14,8 @@
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
-    "test": "jest"
+    "test": "jest",
+    "prebuild": "npm test"
   },
   "dependencies": {
     "sass": "^1.74.1",
