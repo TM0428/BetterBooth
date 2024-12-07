@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, jest } from "@jest/globals";
 import {
     getFromSyncStorage,
     setToSyncStorage,
+    removeFromSyncStorage,
     removeFromLocalStorage
 } from "../../src/js/module/chrome_storage";
 
@@ -86,6 +87,43 @@ describe("setToSyncStorage", () => {
 
         await expect(setToSyncStorage(key, value)).rejects.toThrow(errorMessage);
         expect(chrome.storage.sync.set).not.toHaveBeenCalled();
+    });
+});
+
+describe("removeFromSyncStorage", () => {
+    beforeEach(() => {
+        global.chrome = {
+            storage: {
+                sync: {
+                    remove: jest.fn()
+                }
+            },
+            runtime: {
+                lastError: null
+            }
+        };
+    });
+
+    it("should resolve when chrome.storage.sync.remove succeeds", async () => {
+        const key = "testKey";
+        chrome.storage.sync.remove.mockImplementation((key, callback) => {
+            callback();
+        });
+
+        await expect(removeFromSyncStorage(key)).resolves.toBeUndefined();
+        expect(chrome.storage.sync.remove).toHaveBeenCalledWith(key, expect.any(Function));
+    });
+
+    it("should reject when chrome.runtime.lastError is set", async () => {
+        const key = "testKey";
+        const errorMessage = "An error occurred";
+        chrome.runtime.lastError = new Error(errorMessage);
+        chrome.storage.sync.remove.mockImplementation((key, callback) => {
+            callback();
+        });
+
+        await expect(removeFromSyncStorage(key)).rejects.toThrow(errorMessage);
+        expect(chrome.storage.sync.remove).toHaveBeenCalledWith(key, expect.any(Function));
     });
 });
 
