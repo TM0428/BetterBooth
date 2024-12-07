@@ -104,23 +104,6 @@
         },
         {
             "matches": [
-                "*://*.booth.pm/"
-            ],
-            "exclude_matches": [
-                "*://booth.pm/carts/",
-                "*://accounts.booth.pm/*",
-                "*://manage.booth.pm/*",
-                "*://checkout.booth.pm/*"
-            ],
-            "js": [
-                "js/itemlist_sort.js"
-            ],
-            "css": [
-                "css/itemlist_sort.css"
-            ]
-        },
-        {
-            "matches": [
                 "*://accounts.booth.pm/orders*"
             ],
             "js": [

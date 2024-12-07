@@ -3,10 +3,9 @@
  * このスクリプトはbooth.pm全体に影響するものを記述します
  */
 
-let searchSettings;
 async function getSearchSettingsModule() {
     const src = chrome.runtime.getURL("./js/module/settings_data.js");
-    searchSettings = await import(src);
+    return await import(src);
 }
 async function getFilterDataModule() {
     const src = chrome.runtime.getURL("./js/module/filter_data.js");
@@ -33,7 +32,7 @@ let reload_count = 0;
 /**
  * boothの検索において、自動でソート条件を追加する関数
  */
-async function attachOptionURL() {
+async function attachOptionURL(searchSettings) {
     const settings = await searchSettings.getSearchSettings();
     // 設定から条件を指定しない場合は以下の処理を無視
     if (settings.disable === true) {
@@ -71,14 +70,14 @@ async function attachOptionURL() {
     });
     if (reload_count < 3) {
         reload_count++;
-        setTimeout(attachOptionURL, 1000);
+        setTimeout(attachOptionURL(searchSettings), 1000);
     }
 }
 
 /**
  * 入力されたクエリから、検索URLを出力する関数
  */
-async function setSearchOption(search_input) {
+async function setSearchOption(search_input, searchSettings) {
     const settings = await searchSettings.getSearchSettings();
     var value = search_input;
     if (search_input === "") {
@@ -117,7 +116,7 @@ async function setSearchOption(search_input) {
 /**
  * 検索ボックスを再生成するための部分
  */
-function makeNewSearchTab() {
+function makeNewSearchTab(searchSettings) {
     // div要素を作成
     const divElement = document.createElement("div");
     divElement.classList.add(
@@ -155,7 +154,7 @@ function makeNewSearchTab() {
     });
     inputElement.addEventListener("keydown", function (event) {
         if (event.keyCode === 13 && event.target.value) {
-            setSearchOption("");
+            setSearchOption("", searchSettings);
         }
         if (event.keyCode === 27 && inputElement.classList.contains("focus")) {
             inputElement.classList.remove("focus");
@@ -211,7 +210,7 @@ function makeNewSearchTab() {
     buttonElement.appendChild(iElement);
     buttonElement.addEventListener("click", () => {
         if (inputElement.value !== "") {
-            setSearchOption("");
+            setSearchOption("", searchSettings);
         }
     });
 
@@ -231,7 +230,7 @@ function makeNewSearchTab() {
     }, 1000);
 }
 
-function makeNewSPSearchTab() {
+function makeNewSPSearchTab(searchSettings) {
     // 新しい検索タブの要素を作成
     const newSearchTab = document.createElement("div");
     newSearchTab.classList.add("sp-item-search", "item-search");
@@ -294,7 +293,7 @@ function makeNewSPSearchTab() {
     // テキスト入力完了時のイベントハンドラを設定
     searchInput.addEventListener("keydown", function (event) {
         if (event.keyCode === 13 && this.value) {
-            setSearchOption(this.value);
+            setSearchOption(this.value, searchSettings);
         }
     });
 
@@ -351,38 +350,6 @@ function makeNewSPSearchTab() {
     }, 1000);
 }
 
-function toggleFade(content) {
-    content.classList.toggle("fade");
-}
-
-function hideDescription() {
-    const description = document.querySelector("div.booth-description div.u-mb-300");
-    if (description && description.clientHeight > 400) {
-        const content = description.children[0];
-        content.className = "description-contents";
-        // console.log(description);
-        const showMore = document.createElement("div");
-        showMore.className = "show-more";
-        const icon = document.createElement("i");
-        icon.className = "icon-arrow-open-down s-2x";
-        showMore.appendChild(icon);
-        description.appendChild(showMore);
-        toggleFade(content);
-        showMore.addEventListener("click", () => {
-            toggleFade(content);
-            if (content.clientHeight <= 400) {
-                var height = content.scrollHeight + "px";
-                content.style.height = height;
-                icon.className = "icon-arrow-open-up s-2x";
-            }
-            else {
-                content.style.height = "400px";
-                icon.className = "icon-arrow-open-down s-2x";
-            }
-        });
-    }
-}
-
 function insertLinkIntoNav() {
     // 新しい<a>タグを作成
     const newLink = document.createElement("a");
@@ -418,14 +385,12 @@ function insertLinkIntoNav() {
  * ページ内のおすすめショップにある、ブロック済みのショップを非表示にする関数
  */
 function blockRecommendShop(filterModule) {
-    console.log(filterModule);
     var intervalId = setInterval(() => {
         const Shops = document.querySelectorAll("div.shop-card");
         if (Shops.length > 0) {
             clearInterval(intervalId);
             Shops.forEach((shop) => {
                 const shopUrl = shop.querySelector("a.text-ui").href;
-                console.log(filterModule);
                 filterModule.getFilter().then((filterArray) => {
                     if (filterArray && filterArray.includes(shopUrl)) {
                         shop.style.display = "none";
@@ -451,13 +416,12 @@ function blockRecommendShop(filterModule) {
 }
 
 async function main() {
-    await getSearchSettingsModule();
+    const searchSettings = await getSearchSettingsModule();
     const filterModule = await getFilterDataModule();
-    window.addEventListener("load", attachOptionURL);
-    hideDescription();
+    window.addEventListener("load", attachOptionURL(searchSettings));
 
-    makeNewSearchTab();
-    makeNewSPSearchTab();
+    makeNewSearchTab(searchSettings);
+    makeNewSPSearchTab(searchSettings);
     // testInit();
     // リンクをnav要素の子要素の2番目に挿入
     insertLinkIntoNav();
