@@ -70,7 +70,7 @@ async function attachOptionURL(searchSettings) {
     });
     if (reload_count < 3) {
         reload_count++;
-        setTimeout(attachOptionURL(searchSettings), 1000);
+        setTimeout(() => attachOptionURL(searchSettings), 1000);
     }
 }
 
@@ -278,8 +278,7 @@ function makeNewSPSearchTab(searchSettings) {
     searchInput.addEventListener("input", function () {
         if (this.value) {
             clearIcon.style.display = "flex";
-        }
-        else {
+        } else {
             clearIcon.style.display = "none";
         }
     });
@@ -373,8 +372,7 @@ function insertLinkIntoNav() {
             const existingChildren = navElement.children;
             if (existingChildren.length >= 2) {
                 navElement.insertBefore(newLink, existingChildren[1]);
-            }
-            else {
+            } else {
                 navElement.appendChild(newLink);
             }
         }
