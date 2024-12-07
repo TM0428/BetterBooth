@@ -8,6 +8,10 @@ async function getSearchSettingsModule() {
     const src = chrome.runtime.getURL("./js/module/settings_data.js");
     searchSettings = await import(src);
 }
+async function getFilterDataModule() {
+    const src = chrome.runtime.getURL("./js/module/filter_data.js");
+    return await import(src);
+}
 
 const contentJa = {
     keyword: "キーワードを入力",
@@ -410,8 +414,43 @@ function insertLinkIntoNav() {
     }, 1000);
 }
 
+/**
+ * ページ内のおすすめショップにある、ブロック済みのショップを非表示にする関数
+ */
+function blockRecommendShop(filterModule) {
+    var intervalId = setInterval(() => {
+        const Shops = document.querySelectorAll("div.shop-card");
+        if (Shops.length > 0) {
+            clearInterval(intervalId);
+            Shops.forEach((shop) => {
+                const shopUrl = shop.querySelector("a.text-ui").href;
+                filterModule.getFilter().then((filterArray) => {
+                    if (filterArray && filterArray.includes(shopUrl)) {
+                        shop.style.display = "none";
+                    }
+                });
+            });
+        }
+    }, 500);
+    var intervalId2 = setInterval(() => {
+        const Shops = document.querySelectorAll("div.following-shop-card");
+        if (Shops.length > 0) {
+            clearInterval(intervalId2);
+            Shops.forEach((shop) => {
+                const shopUrl = shop.querySelector("a.text-ui").href;
+                filterModule.getFilter().then((filterArray) => {
+                    if (filterArray && filterArray.includes(shopUrl)) {
+                        shop.style.display = "none";
+                    }
+                });
+            });
+        }
+    }, 500);
+}
+
 async function main() {
     await getSearchSettingsModule();
+    const filterModule = await getFilterDataModule();
     window.addEventListener("load", attachOptionURL);
     hideDescription();
 
@@ -420,6 +459,7 @@ async function main() {
     // testInit();
     // リンクをnav要素の子要素の2番目に挿入
     insertLinkIntoNav();
+    blockRecommendShop(filterModule);
 }
 
 main();
