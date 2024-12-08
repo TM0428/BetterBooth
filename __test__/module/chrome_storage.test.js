@@ -4,6 +4,8 @@ import {
     setToSyncStorage,
     mergeToSyncStorage,
     removeFromSyncStorage,
+    getFromLocalStorage,
+    setToLocalStorage,
     removeFromLocalStorage
 } from "../../src/js/module/chrome_storage";
 
@@ -177,6 +179,89 @@ describe("removeFromSyncStorage", () => {
 
         await expect(removeFromSyncStorage(key)).rejects.toThrow(errorMessage);
         expect(chrome.storage.sync.remove).toHaveBeenCalledWith(key, expect.any(Function));
+    });
+});
+
+describe("getFromLocalStorage", () => {
+    beforeEach(() => {
+        global.chrome = {
+            storage: {
+                local: {
+                    get: jest.fn()
+                }
+            },
+            runtime: {
+                lastError: null
+            }
+        };
+    });
+
+    it("should resolve when chrome.storage.local.get succeeds", async () => {
+        const key = "testKey";
+        const value = "testValue";
+        chrome.storage.local.get.mockImplementation((key, callback) => {
+            callback({ [key]: value });
+        });
+
+        await expect(getFromLocalStorage(key)).resolves.toBe(value);
+        expect(chrome.storage.local.get).toHaveBeenCalledWith(key, expect.any(Function));
+    });
+
+    it("should reject when chrome.runtime.lastError is set", async () => {
+        const key = "testKey";
+        const errorMessage = "An error occurred";
+        chrome.runtime.lastError = new Error(errorMessage);
+        chrome.storage.local.get.mockImplementation((key, callback) => {
+            callback();
+        });
+
+        await expect(getFromLocalStorage(key)).rejects.toThrow(errorMessage);
+        expect(chrome.storage.local.get).toHaveBeenCalledWith(key, expect.any(Function));
+    });
+});
+
+describe("setToLocalStorage", () => {
+    beforeEach(() => {
+        global.chrome = {
+            storage: {
+                local: {
+                    set: jest.fn()
+                }
+            },
+            runtime: {
+                lastError: null
+            }
+        };
+    });
+
+    it("should resolve when chrome.storage.local.set succeeds", async () => {
+        const key = "testKey";
+        const value = "testValue";
+        chrome.storage.local.set.mockImplementation((data, callback) => {
+            callback();
+        });
+
+        await expect(setToLocalStorage(key, value)).resolves.toBeUndefined();
+        expect(chrome.storage.local.set).toHaveBeenCalledWith(
+            { [key]: value },
+            expect.any(Function)
+        );
+    });
+
+    it("should reject when chrome.runtime.lastError is set", async () => {
+        const key = "testKey";
+        const value = "testValue";
+        const errorMessage = "An error occurred";
+        chrome.runtime.lastError = new Error(errorMessage);
+        chrome.storage.local.set.mockImplementation((data, callback) => {
+            callback();
+        });
+
+        await expect(setToLocalStorage(key, value)).rejects.toThrow(errorMessage);
+        expect(chrome.storage.local.set).toHaveBeenCalledWith(
+            { [key]: value },
+            expect.any(Function)
+        );
     });
 });
 
