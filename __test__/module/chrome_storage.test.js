@@ -130,22 +130,16 @@ describe("mergeToSyncStorage", () => {
 
     it("should reject when chrome.runtime.lastError is set", async () => {
         const key = "testKey";
-        const value1 = { existingKey: "existingValue" };
         const value2 = { newKey: "newValue" };
         const errorMessage = "An error occurred";
         chrome.runtime.lastError = new Error(errorMessage);
         chrome.storage.sync.getBytesInUse.mockImplementation((key, callback) => {
-            callback(0);
-        });
-        chrome.storage.sync.get.mockImplementation((key, callback) => {
-            callback({ [key]: value1 });
-        });
-        chrome.storage.sync.set.mockImplementation((data, callback) => {
             callback();
         });
 
         await expect(mergeToSyncStorage(key, value2)).rejects.toThrow(errorMessage);
         expect(chrome.storage.sync.set).not.toHaveBeenCalled();
+        expect(chrome.storage.sync.get).not.toHaveBeenCalled();
     });
 });
 

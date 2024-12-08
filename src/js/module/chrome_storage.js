@@ -60,7 +60,6 @@ export async function mergeToSyncStorage(key, data) {
     try {
         await checkSyncStorageCapacity(key);
     } catch (error) {
-        console.log(error);
         return Promise.reject(error);
     }
     return new Promise((resolve, reject) => {
