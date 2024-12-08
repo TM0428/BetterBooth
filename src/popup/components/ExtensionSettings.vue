@@ -44,10 +44,10 @@
                     <v-list-item height="64">
                         <v-list-item-content>
                             <v-row class="align-center">
-                                <v-col :cols="7" class="text-body-2">
+                                <v-col :cols="8" class="text-body-2">
                                     <div>{{ $t("autoReloadLabel") }}</div>
                                 </v-col>
-                                <v-col :cols="5">
+                                <v-col :cols="4">
                                     <v-checkbox
                                         class="d-flex justify-end"
                                         hide-details
@@ -204,12 +204,10 @@ export default {
             if (this.extended_settings.filter_mode == mode.sync) {
                 this.extended_settings.filter_mode = mode.local;
                 await convertStorageMode(mode.sync, mode.local);
-            }
-            else if (this.extended_settings.filter_mode == mode.local) {
+            } else if (this.extended_settings.filter_mode == mode.local) {
                 this.extended_settings.filter_mode = mode.sync;
                 await convertStorageMode(mode.local, mode.sync);
-            }
-            else {
+            } else {
                 console.warn("Invalid mode");
                 return;
             }

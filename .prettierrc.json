@@ -4,7 +4,5 @@
     "tabWidth": 4,
     "singleQuote": false,
     "printWidth": 100,
-    "trailingComma": "none",
-    "plugins": ["prettier-plugin-brace-style"],
-    "braceStyle": "stroustrup"
+    "trailingComma": "none"
 }

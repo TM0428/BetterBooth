@@ -1,5 +1,5 @@
 import { test, expect } from "@jest/globals";
-import { makeSearchSettingsFromObject } from "../src/js/module/search_settings.js";
+import { makeSearchSettingsFromObject } from "../../src/js/module/search_settings.js";
 
 test("makeSearchSettingsFromObject", () => {
     const searchSettings = makeSearchSettingsFromObject({

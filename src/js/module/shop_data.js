@@ -16,7 +16,7 @@ export function getShopId(shop) {
 }
 
 /**
- * ショップのブロックを追加する関数
+ * ショップのデータを追加する関数
  * @param {*} shop ショップのオブジェクト
  */
 export async function addShop(shop) {
