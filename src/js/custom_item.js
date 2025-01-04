@@ -3,10 +3,9 @@
  * このスクリプトはアイテムページに関する処理を記述します
  */
 
-let itemData;
 async function getItemDataModule() {
     const src = chrome.runtime.getURL("./js/module/item_data.js");
-    itemData = await import(src);
+    return await import(src);
 }
 
 async function getSettingsModule() {
@@ -33,6 +32,7 @@ async function addData(additionalData = {}) {
     const response = await fetch(url);
     const text = await response.text();
     const raw_data = JSON.parse(text);
+    const itemData = await getItemDataModule();
     console.log(raw_data);
     const tags = raw_data.tags.map((tag) => tag.name);
     const statusArray = raw_data.variations.map((item) => item.status);
@@ -124,8 +124,7 @@ function addRestockItem() {
             div.addEventListener("click", function (event) {
                 if (div.classList.contains("requested")) {
                     handleButtonClick(event, div, { restock: false });
-                }
-                else {
+                } else {
                     handleButtonClick(event, div, { restock: true });
                 }
             });
@@ -159,8 +158,7 @@ function redirectToEn() {
     // もし、*://*booth.pm/en/items/* の場合はそのまま
     if (url.match(/.*booth\.pm\/en\/items\/.*/)) {
         mountDeletedItem();
-    }
-    else {
+    } else {
         // url候補:
         // https://booth.pm/ja/items/xxxxxx to https://428_tm.booth.pm/en/items/xxxxxx
         if (url.match(/.*booth\.pm\/ja\/items\/.*/)) {
@@ -175,10 +173,8 @@ function redirectToEn() {
 
 async function mountDeletedItem() {
     // window.location.href から itemID を取得
+    const itemData = await getItemDataModule();
     var itemId = itemData.getItemId(window.location.href.match(/\/items\/(\d+)/)[1]);
-    if (itemData === undefined) {
-        await getItemDataModule();
-    }
     const item = await itemData.getItem(itemId);
     if (item == null || item == undefined) {
         return;
@@ -215,7 +211,6 @@ async function mountDeletedItem() {
 }
 
 async function main() {
-    await getItemDataModule();
     const settingsData = await getSettingsModule();
     const setting = await settingsData.getExtendedSettings();
     if (setting.language !== "ja") {
@@ -226,8 +221,7 @@ async function main() {
             addSaveButton();
             addDownloadedItem();
             addRestockItem();
-        }
-        else {
+        } else {
             redirectToEn();
         }
     }
