@@ -7,15 +7,14 @@ function attachShippingInfo() {
     /**
      * https://accounts.booth.pm/ordersの内容に対して、配送情報を付与する
      */
-    const orderLinks = document.querySelectorAll(
-        "div.l-orders-index > div.sheet > div.l-orders-index-line-item-actions > a"
-    );
+    const orderLinks = document.querySelectorAll("div.l-orders-index > a.nav-reverse");
+    console.log(orderLinks);
     orderLinks.forEach((orderLink) => {
         const orderNumber = orderLink.getAttribute("href").replace("/orders/", "");
         getShippingInfo(orderNumber).then((shippingInfo) => {
             if (shippingInfo) {
-                const orderCol = orderLink.parentElement.parentElement;
-                const textContents = orderCol.querySelector("div.l-col");
+                const orderCol = orderLink.querySelector("div.sheet > div.flex");
+                const textContents = orderCol.querySelector("div.flex-1");
                 const badge = orderCol.querySelector("div.badge");
                 if (
                     badge.classList.contains("cancelled") ||
@@ -60,6 +59,7 @@ async function getShippingInfo(orderNumber) {
         badge.classList.remove("u-mx-0");
         badge.classList.add("u-align-top");
         badge.classList.add("u-mx-2");
+        console.log(badge.outerHTML);
         return badge.outerHTML;
     }
     return null;
