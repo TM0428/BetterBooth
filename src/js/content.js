@@ -175,13 +175,6 @@ function makeNewSearchTab(searchSettings) {
     inputContainerElement.appendChild(inputElement);
     inputContainerElement.appendChild(reactAutowhatever1Element);
 
-    document.addEventListener("keydown", (event) => {
-        // フォーカスがない場合、sが入力された時にフォーカスをあてる
-        if (event.key === "s" && document.activeElement !== inputElement) {
-            inputElement.focus();
-            event.preventDefault(); // sの入力をキャンセル
-        }
-    });
     inputElement.addEventListener("focus", () => {
         inputElement.classList.add("focus");
         divElement.classList.add("focus");

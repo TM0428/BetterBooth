@@ -1,6 +1,6 @@
 {
   "name": "betterbooth",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -22,7 +22,7 @@
     "vue": "^3.5.12",
     "vue-i18n": "^9.13.1",
     "vue-router": "^4.4.3",
-    "vuetify": "^3.7.3"
+    "vuetify": "^3.7.6"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
