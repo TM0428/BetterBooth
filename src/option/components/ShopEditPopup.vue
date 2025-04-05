@@ -24,7 +24,7 @@
                             <div v-for="(item, i) in shop.add_url" :key="i">
                                 <v-list-item>
                                     <template v-slot:prepend>
-                                        <v-icon :icon="LinkIcon"></v-icon>
+                                        <BoothIconPicker></BoothIconPicker>
                                     </template>
                                     <v-list-item-content>
                                         <v-list-item-title> {{ item.url }} </v-list-item-title>
@@ -75,9 +75,14 @@
 import { mdiPencil, mdiClose, mdiPlus } from "@mdi/js";
 import { getShop, setShop } from "@/js/module/shop_data";
 import LinkIcon from "./icons/LinkIcon.vue";
+import FanboxIcon from "./icons/FanboxIcon.vue";
+import BoothIconPicker from "./icons/BoothIconPicker.vue";
 import Shop from "@/js/module/shop";
 
 export default {
+    components: {
+        BoothIconPicker
+    },
     props: {
         shopId: {
             type: String,
@@ -89,6 +94,8 @@ export default {
             newUrl: "",
             shop: {},
             LinkIcon: LinkIcon,
+            FanboxIcon: FanboxIcon,
+            BoothIconPicker: BoothIconPicker,
             mdiPencilIcon: mdiPencil,
             mdiCloseIcon: mdiClose,
             mdiPlusIcon: mdiPlus,

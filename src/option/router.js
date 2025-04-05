@@ -1,6 +1,7 @@
 import Item from "./pages/ItemDetailPage.vue";
 import Top from "./pages/TopPage.vue";
 import CustomShop from "./pages/CustomShopPage.vue";
+import CustomShopListPage from "./pages/CustomShopListPage.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { getExtendedSettings } from "@/js/module/settings_data";
 
@@ -18,8 +19,14 @@ const routes = [
     },
     {
         path: "/customshop",
+        name: "CustomShopListPage",
+        component: CustomShopListPage
+    },
+    {
+        path: "/customshop/:shopId",
         name: "CustomShop",
-        component: CustomShop
+        component: CustomShop,
+        props: true
     }
 ];
 
