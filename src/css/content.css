@@ -91,3 +91,9 @@ div.item-search-input__container {
     font-size: 1.25rem;
     color: #252f3d;
 }
+
+.u-justify-content-between {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
