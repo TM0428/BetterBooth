@@ -54,12 +54,11 @@ async function getShippingInfo(orderNumber) {
             return null;
         }
         // badgeのtext処理
-        // classの値をu-align-middle,u-mx-0からそれぞれu-align-top,u-mx-2に変更する
-        badge.classList.remove("u-align-middle");
-        badge.classList.remove("u-mx-0");
-        badge.classList.add("u-align-top");
-        badge.classList.add("u-mx-2");
-        console.log(badge.outerHTML);
+        // classの値をalign-middle,mx-0からそれぞれalign-top,mx-2に変更する
+        badge.classList.remove("align-middle");
+        badge.classList.remove("mx-0");
+        badge.classList.add("align-top");
+        badge.classList.add("mx-2");
         return badge.outerHTML;
     }
     return null;

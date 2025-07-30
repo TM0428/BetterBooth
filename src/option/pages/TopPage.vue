@@ -176,22 +176,18 @@ export default {
                 let cartMatch = false;
                 if (item.purchased == undefined && this.srchCart >= 0) {
                     cartMatch = false;
-                }
-                else if (this.srchCart == 0) {
+                } else if (this.srchCart == 0) {
                     cartMatch = !item.purchased;
-                }
-                else if (this.srchCart == 1) {
+                } else if (this.srchCart == 1) {
                     cartMatch = item.purchased;
-                }
-                else {
+                } else {
                     cartMatch = true;
                 }
                 // srchTagsによるフィルタリング
                 let tagsMatch = false;
                 if (this.srchTags.length === 0) {
                     tagsMatch = true;
-                }
-                else if (item.tags) {
+                } else if (item.tags) {
                     tagsMatch = this.srchTags.every((stag) => item.tags.includes(stag));
                 }
 
@@ -234,8 +230,7 @@ export default {
             // this.$refs.appbar.addSearchText(cart_command);
             if (cart) {
                 this.srchCart = 1;
-            }
-            else {
+            } else {
                 this.srchCart = 0;
             }
             this.page = 1;
@@ -284,8 +279,7 @@ export default {
                     thumbnail_url: this.$route.query.shop_icon,
                     url: this.$route.query.shop_url
                 };
-            }
-            else {
+            } else {
                 this.srchShop = {};
             }
         },
@@ -364,7 +358,7 @@ export default {
 </style>
 
 <style scoped>
-.searchTextBox >>> input {
+.searchTextBox :deep(input) {
     color: rgb(var(--v-theme-onSurface)) !important;
 }
 </style>
