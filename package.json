@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "sass": "^1.74.1",
+    "vite": "^5.4.0",
     "vue": "^3.5.12",
     "vue-i18n": "^9.14.5",
     "vue-router": "^4.4.3",
@@ -30,7 +31,7 @@
     "@intlify/unplugin-vue-i18n": "^5.2.0",
     "@mdi/js": "^7.2.96",
     "@rushstack/eslint-patch": "^1.10.4",
-    "@vitejs/plugin-vue": "^4.2.1",
+    "@vitejs/plugin-vue": "^5.1.0",
     "@vue/eslint-config-prettier": "^9.0.0",
     "babel-jest": "^29.7.0",
     "eslint": "^8.57.1",
@@ -43,7 +44,6 @@
     "prettier": "^3.2.5",
     "prettier-plugin-brace-style": "^0.6.0",
     "shx": "^0.3.4",
-    "vite": "^4.5.3",
     "watch": "^0.13.0"
   },
   "type": "module",
