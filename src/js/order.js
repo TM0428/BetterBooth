@@ -59,7 +59,6 @@ async function getShippingInfo(orderNumber) {
         badge.classList.remove("mx-0");
         badge.classList.add("align-top");
         badge.classList.add("mx-2");
-        console.log(badge);
         return badge.outerHTML;
     }
     return null;
