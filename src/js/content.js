@@ -47,6 +47,8 @@ async function attachOptionURL(searchSettings) {
         // console.log(aElement);
         // 下のナビゲーションに含まれる場合は、ソート条件を維持させる
         if (aElement.classList.contains("nav-item")) return;
+        // ソート・フィルター設定のプルダウンメニュー内の場合は、リンクを変更しない
+        if (aElement.closest("#js-market-result-pulldown")) return;
         // console.log(aElement.href);
         const regex = new RegExp("https?://booth.pm/.*/(search|browse)/.*");
 
@@ -406,6 +408,104 @@ function blockRecommendShop(filterModule) {
     }, 500);
 }
 
+/**
+ * 新しい構造のアイテムカードのリンクをショップURLに変換する関数
+ * @param {HTMLElement} itemCard - アイテムカードのラッパー要素
+ */
+function convertItemCardLinks(itemCard) {
+    // ショップリンクを取得（ショップ名の部分）
+    const shopLinkElement = itemCard.querySelector('a[href*="booth.pm"][href$="/"]');
+    if (!shopLinkElement) return;
+
+    const shopUrl = shopLinkElement.getAttribute("href");
+    if (!shopUrl) return;
+
+    // shopUrl を正規化（末尾を "/" に揃える）
+    const normalizedShopUrl = shopUrl.endsWith("/") ? shopUrl : shopUrl + "/";
+
+    // アイテムへのリンクを取得
+    const itemLinks = itemCard.querySelectorAll('a[href*="/items/"]');
+    itemLinks.forEach((itemLink) => {
+        const itemHref = itemLink.getAttribute("href");
+        if (!itemHref) {
+            return;
+        }
+
+        // 絶対URLに変換して、既に shop の items パスを指しているか確認
+        let absoluteItemUrl;
+        try {
+            absoluteItemUrl = new URL(itemHref, window.location.href).href;
+        } catch (e) {
+            // 不正な URL は変換対象外
+            return;
+        }
+
+        if (absoluteItemUrl.startsWith(normalizedShopUrl + "items/")) {
+            return; // 既に変換済みの場合はスキップ
+        }
+
+        // booth.pm/ja/items/xxx または booth.pm/items/xxx を shop.booth.pm/items/xxx に変換
+        const itemIdMatch = itemHref.match(/\/items\/(\d+)/);
+        if (itemIdMatch) {
+            const newUrl = new URL(`items/${itemIdMatch[1]}`, shopUrl).toString();
+            itemLink.setAttribute("href", newUrl);
+        }
+    });
+}
+
+/**
+ * 動的に追加されるアイテムカードを監視し、リンクを変換する関数
+ */
+function observeItemCards(searchSettings) {
+    // 既存の要素を処理
+    const processExistingCards = () => {
+        const itemCards = document.querySelectorAll("div.item-card-wrapper");
+        itemCards.forEach(convertItemCardLinks);
+    };
+
+    // 初回実行
+    processExistingCards();
+
+    // MutationObserverで動的に追加される要素を監視
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    // data-ga-section属性を持つ要素を探す
+                    if (node.matches && node.matches("[data-ga-section]")) {
+                        const itemCards = node.querySelectorAll("div.item-card-wrapper");
+                        itemCards.forEach(convertItemCardLinks);
+                    } else if (node.querySelector) {
+                        const itemCards = node.querySelectorAll("div.item-card-wrapper");
+                        itemCards.forEach(convertItemCardLinks);
+                    }
+
+                    // 要素自体がitem-card-wrapperの場合
+                    if (node.matches && node.matches("div.item-card-wrapper")) {
+                        convertItemCardLinks(node);
+                    }
+                }
+            });
+        });
+
+        // リンクにオプションURLを付与
+        attachOptionURL(searchSettings);
+    });
+
+    // body全体を監視対象に
+    const targetNode = document.body;
+    const config = {
+        childList: true,
+        subtree: true
+    };
+
+    observer.observe(targetNode, config);
+
+    // 念のため、1秒後にも再実行
+    setTimeout(processExistingCards, 1000);
+    setTimeout(processExistingCards, 2000);
+}
+
 async function main() {
     const searchSettings = await getSearchSettingsModule();
     const filterModule = await getFilterDataModule();
@@ -417,6 +517,8 @@ async function main() {
     // リンクをnav要素の子要素の2番目に挿入
     insertLinkIntoNav();
     blockRecommendShop(filterModule);
+    // 動的に追加されるアイテムカードを監視
+    observeItemCards(searchSettings);
 }
 
 main();
