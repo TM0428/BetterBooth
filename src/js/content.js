@@ -447,7 +447,7 @@ function convertItemCardLinks(itemCard) {
         // booth.pm/ja/items/xxx または booth.pm/items/xxx を shop.booth.pm/items/xxx に変換
         const itemIdMatch = itemHref.match(/\/items\/(\d+)/);
         if (itemIdMatch) {
-            const newUrl = shopUrl + "items/" + itemIdMatch[1];
+            const newUrl = new URL(`items/${itemIdMatch[1]}`, shopUrl).toString();
             itemLink.setAttribute("href", newUrl);
         }
     });
