@@ -420,11 +420,27 @@ function convertItemCardLinks(itemCard) {
     const shopUrl = shopLinkElement.getAttribute("href");
     if (!shopUrl) return;
 
+    // shopUrl を正規化（末尾を "/" に揃える）
+    const normalizedShopUrl = shopUrl.endsWith("/") ? shopUrl : shopUrl + "/";
+
     // アイテムへのリンクを取得
     const itemLinks = itemCard.querySelectorAll('a[href*="/items/"]');
     itemLinks.forEach((itemLink) => {
         const itemHref = itemLink.getAttribute("href");
-        if (!itemHref || itemHref.includes(shopUrl.replace("https://", "").replace("/", ""))) {
+        if (!itemHref) {
+            return;
+        }
+
+        // 絶対URLに変換して、既に shop の items パスを指しているか確認
+        let absoluteItemUrl;
+        try {
+            absoluteItemUrl = new URL(itemHref, window.location.href).href;
+        } catch (e) {
+            // 不正な URL は変換対象外
+            return;
+        }
+
+        if (absoluteItemUrl.startsWith(normalizedShopUrl + "items/")) {
             return; // 既に変換済みの場合はスキップ
         }
 
