@@ -21,18 +21,15 @@ class Item {
         this.name = name;
         if (Array.isArray(images)) {
             this.images = Array.from(images);
-        }
-        else if (typeof images == "object") {
+        } else if (typeof images == "object") {
             this.images = Object.values(images);
-        }
-        else {
+        } else {
             this.images = new Array();
         }
         this.description = description;
         if (shop) {
             this.shop = makeShopFromObject(shop);
-        }
-        else {
+        } else {
             this.shop = new Shop();
         }
         this.id = id;
@@ -40,21 +37,17 @@ class Item {
         this.url = url;
         if (Array.isArray(tags)) {
             this.tags = Array.from(tags);
-        }
-        else if (typeof tags == "object") {
+        } else if (typeof tags == "object") {
             this.tags = Object.values(tags);
-        }
-        else {
+        } else {
             this.tags = new Array();
         }
         this.category = category;
         if (Array.isArray(status)) {
             this.status = Array.from(status);
-        }
-        else if (typeof status == "object") {
+        } else if (typeof status == "object") {
             this.status = Object.values(status);
-        }
-        else {
+        } else {
             this.status = new Array();
         }
         this.wished = wished;

@@ -123,8 +123,7 @@ function attachBlockButton(liElement, extended_settings, filterData) {
             try {
                 await filterData.addFilter(aElement.href, extended_settings.getFilterMode);
                 filterReload(aElement.href);
-            }
-            catch (error) {
+            } catch (error) {
                 alert(filterLang.errorBlockShop);
             }
         }

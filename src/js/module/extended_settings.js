@@ -18,8 +18,7 @@ class ExtendedSettings {
     get getFilterMode() {
         if (this.filter_mode) {
             return this.filter_mode;
-        }
-        else {
+        } else {
             return mode.sync;
         }
     }
