@@ -138,7 +138,7 @@ export default {
         async addStorage(data) {
             const result = await addItem(data);
             if (result != 0) {
-                window.alert("Some error occured!");
+                window.alert("Some error occurred!");
             } else {
                 window.alert(this.$t("topDataAdd"));
                 this.$emit("item-imported", result);
