@@ -8,8 +8,15 @@ async function getFilterDataModule() {
     return await import(src);
 }
 
+async function getSettingsModule() {
+    const src = chrome.runtime.getURL("./js/module/settings_data.js");
+    return await import(src);
+}
+
 async function main() {
     const filterModule = await getFilterDataModule();
+    const settingsModule = await getSettingsModule();
+    const extended_settings = await settingsModule.getExtendedSettings();
 
     // aタグの中からショップURLを探す
     const aElements = document.querySelectorAll('a[href*=".booth.pm"]');
@@ -31,7 +38,7 @@ async function main() {
 
     if (!shopLinkElement) return;
 
-    filterModule.getFilter().then((filterArray) => {
+    filterModule.getFilter(extended_settings.getFilterMode).then((filterArray) => {
         // boothのショップURLは末尾のスラッシュ有無の揺れがあるため考慮
         const hasMatch =
             filterArray &&
