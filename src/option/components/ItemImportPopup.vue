@@ -94,8 +94,7 @@ export default {
 
                     this.addStorage(sanitizedData);
                     // Perform any further operations with the sanitizedData
-                }
-                else {
+                } else {
                     window.alert(this.$t("topInvalid"));
                 }
             };
@@ -139,9 +138,8 @@ export default {
         async addStorage(data) {
             const result = await addItem(data);
             if (result != 0) {
-                window.alert("Some error occured!");
-            }
-            else {
+                window.alert("Some error occurred!");
+            } else {
                 window.alert(this.$t("topDataAdd"));
                 this.$emit("item-imported", result);
             }

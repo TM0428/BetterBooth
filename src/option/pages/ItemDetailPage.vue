@@ -256,7 +256,8 @@ export default {
 
 <style scoped>
 .content {
-    font-family: -apple-system, BlinkMacSystemFont, Avenir, "Helvetica Neue", "Segoe UI", Arial,
+    font-family:
+        -apple-system, BlinkMacSystemFont, Avenir, "Helvetica Neue", "Segoe UI", Arial,
         "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN", メイリオ, Meiryo, "ＭＳ Ｐゴシック",
         sans-serif !important;
 }

@@ -377,14 +377,14 @@ function insertLinkIntoNav() {
 /**
  * ページ内のおすすめショップにある、ブロック済みのショップを非表示にする関数
  */
-function blockRecommendShop(filterModule) {
+function blockRecommendShop(filterModule, extended_settings) {
     var intervalId = setInterval(() => {
         const Shops = document.querySelectorAll("div.shop-card");
         if (Shops.length > 0) {
             clearInterval(intervalId);
             Shops.forEach((shop) => {
                 const shopUrl = shop.querySelector("a.text-ui").href;
-                filterModule.getFilter().then((filterArray) => {
+                filterModule.getFilter(extended_settings.getFilterMode).then((filterArray) => {
                     if (filterArray && filterArray.includes(shopUrl)) {
                         shop.style.display = "none";
                     }
@@ -398,7 +398,7 @@ function blockRecommendShop(filterModule) {
             clearInterval(intervalId2);
             Shops.forEach((shop) => {
                 const shopUrl = shop.querySelector("a.text-ui").href;
-                filterModule.getFilter().then((filterArray) => {
+                filterModule.getFilter(extended_settings.getFilterMode).then((filterArray) => {
                     if (filterArray && filterArray.includes(shopUrl)) {
                         shop.style.display = "none";
                     }
@@ -516,7 +516,8 @@ async function main() {
     // testInit();
     // リンクをnav要素の子要素の2番目に挿入
     insertLinkIntoNav();
-    blockRecommendShop(filterModule);
+    const extended_settings = await searchSettings.getExtendedSettings();
+    blockRecommendShop(filterModule, extended_settings);
     // 動的に追加されるアイテムカードを監視
     observeItemCards(searchSettings);
 }

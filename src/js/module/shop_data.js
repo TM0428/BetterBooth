@@ -9,8 +9,7 @@ import { makeShopFromObject } from "./shop.js";
 export function getShopId(shop) {
     if (typeof shop == "string") {
         return "shop_" + shop;
-    }
-    else {
+    } else {
         return "shop_" + shop.subdomain;
     }
 }
@@ -26,15 +25,13 @@ export async function addShop(shop) {
         if (shops.includes(shopId)) {
             console.log("[shop-data] shop data merge");
             await mergeToSyncStorage(shopId, shop);
-        }
-        else {
+        } else {
             console.log("[shop-data] shop data add");
             shops.push(shopId);
             await setToSyncStorage("shops", shops);
             await setToSyncStorage(shopId, shop);
         }
-    }
-    else {
+    } else {
         initShop(shop);
     }
 }
@@ -43,8 +40,7 @@ export async function getShopsList() {
     const shops = await getFromSyncStorage("shops");
     if (shops) {
         return shops;
-    }
-    else {
+    } else {
         return [];
     }
 }

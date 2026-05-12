@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "__MSG_Name__",
     "default_locale": "ja",
-    "version": "0.6.5",
+    "version": "0.6.6",
     "description": "__MSG_Description__",
     "icons": {
         "128": "icon/icon-128.png",
@@ -86,6 +86,15 @@
         },
         {
             "matches": [
+                "*://booth.pm/gifts/*"
+            ],
+            "js": [
+                "js/custom_gift.js"
+            ],
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
                 "*://*.booth.pm/*"
             ],
             "exclude_matches": [
@@ -111,28 +120,30 @@
             ]
         }
     ],
-    "web_accessible_resources": [{
-        "resources": [
-          "/src/popup/popup.html"
-        ],
-        "matches": [
-          "*://*.booth.pm/*"
-        ]
-    },
-    {
-        "resources": [
-            "js/module/chrome_storage.js",
-            "js/module/shop_data.js",
-            "js/module/shop.js",
-            "js/module/filter_data.js",
-            "js/module/item_data.js",
-            "js/module/item.js",
-            "js/module/settings_data.js",
-            "js/module/extended_settings.js",
-            "js/module/search_settings.js"
-        ],
-        "matches": [
-            "*://*.booth.pm/*"
-        ]
-    }]
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "/src/popup/popup.html"
+            ],
+            "matches": [
+                "*://*.booth.pm/*"
+            ]
+        },
+        {
+            "resources": [
+                "js/module/chrome_storage.js",
+                "js/module/shop_data.js",
+                "js/module/shop.js",
+                "js/module/filter_data.js",
+                "js/module/item_data.js",
+                "js/module/item.js",
+                "js/module/settings_data.js",
+                "js/module/extended_settings.js",
+                "js/module/search_settings.js"
+            ],
+            "matches": [
+                "*://*.booth.pm/*"
+            ]
+        }
+    ]
 }

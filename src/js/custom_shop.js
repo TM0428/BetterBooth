@@ -65,8 +65,7 @@ async function addButton(settingsData, filterData) {
         text.textContent = blocking;
         var contents = document.querySelector("main.modules");
         contents.style.display = "none";
-    }
-    else {
+    } else {
         button.classList.add(
             "btn",
             "small-dense",
@@ -89,16 +88,14 @@ async function addButton(settingsData, filterData) {
             module_contents.style.display = "block";
             text.textContent = block;
             filterData.removeFilter(url, extended_settings.getFilterMode);
-        }
-        else {
+        } else {
             try {
                 await filterData.addFilter(url, extended_settings.getFilterMode);
                 button.classList.remove(NOT_BLOCK, "shop__text--contents");
                 button.classList.add(NOW_BLOCK, "shop__background--contents", "shop__text--price");
                 module_contents.style.display = "none";
                 text.textContent = blocking;
-            }
-            catch (error) {
+            } catch (error) {
                 alert(customShopLang.errorBlockShop);
             }
         }
@@ -172,8 +169,7 @@ function hideDescription() {
                 var height = content.scrollHeight + "px";
                 content.style.height = height;
                 icon.className = "icon-arrow-open-up s-2x";
-            }
-            else {
+            } else {
                 content.style.height = "400px";
                 icon.className = "icon-arrow-open-down s-2x";
             }
