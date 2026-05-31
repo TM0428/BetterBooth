@@ -27,6 +27,21 @@ if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP")
     contentLang = contentEn;
 }
 
+function getCurrentLang() {
+    const match = window.location.pathname.match(/^\/(ja|en|ko|zh-cn|zh-tw)/);
+    if (match) return match[1];
+    
+    const htmlLang = document.documentElement.lang;
+    if (htmlLang) {
+        if (htmlLang.toLowerCase().startsWith("zh")) {
+            return htmlLang.toLowerCase();
+        }
+        return htmlLang.split('-')[0].toLowerCase();
+    }
+    
+    return "ja";
+}
+
 let reload_count = 0;
 
 /**
@@ -87,7 +102,8 @@ async function setSearchOption(search_input, searchSettings) {
         value = input.value;
     }
     if (value === "") return;
-    var url = new URL("https://booth.pm/ja/search/" + value);
+    const lang = getCurrentLang();
+    var url = new URL("https://booth.pm/" + lang + "/search/" + value);
     // console.log(settings);
     // 設定から条件を指定しない場合は以下の処理を無視
     if (settings.disable === true) {
@@ -229,8 +245,9 @@ function makeNewSPSearchTab(searchSettings) {
     // 新しい検索タブの要素を作成
     const newSearchTab = document.createElement("div");
     newSearchTab.classList.add("sp-item-search", "item-search");
-    newSearchTab.setAttribute("data-url", "https://booth.pm/ja");
-    newSearchTab.setAttribute("data-search-params", '{"portal_domain":"ja"}');
+    const lang = getCurrentLang();
+    newSearchTab.setAttribute("data-url", "https://booth.pm/" + lang);
+    newSearchTab.setAttribute("data-search-params", '{"portal_domain":"' + lang + '"}');
     newSearchTab.setAttribute(
         "data-product-list",
         "from market_top via global_nav to search_index"
