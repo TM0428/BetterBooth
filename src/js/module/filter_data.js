@@ -18,33 +18,28 @@ export async function addFilter(word, storageMode = mode.sync) {
     let filterArray;
     if (storageMode === mode.sync) {
         filterArray = await getFromSyncStorage("filters");
-    }
-    else {
+    } else {
         filterArray = await getFromLocalStorage("filters");
     }
     if (filterArray) {
         if (filterArray.includes(word)) {
             console.warn("[filter_data] already blocked");
             return;
-        }
-        else {
+        } else {
             filterArray.push(word);
         }
-    }
-    else {
+    } else {
         console.log("[filter_data] filter array init");
         filterArray = [word];
     }
     try {
         if (storageMode === mode.sync) {
             await setToSyncStorage("filters", filterArray);
-        }
-        else {
+        } else {
             await setToLocalStorage("filters", filterArray);
         }
         console.log("[filter_data] filter add");
-    }
-    catch (error) {
+    } catch (error) {
         throw new Error("Failed to set filters to storage");
     }
 }
@@ -57,8 +52,7 @@ export async function removeFilter(word, storageMode = mode.sync) {
     let filterArray;
     if (storageMode === mode.sync) {
         filterArray = await getFromSyncStorage("filters");
-    }
-    else {
+    } else {
         filterArray = await getFromLocalStorage("filters");
     }
     if (filterArray && filterArray.includes(word)) {
@@ -66,13 +60,11 @@ export async function removeFilter(word, storageMode = mode.sync) {
         try {
             if (storageMode === mode.sync) {
                 await setToSyncStorage("filters", newfilterArray);
-            }
-            else {
+            } else {
                 await setToLocalStorage("filters", newfilterArray);
             }
             console.log("[filter_data] filter remove");
-        }
-        catch (error) {
+        } catch (error) {
             throw new Error("Failed to remove filters to storage");
         }
     }
@@ -84,8 +76,7 @@ export async function convertStorageMode(fromstorageMode, toStorageMode) {
         // fromから削除
         await setFilter([], fromstorageMode);
         await setFilter([], toStorageMode);
-    }
-    else if (toStorageMode === mode.local) {
+    } else if (toStorageMode === mode.local) {
         // コピーしてから削除
         await setFilter(filterArray, toStorageMode);
         await setFilter([], fromstorageMode);
@@ -95,8 +86,7 @@ export async function convertStorageMode(fromstorageMode, toStorageMode) {
 export async function getFilter(storageMode = mode.sync) {
     if (storageMode === mode.sync) {
         return await getFromSyncStorage("filters");
-    }
-    else {
+    } else {
         return await getFromLocalStorage("filters");
     }
 }
@@ -104,8 +94,7 @@ export async function getFilter(storageMode = mode.sync) {
 export async function setFilter(filter, storageMode = mode.sync) {
     if (storageMode === mode.sync) {
         await setToSyncStorage("filters", filter);
-    }
-    else {
+    } else {
         await setToLocalStorage("filters", filter);
     }
     console.log("[filter_data] filter set");

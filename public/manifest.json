@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "__MSG_Name__",
     "default_locale": "ja",
-    "version": "0.6.4",
+    "version": "0.6.7",
     "description": "__MSG_Description__",
     "icons": {
         "128": "icon/icon-128.png",
@@ -83,6 +83,15 @@
             "js": [
                 "js/purchase.js"
             ]
+        },
+        {
+            "matches": [
+                "*://booth.pm/gifts/*"
+            ],
+            "js": [
+                "js/custom_gift.js"
+            ],
+            "run_at": "document_end"
         },
         {
             "matches": [

@@ -139,8 +139,7 @@ export default {
         handleCartClick() {
             if (this.item.purchased) {
                 this.$emit("cart-clicked", this.item.purchased);
-            }
-            else {
+            } else {
                 this.$emit("cart-clicked", false);
             }
         }

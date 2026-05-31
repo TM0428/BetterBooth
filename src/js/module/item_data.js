@@ -9,8 +9,7 @@ import { makeItemFromObject } from "./item.js";
 export function getItemId(item) {
     if (typeof item == "string") {
         return "items_" + item;
-    }
-    else {
+    } else {
         return "items_" + item.id;
     }
 }
@@ -22,15 +21,13 @@ export async function addItem(item) {
         if (items.includes(itemId)) {
             console.log("[item_data] item data merge");
             await mergeToLocalStorage(itemId, item);
-        }
-        else {
+        } else {
             console.log("[item_data] item data add");
             items.push(itemId);
             await setToLocalStorage("items", items);
             await setToLocalStorage(itemId, item);
         }
-    }
-    else {
+    } else {
         initItem(item);
     }
 }

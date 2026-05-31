@@ -5,11 +5,9 @@ class Shop {
         this.name = name;
         if (Array.isArray(add_url)) {
             this.add_url = Array.from(add_url);
-        }
-        else if (typeof add_url == "object") {
+        } else if (typeof add_url == "object") {
             this.add_url = Object.values(add_url);
-        }
-        else {
+        } else {
             this.add_url = new Array();
         }
     }

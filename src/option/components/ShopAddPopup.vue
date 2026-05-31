@@ -144,11 +144,9 @@ export default {
             // 3. それも存在しない場合、サブドメインを取得
             if (homeLinkNicknameElement) {
                 name = homeLinkNicknameElement.textContent;
-            }
-            else if (shopNameElement) {
+            } else if (shopNameElement) {
                 name = shopNameElement.textContent;
-            }
-            else {
+            } else {
                 const match = this.shopUrl.match(/^(?:https?:\/\/)?([^/]+)/);
                 const subdomain = match ? match[1].split(".")[0] : null;
                 name = subdomain;
