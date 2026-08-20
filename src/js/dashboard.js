@@ -26,7 +26,9 @@ function convertItemCardLinks(itemCard) {
         if (!itemIdMatch) {
             return;
         }
-        const newUrl = "https://" + brand + ".booth.pm/items/" + itemIdMatch[1];
+        // 属性由来の値はエンコードしてからURLに組み込む
+        const newUrl =
+            "https://" + encodeURIComponent(brand) + ".booth.pm/items/" + encodeURIComponent(itemIdMatch[1]);
         if (itemHref !== newUrl) {
             itemLink.setAttribute("href", newUrl);
         }
