@@ -1,5 +1,5 @@
 <template>
-    <v-btn class="mr-4" variant="outlined" color="success" block>
+    <v-btn variant="outlined" color="primary" :prepend-icon="mdiFileImportIcon">
         {{ $t("topImport") }}
         <v-dialog v-model="dialog_import" activator="parent" width="auto">
             <v-card width="100%" height="100%">
@@ -41,15 +41,10 @@
 </template>
 <script>
 import { addItem } from "@/js/module/item_data";
+import { validateItemData, sanitizeItemData } from "@/js/module/item_export";
 import { mdiFileImport } from "@mdi/js";
 
 export default {
-    props: {
-        filteredItemList: {
-            type: Object,
-            required: true
-        }
-    },
     data() {
         return {
             dialog_import: false,
@@ -75,74 +70,52 @@ export default {
         fileRead(file) {
             const reader = new FileReader();
             reader.onload = () => {
-                const data = JSON.parse(reader.result);
-                if (this.validateData(data)) {
-                    // Only keep the required properties from the data object
-                    const sanitizedData = {
-                        additionalDescription: data.additionalDescription || null,
-                        description: data.description,
-                        id: data.id,
-                        price: data.price || "",
-                        images: data.images || [],
-                        name: data.name,
-                        url: data.url || "",
-                        shop: data.shop || null,
-                        tags: data.tags || [],
-                        purchased: data.purchased || false
-                    };
-                    console.log(sanitizedData);
-
-                    this.addStorage(sanitizedData);
-                    // Perform any further operations with the sanitizedData
-                } else {
+                let data;
+                try {
+                    data = JSON.parse(reader.result);
+                } catch (error) {
+                    console.error(error);
                     window.alert(this.$t("topInvalid"));
+                    return;
                 }
+
+                // 単体エクスポート(object)と一括エクスポート(array)の両方に対応
+                const rawItems = Array.isArray(data) ? data : [data];
+                const validItems = [];
+                let skippedCount = 0;
+                for (const rawItem of rawItems) {
+                    if (validateItemData(rawItem)) {
+                        validItems.push(sanitizeItemData(rawItem));
+                    } else {
+                        skippedCount++;
+                    }
+                }
+
+                if (validItems.length === 0) {
+                    window.alert(this.$t("topInvalid"));
+                    return;
+                }
+                this.addStorage(validItems, skippedCount);
             };
             reader.readAsText(file);
         },
-        validateData(data) {
-            // データがオブジェクトで、必要なプロパティが含まれているかを確認するバリデーション
-            return (
-                typeof data === "object" &&
-                data !== null &&
-                "description" in data &&
-                typeof data.description === "string" &&
-                "id" in data &&
-                typeof data.id === "number" &&
-                "images" in data &&
-                Array.isArray(data.images) &&
-                data.images.every(
-                    (image) =>
-                        typeof image === "object" &&
-                        image !== null &&
-                        "original" in image &&
-                        typeof image.original === "string" &&
-                        "resized" in image &&
-                        typeof image.resized === "string"
-                ) &&
-                "name" in data &&
-                typeof data.name === "string" &&
-                "price" in data &&
-                typeof data.price === "string" &&
-                "shop" in data &&
-                typeof data.shop === "object" &&
-                data.shop !== null &&
-                "name" in data.shop &&
-                typeof data.shop.name === "string" &&
-                "subdomain" in data.shop &&
-                typeof data.shop.subdomain === "string" &&
-                "url" in data.shop &&
-                typeof data.shop.url === "string"
-            );
-        },
-        async addStorage(data) {
-            const result = await addItem(data);
-            if (result != 0) {
+        async addStorage(items, skippedCount) {
+            try {
+                for (const item of items) {
+                    await addItem(item);
+                }
+            } catch (error) {
+                console.error(error);
                 window.alert("Some error occurred!");
-            } else {
-                window.alert(this.$t("topDataAdd"));
-                this.$emit("item-imported", result);
+                this.dialog_import = false;
+                return;
             }
+            let message = this.$t("topDataAddCount", { count: items.length });
+            if (skippedCount > 0) {
+                message += "\n" + this.$t("topImportSkippedCount", { count: skippedCount });
+            }
+            window.alert(message);
+            this.$emit("item-imported", 0);
             this.dialog_import = false;
         }
     }

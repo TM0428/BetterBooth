@@ -16,7 +16,8 @@ class Item {
         purchased = false,
         additionalDescription = "",
         download = false,
-        restock = false
+        restock = false,
+        downloadTypes = []
     ) {
         this.name = name;
         if (Array.isArray(images)) {
@@ -55,6 +56,13 @@ class Item {
         this.additionalDescription = additionalDescription;
         this.download = download;
         this.restock = restock;
+        if (Array.isArray(downloadTypes)) {
+            this.downloadTypes = Array.from(downloadTypes);
+        } else if (downloadTypes && typeof downloadTypes == "object") {
+            this.downloadTypes = Object.values(downloadTypes);
+        } else {
+            this.downloadTypes = new Array();
+        }
     }
 }
 
@@ -77,7 +85,8 @@ export function makeItemFromObject(item) {
         item.purchased,
         item.additionalDescription,
         item.download,
-        item.restock
+        item.restock,
+        item.downloadTypes
     );
 }
 

@@ -40,6 +40,19 @@ Boothの検索では、毎回検索条件がクリアされてしまうため、
 npm install
 ```
 
+### Development (UI Preview)
+
+```sh
+npm run dev
+```
+
+開発サーバーが起動したら、ブラウザで以下のURLを開くことで、拡張機能として読み込まずに各ページをプレビューできます。
+
+- 保存したアイテム一覧(オプションページ): `http://localhost:5173/src/option/option.html#/`
+- ポップアップ(設定画面): `http://localhost:5173/src/popup/popup.html`
+
+開発サーバー上では `chrome.storage` が存在しないため、`src/option/dev_chrome_mock.js` がサンプルデータ入りのモックを自動で適用します(`import.meta.env.DEV` ガード付きのため、本番ビルドには含まれません)。
+
 ### Compile and Minify for Production
 
 ```sh

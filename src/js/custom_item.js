@@ -144,6 +144,52 @@ function handleButtonClick(event, anchorElement, data) {
     addData(data);
 }
 
+function addImageKeyboardNavigation() {
+    document.addEventListener("keydown", (event) => {
+        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
+            return;
+        }
+        if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
+            return;
+        }
+        // 入力欄にフォーカスがある場合は何もしない
+        const target = event.target;
+        if (
+            target &&
+            (target.tagName === "INPUT" ||
+                target.tagName === "TEXTAREA" ||
+                target.tagName === "SELECT" ||
+                target.isContentEditable)
+        ) {
+            return;
+        }
+
+        const isNext = event.key === "ArrowRight";
+
+        // 画像拡大モーダルが開いている場合はモーダル内の前へ/次へボタンを操作
+        const modal = document.querySelector(".booth-modal");
+        if (modal && getComputedStyle(modal).visibility === "visible") {
+            const buttons = modal.querySelectorAll(".booth-modal-content button.charcoal-icon-button");
+            if (buttons.length >= 2) {
+                buttons[isNext ? 1 : 0].click();
+                event.preventDefault();
+            }
+            return;
+        }
+
+        // 通常表示時はメインの画像/動画スライダーを操作
+        const slider = document.querySelector(".primary-image-area.slick-slider");
+        if (!slider) {
+            return;
+        }
+        const arrow = slider.querySelector(isNext ? "button.slick-next" : "button.slick-prev");
+        if (arrow) {
+            arrow.click();
+            event.preventDefault();
+        }
+    });
+}
+
 function validateItemPage() {
     if (document.body.children[0].className == "dialog") {
         return false;
@@ -216,14 +262,16 @@ async function main() {
     if (setting.language !== "ja") {
         itemGetLang = itemGetEn;
     }
-    if (setting.save_item) {
-        if (validateItemPage()) {
+    if (validateItemPage()) {
+        // 左右キーで商品の画像/動画を移動できるようにする
+        addImageKeyboardNavigation();
+        if (setting.save_item) {
             addSaveButton();
             addDownloadedItem();
             addRestockItem();
-        } else {
-            redirectToEn();
         }
+    } else if (setting.save_item) {
+        redirectToEn();
     }
 }
 

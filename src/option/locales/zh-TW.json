@@ -2,11 +2,15 @@
     "topTitle": "保存的物品清單",
     "topHowto": "使用說明",
     "topSearchText": "搜尋物品...",
+    "topItemCount": "{count} 個物品",
+    "topNoItems": "找不到物品",
     "topImport": "匯入數據...",
     "topImportJson": "Select File(.json)",
     "topSetttings": "前往設置頁面",
     "topInvalid": "無效的輸入數據。",
     "topDataAdd": "已新增數據。",
+    "topDataAddCount": "已新增 {count} 筆資料。",
+    "topImportSkippedCount": "{count} 筆資料格式無效，已跳過。",
     "itemBackToList": "返回物品列表",
     "itemGotoShop": "前往商店",
     "itemGotoLink": "Go to Item page",
@@ -17,5 +21,6 @@
     "allDownloadButton": "Download List",
     "downloadTitle": "Data Download",
     "downloadExt": "Download Format:",
-    "downloadInfo": "Save Information"
+    "downloadInfo": "Save Information",
+    "downloadJsonNote": "JSON 格式會保存所有資料。保存的檔案可透過「匯入數據」再次匯入。"
 }

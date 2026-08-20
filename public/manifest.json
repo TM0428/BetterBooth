@@ -125,6 +125,24 @@
             "js": [
                 "js/order.js"
             ]
+        },
+        {
+            "matches": [
+                "*://accounts.booth.pm/library*"
+            ],
+            "js": [
+                "js/library.js"
+            ],
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "*://accounts.booth.pm/dashboard*"
+            ],
+            "js": [
+                "js/dashboard.js"
+            ],
+            "run_at": "document_end"
         }
     ],
     "web_accessible_resources": [

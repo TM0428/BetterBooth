@@ -1,62 +1,66 @@
 <template>
     <v-card
         @click="navigateToItem"
-        class="d-flex flex-column"
+        class="item-card d-flex flex-column"
         height="100%"
-        min-width="270px"
-        color="surfaceContainerLow"
+        rounded="lg"
+        variant="flat"
+        border
+        color="surface"
     >
-        <v-img :src="imageUrl" alt="Item Image" class="cover bg-grey-lighten-2" aspect-ratio="1" />
-        <div class="ma-2 text-h6 text-weight-regular two-line-title">
-            <div class="ellipsis-2-lines inherit">
+        <v-img
+            :src="imageUrl"
+            alt="Item Image"
+            class="bg-surfaceContainer flex-grow-0"
+            aspect-ratio="1"
+            cover
+        />
+        <div class="pa-3 d-flex flex-column flex-grow-1">
+            <div class="item-title text-subtitle-1 font-weight-medium">
                 {{ item.name }}
             </div>
-        </div>
-        <!--ショップ-->
-        <div class="ma-1 d-flex flex-row">
-            <v-chip color="primary" variant="outlined" @click.stop="handleShopClick(item.shop)">
-                <v-avatar start>
+            <!--ショップ-->
+            <div
+                class="shop-row d-flex align-center mt-1"
+                @click.stop="handleShopClick(item.shop)"
+            >
+                <v-avatar size="20">
                     <v-img :src="item.shop.thumbnail_url"></v-img>
                 </v-avatar>
-                <span class="d-inline-block text-truncate shop-name">
+                <span class="text-body-2 text-onSurfaceVariant ml-2 text-truncate">
                     {{ item.shop.name }}
                 </span>
-            </v-chip>
-        </div>
-        <div class="ma-1 d-flex flex-row">
-            <div class="text-subtitle-1 text-primary">
-                {{ item.price }}
             </div>
-            <v-spacer></v-spacer>
-            <!--購入したか-->
-            <div class="d-flex flex-row">
-                <div v-if="item.restock" class="mx-1">
-                    <v-chip :color="item.restock ? 'warning' : 'disable'">
+            <div class="d-flex align-center mt-2">
+                <div class="text-subtitle-1 font-weight-bold text-primary">
+                    {{ item.price }}
+                </div>
+                <v-spacer></v-spacer>
+                <!--再入荷リクエスト・DL商品・購入状態-->
+                <div class="d-flex align-center ga-1">
+                    <v-chip v-if="item.restock" size="small" color="tertiary" variant="tonal">
                         <v-icon :icon="mdiEmailAlertOutlineIcon"></v-icon>
-                        <v-tooltip activator="parent" location="left">
+                        <v-tooltip activator="parent" location="top">
                             {{ $t("restockRequest") }}
                         </v-tooltip>
                     </v-chip>
-                </div>
-                <div v-if="item.download" class="mx-1">
-                    <v-chip :color="item.download ? 'primary' : 'disable'">
+                    <v-chip v-if="item.download" size="small" color="primary" variant="tonal">
                         <v-icon :icon="mdiCloudArrowDownOutlineIcon"></v-icon>
-                        <v-tooltip activator="parent" location="left">
+                        <v-tooltip activator="parent" location="top">
                             {{ $t("isDLItem") }}
                         </v-tooltip>
                     </v-chip>
-                </div>
-                <div class="mx-1">
                     <v-chip
-                        :class="item.purchased ? 'purchased-cart-chip' : 'non-purchased-cart-chip'"
-                        :variant="item.purchased ? 'flat' : 'outlined'"
+                        size="small"
+                        :color="item.purchased ? 'primary' : 'onSurfaceVariant'"
+                        :variant="item.purchased ? 'tonal' : 'outlined'"
                         :disabled="item.purchased == undefined"
                         @click.stop="handleCartClick()"
                     >
                         <v-icon
                             :icon="item.purchased ? mdiCartCheckIcon : mdiCartOutlineIcon"
                         ></v-icon>
-                        <v-tooltip activator="parent" location="left">
+                        <v-tooltip activator="parent" location="top">
                             <div v-if="item.purchased">
                                 {{ $t("purchased") }}
                             </div>
@@ -70,20 +74,18 @@
                     </v-chip>
                 </div>
             </div>
-        </div>
 
-        <!-- タグの表示部分 -->
-        <div class="ma-1">
-            <div class="inline-block">
+            <!-- タグの表示部分 -->
+            <div v-if="item.tags && item.tags.length" class="d-flex flex-wrap ga-1 mt-2">
                 <v-chip
                     v-for="tag in item.tags"
                     :key="tag"
-                    small
+                    size="small"
                     label
                     rounded="lg"
-                    class="ma-1 tag-chip"
+                    color="onSurfaceVariant"
+                    variant="tonal"
                     @click.stop="handleTagClick(tag)"
-                    variant="outlined"
                 >
                     <span class="d-inline-block text-truncate tag-name">
                         {{ tag }}
@@ -150,33 +152,37 @@ export default {
 };
 </script>
 
-<style>
-.ellipsis-2-lines {
-    text-overflow: ellipsis;
+<style scoped>
+.item-card {
+    transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
 }
-.cover {
-    max-height: 242px !important;
+
+.item-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
-.two-line-title {
+
+.item-title {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
-    max-height: 66px;
+    line-height: 1.4;
+    min-height: 2.8em;
+    word-break: break-all;
 }
-.shop-name {
-    max-width: 220px;
+
+.shop-row {
+    cursor: pointer;
+    min-width: 0;
 }
+
+.shop-row:hover span {
+    text-decoration: underline;
+}
+
 .tag-name {
-    max-width: 240px;
-}
-
-.inline-block {
-    display: inline-block;
-}
-
-.inherit {
-    width: inherit;
+    max-width: 200px;
 }
 </style>

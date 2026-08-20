@@ -8,82 +8,74 @@
         ></AppBar>
     </div>
     <div class="content">
-        <v-container fluid>
-            <v-row height="64">
-                <v-col cols="12" lg="8" height="64">
-                    <div
-                        class="text-h4"
-                        v-if="
-                            !(
-                                searchText == '' &&
-                                srchTags.length == 0 &&
-                                srchCart == -1 &&
-                                (srchShop.name == '' || srchShop.name == undefined)
-                            )
-                        "
-                    >
-                        Search by {{ searchText }}
-
-                        <span v-if="srchCart >= 0">
-                            <v-chip
-                                closable
-                                @click:close="removeCart()"
-                                :class="
-                                    srchCart == 0
-                                        ? 'ma-1 non-purchased-cart-chip'
-                                        : 'ma-1 purchased-cart-chip'
-                                "
-                                :variant="srchCart == 0 ? 'outlined' : 'flat'"
-                            >
-                                <v-icon :icon="mdiCartOutlineIcon" class="mr-2"></v-icon>
-
-                                <div v-if="srchCart == 1">
-                                    {{ $t("purchased") }}
-                                </div>
-                                <div v-else>
-                                    {{ $t("notpurchased") }}
-                                </div>
-                            </v-chip>
-                        </span>
-                        <span v-if="srchShop.name">
-                            <v-chip
-                                class="ma-1 shop-chip"
-                                variant="outlined"
-                                closable
-                                @click:close="removeShop()"
-                            >
-                                <v-avatar start>
-                                    <v-img :src="srchShop.thumbnail_url"></v-img>
-                                </v-avatar>
-                                shop: {{ srchShop.name }}
-                            </v-chip>
-                        </span>
-                        <v-chip
-                            v-for="(stag, index) in srchTags"
-                            :key="stag"
-                            closable
-                            label
-                            rounded="lg"
-                            @click:close="removeTag(index)"
-                            class="ma-1 tag-chip"
-                            variant="outlined"
-                        >
-                            tag: {{ stag }}
-                        </v-chip>
+        <v-container fluid class="pa-4 pa-sm-6">
+            <v-row align="center" class="mb-1">
+                <v-col cols="12" md="6">
+                    <div class="text-h6 font-weight-medium">
+                        {{ $t("topItemCount", { count: filteredItemList.length }) }}
                     </div>
                 </v-col>
-                <v-col cols="12" sm="6" md="6" lg="2">
-                    <ItemImportPopup
-                        @item-imported="handleItemImported"
-                        class="ma-1"
-                    ></ItemImportPopup>
-                </v-col>
-                <v-col cols="12" sm="6" md="6" lg="2">
-                    <ItemDownloadPopup :filtered-item-list="filteredItemList" class="ma-1">
-                    </ItemDownloadPopup>
+                <v-col cols="12" md="6" class="d-flex flex-wrap ga-2 justify-md-end align-center">
+                    <ItemImportPopup @item-imported="handleItemImported"></ItemImportPopup>
+                    <ItemDownloadPopup
+                        :filtered-item-list="filteredItemList"
+                    ></ItemDownloadPopup>
                 </v-col>
             </v-row>
-            <v-row class="mx-auto">
+            <v-row v-if="hasActiveFilter" class="mb-1" dense>
+                <v-col cols="12" class="d-flex flex-wrap ga-2 align-center">
+                    <v-chip
+                        v-if="searchText"
+                        closable
+                        @click:close="clearSearchText()"
+                        color="onSurfaceVariant"
+                        variant="outlined"
+                    >
+                        <v-icon :icon="mdiMagnifyIcon" start></v-icon>
+                        {{ searchText }}
+                    </v-chip>
+                    <v-chip
+                        v-if="srchCart >= 0"
+                        closable
+                        @click:close="removeCart()"
+                        :color="srchCart == 1 ? 'primary' : 'onSurfaceVariant'"
+                        :variant="srchCart == 1 ? 'tonal' : 'outlined'"
+                    >
+                        <v-icon :icon="mdiCartOutlineIcon" start></v-icon>
+                        <template v-if="srchCart == 1">
+                            {{ $t("purchased") }}
+                        </template>
+                        <template v-else>
+                            {{ $t("notpurchased") }}
+                        </template>
+                    </v-chip>
+                    <v-chip
+                        v-if="srchShop.name"
+                        color="onSurfaceVariant"
+                        variant="outlined"
+                        closable
+                        @click:close="removeShop()"
+                    >
+                        <v-avatar start>
+                            <v-img :src="srchShop.thumbnail_url"></v-img>
+                        </v-avatar>
+                        {{ srchShop.name }}
+                    </v-chip>
+                    <v-chip
+                        v-for="(stag, index) in srchTags"
+                        :key="stag"
+                        closable
+                        label
+                        rounded="lg"
+                        @click:close="removeTag(index)"
+                        color="onSurfaceVariant"
+                        variant="tonal"
+                    >
+                        tag: {{ stag }}
+                    </v-chip>
+                </v-col>
+            </v-row>
+            <v-row>
                 <!-- アイテムカードを表示 -->
                 <v-col
                     v-for="item in paginatedItems"
@@ -103,10 +95,21 @@
                 </v-col>
             </v-row>
 
+            <div
+                v-if="filteredItemList.length === 0"
+                class="text-center py-16 text-onSurfaceVariant"
+            >
+                <v-icon :icon="mdiPackageVariantIcon" size="64" class="mb-4"></v-icon>
+                <div class="text-h6">{{ $t("topNoItems") }}</div>
+            </div>
+
             <v-pagination
+                v-if="pageCount > 1"
                 v-model="page"
                 :length="pageCount"
                 :total-visible="7"
+                active-color="primary"
+                class="my-6"
                 @update:modelValue="updateQuery"
             ></v-pagination>
         </v-container>
@@ -119,7 +122,13 @@ import ItemDownloadPopup from "../components/ItemDownloadPopup.vue";
 import ItemImportPopup from "../components/ItemImportPopup.vue";
 import AppBar from "../components/AppBar.vue";
 
-import { mdiMagnify, mdiCartOutline, mdiHelpCircleOutline, mdiCloseCircle } from "@mdi/js";
+import {
+    mdiMagnify,
+    mdiCartOutline,
+    mdiHelpCircleOutline,
+    mdiCloseCircle,
+    mdiPackageVariantClosed
+} from "@mdi/js";
 import { getItems } from "@/js/module/item_data";
 import { getExtendedSettings } from "@/js/module/settings_data";
 
@@ -148,10 +157,19 @@ export default {
             mdiMagnifyIcon: mdiMagnify,
             mdiCartOutlineIcon: mdiCartOutline,
             mdiHelpCircleOutlineIcon: mdiHelpCircleOutline,
-            mdiCloseCircleIcon: mdiCloseCircle
+            mdiCloseCircleIcon: mdiCloseCircle,
+            mdiPackageVariantIcon: mdiPackageVariantClosed
         };
     },
     computed: {
+        hasActiveFilter() {
+            return (
+                this.searchText !== "" ||
+                this.srchTags.length > 0 ||
+                this.srchCart >= 0 ||
+                Boolean(this.srchShop.name)
+            );
+        },
         filteredItemList() {
             const searchTerms = this.searchText.toLowerCase().split(" "); // スペースで検索ワードを分割
 
@@ -256,6 +274,13 @@ export default {
             this.srchCart = -1;
             this.page = 1;
         },
+        clearSearchText() {
+            if (this.$refs.appbar) {
+                this.$refs.appbar.handleClearText();
+            } else {
+                this.updateSearchText("");
+            }
+        },
         updateSearchText(text) {
             this.searchText = text;
             this.page = 1;
@@ -328,37 +353,8 @@ export default {
 };
 </script>
 
-<style>
-.non-purchased-cart-chip {
-    color: rgb(var(--v-theme-outline)) !important;
-}
-
-.non-purchased-cart-chip * {
-    color: rgb(var(--v-theme-onSurfaceVariant)) !important;
-}
-
-.purchased-cart-chip {
-    color: rgb(var(--v-theme-primary)) !important;
-    background-color: rgb(var(--v-theme-secondaryContainer)) !important;
-}
-
-.purchased-cart-chip * {
-    color: rgb(var(--v-theme-onSecondaryContainer)) !important;
-}
-
-.tag-chip {
-    color: rgb(var(--v-theme-onSurfaceVariant)) !important;
-    background-color: rgba(var(--v-theme-onSurfaceVariant), 0.12) !important;
-}
-
-.shop-chip {
-    color: rgb(var(--v-theme-primary)) !important;
-    background-color: rgb(var(--v-theme-surfaceContainerLow)) !important;
-}
-</style>
-
 <style scoped>
-.searchTextBox :deep(input) {
-    color: rgb(var(--v-theme-onSurface)) !important;
+.content {
+    min-height: 100vh;
 }
 </style>

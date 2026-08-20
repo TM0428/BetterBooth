@@ -34,12 +34,8 @@
                                     block
                                     :prepend-icon="mdiCartOutlineIcon"
                                     rounded="xl"
-                                    :variant="data.purchased ? 'flat' : 'outlined'"
-                                    :class="
-                                        data.purchased
-                                            ? 'purchased-cart-chip'
-                                            : 'non-purchased-cart-chip'
-                                    "
+                                    :variant="data.purchased ? 'tonal' : 'outlined'"
+                                    :color="data.purchased ? 'primary' : 'onSurfaceVariant'"
                                     size="large"
                                     @click="togglePurchased"
                                 >
@@ -147,6 +143,7 @@
 <script>
 import Item from "@/js/module/item";
 import { deleteItem, getItem, getItemId, mergeItem } from "@/js/module/item_data";
+import { itemToExportObject } from "@/js/module/item_export";
 import ImageCarousel from "@/option/components/ImageCarousel.vue";
 import router from "@/option/router"; // Vue Router インスタンスのインポート
 import {
@@ -201,7 +198,8 @@ export default {
             document.body.style.overflow = "auto";
         },
         exportData() {
-            const dataToExport = JSON.stringify(this.data);
+            // shop.url(getter)を含む完全なデータとしてエクスポートする
+            const dataToExport = JSON.stringify(itemToExportObject(this.data), null, 4);
             const filename = `${this.itemId}.json`;
 
             const blob = new Blob([dataToExport], { type: "application/json" });

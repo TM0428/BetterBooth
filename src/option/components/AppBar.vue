@@ -17,12 +17,13 @@
         </a>
         <v-text-field
             class="mr-4 searchTextBox"
+            style="max-width: 480px"
             v-model="searchText"
             :label="$t('topSearchText')"
             clearable
-            rounded="rounded-pill"
+            rounded="pill"
             density="compact"
-            bg-color="surfaceContainerHighest"
+            bg-color="surface"
             color="primary"
             single-line
             hide-details
