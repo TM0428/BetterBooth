@@ -20,12 +20,24 @@
                 </template>
             </v-list>
         </v-card>
+        <div class="pa-2">
+            <v-btn
+                color="primary"
+                block
+                :disabled="filters.length === 0"
+                @click="openMigrationPage()"
+            >
+                {{ $t("migrateToOfficialButton") }}
+            </v-btn>
+        </div>
     </v-sheet>
 </template>
 
 <script setup>
 import { getFilter, setFilter } from "@/js/module/filter_data";
 import { getExtendedSettings } from "@/js/module/settings_data";
+import { setToLocalStorage } from "@/js/module/chrome_storage";
+import { MIGRATION_REQUEST_KEY } from "@/js/module/notice_constants";
 import { ref, onMounted } from "vue";
 
 const filters = ref([]);
@@ -33,6 +45,14 @@ const filters = ref([]);
 const removeFilter = async (index) => {
     filters.value.splice(index, 1);
     await setFilter(Array.from(filters.value));
+};
+
+// booth.pmのトップページを開き、content.js側で移行ポップアップを表示させる
+// (移行APIはbooth.pmのページ上からしか呼び出せないため)
+const openMigrationPage = async () => {
+    await setToLocalStorage(MIGRATION_REQUEST_KEY, true);
+    chrome.tabs.create({ url: "https://booth.pm/" });
+    window.close();
 };
 
 onMounted(async () => {

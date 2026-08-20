@@ -29,5 +29,7 @@
     "changeFilterButtonLabel": "変更する",
     "confirmFilterChangeTitle": "フィルターの保存方法の変更",
     "confirmFilterDeleteMessage": "フィルターの保存方法を変更すると、今まで保存したショップリストの情報が全て消えてしまいます。よろしいですか？",
-    "confirmFilterChangeMessage": "フィルターの保存方法を変更すると、アカウント内で共有されなくなります。よろしいですか？(拡張機能から設定変更を促された場合にのみ推奨します)"
+    "confirmFilterChangeMessage": "フィルターの保存方法を変更すると、アカウント内で共有されなくなります。よろしいですか？(拡張機能から設定変更を促された場合にのみ推奨します)",
+    "nativeBlockSyncLabel": "ブロック時にBOOTH本体の非表示にも反映する",
+    "migrateToOfficialButton": "BOOTH本体の非表示リストへ移行"
 }

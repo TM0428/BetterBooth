@@ -15,6 +15,10 @@ async function getSettingsModule() {
     const src = chrome.runtime.getURL("./js/module/settings_data.js");
     return await import(src);
 }
+async function getMigrationModule() {
+    const src = chrome.runtime.getURL("./js/module/hidden_shops_migration.js");
+    return await import(src);
+}
 
 const NOW_BLOCK = "shop__border--price";
 const NOT_BLOCK = "shop__background--price";
@@ -22,16 +26,51 @@ const customShopJa = {
     block: "ブロック",
     blocking: "ブロック中",
     errorBlockShop:
-        "ショップの保存数が上限に達しています。設定からFilterの保存方法を変更してください。"
+        "ショップの保存数が上限に達しています。設定からFilterの保存方法を変更してください。",
+    errorNativeSync:
+        "BOOTH本体の非表示リストへの反映に失敗しました。BOOTHにログインしているか確認してください。"
 };
 const customShopEn = {
     block: "block",
     blocking: "blocking",
-    errorBlockShop: "The number of shops saved has reached the limit. Please change the settings."
+    errorBlockShop: "The number of shops saved has reached the limit. Please change the settings.",
+    errorNativeSync:
+        "Failed to update BOOTH's official hidden shop list. Please check that you are signed in to BOOTH."
 };
 var customShopLang = customShopJa;
 if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP") {
     customShopLang = customShopEn;
+}
+
+/**
+ * このショップのshop_uuidを取得する関数
+ * (ショップヘッダーの要素から取得し、無い場合はservice worker経由で解決する)
+ */
+async function getShopUuid(migration) {
+    const element = document.querySelector("[data-shop-uuid]");
+    const uuid = element && element.getAttribute("data-shop-uuid");
+    if (uuid) return uuid;
+    return await migration.resolveShopUuid(window.location.origin + "/");
+}
+
+/**
+ * 設定が有効な場合に、BOOTH本体の非表示リストへブロック/解除を反映する関数
+ * (失敗しても拡張機能側のブロックには影響させない)
+ */
+async function syncNativeBlock(extended_settings, isBlock) {
+    if (!extended_settings.getNativeBlockSync) return;
+    try {
+        const migration = await getMigrationModule();
+        const uuid = await getShopUuid(migration);
+        if (isBlock) {
+            await migration.hideShop(uuid);
+        } else {
+            await migration.unhideShop(uuid);
+        }
+    } catch (error) {
+        console.warn("[custom_shop] native block sync failed:", error);
+        alert(customShopLang.errorNativeSync);
+    }
 }
 
 /**
@@ -88,6 +127,7 @@ async function addButton(settingsData, filterData) {
             module_contents.style.display = "block";
             text.textContent = block;
             filterData.removeFilter(url, extended_settings.getFilterMode);
+            await syncNativeBlock(extended_settings, false);
         } else {
             try {
                 await filterData.addFilter(url, extended_settings.getFilterMode);
@@ -97,7 +137,9 @@ async function addButton(settingsData, filterData) {
                 text.textContent = blocking;
             } catch (error) {
                 alert(customShopLang.errorBlockShop);
+                return;
             }
+            await syncNativeBlock(extended_settings, true);
         }
     });
     parentDiv.appendChild(button);

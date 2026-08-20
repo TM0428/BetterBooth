@@ -97,3 +97,91 @@ div.item-search-input__container {
     justify-content: space-between !important;
     align-items: center !important;
 }
+
+/* BOOTH本体の非表示機能への移行のお知らせポップアップ */
+div.bb-migration-notice {
+    position: fixed;
+    left: 16px;
+    bottom: 16px;
+    z-index: 10000;
+    box-sizing: border-box;
+    width: 320px;
+    max-width: calc(100vw - 32px);
+    padding: 16px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    color: #252f3d;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+div.bb-migration-notice__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+span.bb-migration-notice__title {
+    font-weight: bold;
+    font-size: 14px;
+    color: #fc4d50;
+}
+
+button.bb-migration-notice__close {
+    padding: 0 4px;
+    border: none;
+    background: transparent;
+    color: #757575;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+p.bb-migration-notice__body {
+    margin: 0 0 12px;
+}
+
+div.bb-migration-notice__status {
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+div.bb-migration-notice__status:empty {
+    display: none;
+}
+
+a.bb-migration-notice__link {
+    color: #fc4d50;
+    text-decoration: underline;
+}
+
+div.bb-migration-notice__actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+button.bb-migration-notice__button {
+    padding: 6px 14px;
+    border: 1px solid #d1d1d1;
+    border-radius: 16px;
+    background-color: #fff;
+    color: #252f3d;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+button.bb-migration-notice__button--primary {
+    border-color: #fc4d50;
+    background-color: #fc4d50;
+    color: #fff;
+    font-weight: bold;
+}
+
+button.bb-migration-notice__button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}

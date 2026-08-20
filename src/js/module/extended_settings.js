@@ -6,13 +6,15 @@ class ExtendedSettings {
         auto_reload = false,
         save_item = false,
         save_purchase = false,
-        filter_mode = mode.sync
+        filter_mode = mode.sync,
+        native_block_sync = false
     ) {
         this.language = language;
         this.auto_reload = auto_reload;
         this.save_item = save_item;
         this.save_purchase = save_purchase;
         this.filter_mode = filter_mode;
+        this.native_block_sync = native_block_sync;
     }
 
     get getFilterMode() {
@@ -26,6 +28,11 @@ class ExtendedSettings {
     set setFilterMode(value) {
         this.filter_mode = value;
     }
+
+    // ブロック時にBOOTH本体の非表示リストにも反映するかどうか(デフォルトはoff)
+    get getNativeBlockSync() {
+        return this.native_block_sync === true;
+    }
 }
 
 export function makeExtensionSettingsFromObject(object) {
@@ -37,7 +44,8 @@ export function makeExtensionSettingsFromObject(object) {
         object.auto_reload,
         object.save_item,
         object.save_purchase,
-        object.filter_mode
+        object.filter_mode,
+        object.native_block_sync
     );
 }
 

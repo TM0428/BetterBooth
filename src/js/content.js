@@ -11,16 +11,58 @@ async function getFilterDataModule() {
     const src = chrome.runtime.getURL("./js/module/filter_data.js");
     return await import(src);
 }
+async function getChromeStorageModule() {
+    const src = chrome.runtime.getURL("./js/module/chrome_storage.js");
+    return await import(src);
+}
+async function getMigrationModule() {
+    const src = chrome.runtime.getURL("./js/module/hidden_shops_migration.js");
+    return await import(src);
+}
 
 const contentJa = {
     keyword: "キーワードを入力",
     genre: "ジャンル、商品名など",
-    gotoExtension: "拡張機能のページへ"
+    gotoExtension: "拡張機能のページへ",
+    noticeTitle: "Better BOOTHからのお知らせ",
+    noticeBody:
+        "BOOTH公式にショップの非表示機能が追加されました。Better BOOTHでブロック中のショップを、BOOTH本体の非表示リストへ移行できます。今まで通りBetter BOOTHでのブロックも有効です。(公式の上限は200件です)",
+    noticeMigrate: "移行する",
+    noticeClose: "閉じる",
+    noticeProgress: (current, total) => `移行中... (${current}/${total})`,
+    noticeResult: (migrated, skipped, failed, limit) => {
+        let text = `${migrated}件を移行しました。`;
+        if (skipped > 0) text += `(移行済みのため${skipped}件をスキップ)`;
+        if (limit > 0) text += `(上限に達したため${limit}件は未移行)`;
+        if (failed > 0) text += `(${failed}件は失敗)`;
+        return text;
+    },
+    noticeCheckList: "非表示ショップ一覧を確認",
+    noticeNeedLogin:
+        "移行にはBOOTHへのログインが必要です。ログイン後にトップページを開くと、再度お知らせが表示されます。",
+    noticeError: "エラーが発生しました。時間をおいて再度お試しください。"
 };
 const contentEn = {
     keyword: "Search",
     genre: "Genre, Item Name, etc.",
-    gotoExtension: "Go to Extension Page"
+    gotoExtension: "Go to Extension Page",
+    noticeTitle: "News from Better BOOTH",
+    noticeBody:
+        "BOOTH now officially supports hiding shops. You can migrate the shops blocked by Better BOOTH to BOOTH's own hidden shop list. Blocking by Better BOOTH keeps working as before. (The official limit is 200 shops.)",
+    noticeMigrate: "Migrate",
+    noticeClose: "Close",
+    noticeProgress: (current, total) => `Migrating... (${current}/${total})`,
+    noticeResult: (migrated, skipped, failed, limit) => {
+        let text = `Migrated ${migrated} shop(s).`;
+        if (skipped > 0) text += ` (${skipped} skipped: already hidden)`;
+        if (limit > 0) text += ` (${limit} not migrated: limit reached)`;
+        if (failed > 0) text += ` (${failed} failed)`;
+        return text;
+    },
+    noticeCheckList: "Check your hidden shops",
+    noticeNeedLogin:
+        "You need to sign in to BOOTH to migrate. After signing in, open the top page again to see this notice.",
+    noticeError: "An error occurred. Please try again later."
 };
 var contentLang = contentJa;
 if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP") {
@@ -30,15 +72,15 @@ if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP")
 function getCurrentLang() {
     const match = window.location.pathname.match(/^\/(ja|en|ko|zh-cn|zh-tw)/);
     if (match) return match[1];
-    
+
     const htmlLang = document.documentElement.lang;
     if (htmlLang) {
         if (htmlLang.toLowerCase().startsWith("zh")) {
             return htmlLang.toLowerCase();
         }
-        return htmlLang.split('-')[0].toLowerCase();
+        return htmlLang.split("-")[0].toLowerCase();
     }
-    
+
     return "ja";
 }
 
@@ -523,6 +565,169 @@ function observeItemCards(searchSettings) {
     setTimeout(processExistingCards, 2000);
 }
 
+async function getNoticeConstantsModule() {
+    const src = chrome.runtime.getURL("./js/module/notice_constants.js");
+    return await import(src);
+}
+
+/**
+ * booth.pmのトップページ(メインページ)かどうかを判定する関数
+ */
+function isMarketTopPage() {
+    if (window.location.host !== "booth.pm") return false;
+    return /^\/(?:(?:ja|en|ko|zh-cn|zh-tw)\/?)?$/.test(window.location.pathname);
+}
+
+/**
+ * お知らせIDを表示済みから外す関数(ログイン後に再表示したい場合など)
+ */
+async function unmarkNoticeShown(noticeId) {
+    const storage = await getChromeStorageModule();
+    const constants = await getNoticeConstantsModule();
+    const shownIds = (await storage.getFromLocalStorage(constants.SHOWN_NOTICE_IDS_KEY)) || [];
+    await storage.setToLocalStorage(
+        constants.SHOWN_NOTICE_IDS_KEY,
+        shownIds.filter((id) => id !== noticeId)
+    );
+}
+
+/**
+ * 未表示のお知らせをトップページに1件だけ表示する関数
+ * お知らせの追加方法はnotice_constants.jsのコメントを参照
+ */
+async function showNotices(filterModule, extended_settings) {
+    if (!isMarketTopPage()) return;
+
+    const storage = await getChromeStorageModule();
+    const constants = await getNoticeConstantsModule();
+
+    // ポップアップの「移行」ボタンから要求された場合は、表示済みでも移行UIを表示する
+    const migrationRequested = await storage.getFromLocalStorage(constants.MIGRATION_REQUEST_KEY);
+    if (migrationRequested) {
+        await storage.removeFromLocalStorage(constants.MIGRATION_REQUEST_KEY);
+        await showHiddenShopsMigrationNotice(filterModule, extended_settings);
+        return;
+    }
+
+    const shownIds = (await storage.getFromLocalStorage(constants.SHOWN_NOTICE_IDS_KEY)) || [];
+
+    // お知らせの定義(上から順に、未表示かつshouldShowがtrueの最初の1件を表示する)
+    const notices = [
+        {
+            id: constants.noticeIds.hiddenShopsMigration,
+            shouldShow: async () => {
+                // ブロック中のショップがなければ移行するものがないので表示しない
+                const filterArray = await filterModule.getFilter(extended_settings.getFilterMode);
+                return !!filterArray && filterArray.length > 0;
+            },
+            show: () => showHiddenShopsMigrationNotice(filterModule, extended_settings)
+        }
+    ];
+
+    for (const notice of notices) {
+        if (shownIds.includes(notice.id)) continue;
+        if (!(await notice.shouldShow())) continue;
+        // 1度のみ表示するため、表示時点でIDを保存する
+        await storage.setToLocalStorage(constants.SHOWN_NOTICE_IDS_KEY, [...shownIds, notice.id]);
+        await notice.show();
+        break;
+    }
+}
+
+/**
+ * BOOTH本体の非表示機能への移行を通知するポップアップを表示する関数
+ */
+async function showHiddenShopsMigrationNotice(filterModule, extended_settings) {
+    const filterArray = await filterModule.getFilter(extended_settings.getFilterMode);
+
+    const notice = document.createElement("div");
+    notice.className = "bb-migration-notice";
+
+    const header = document.createElement("div");
+    header.className = "bb-migration-notice__header";
+    const title = document.createElement("span");
+    title.className = "bb-migration-notice__title";
+    title.textContent = contentLang.noticeTitle;
+    const closeIcon = document.createElement("button");
+    closeIcon.className = "bb-migration-notice__close";
+    closeIcon.setAttribute("aria-label", contentLang.noticeClose);
+    closeIcon.textContent = "×";
+    header.appendChild(title);
+    header.appendChild(closeIcon);
+
+    const body = document.createElement("p");
+    body.className = "bb-migration-notice__body";
+    body.textContent = contentLang.noticeBody;
+
+    const status = document.createElement("div");
+    status.className = "bb-migration-notice__status";
+
+    const actions = document.createElement("div");
+    actions.className = "bb-migration-notice__actions";
+    const migrateButton = document.createElement("button");
+    migrateButton.className = "bb-migration-notice__button bb-migration-notice__button--primary";
+    migrateButton.textContent = contentLang.noticeMigrate;
+    const closeButton = document.createElement("button");
+    closeButton.className = "bb-migration-notice__button";
+    closeButton.textContent = contentLang.noticeClose;
+    actions.appendChild(migrateButton);
+    actions.appendChild(closeButton);
+
+    notice.appendChild(header);
+    notice.appendChild(body);
+    notice.appendChild(status);
+    notice.appendChild(actions);
+    document.body.appendChild(notice);
+
+    const closeNotice = () => notice.remove();
+    closeIcon.addEventListener("click", closeNotice);
+    closeButton.addEventListener("click", closeNotice);
+
+    migrateButton.addEventListener("click", async () => {
+        migrateButton.disabled = true;
+        try {
+            const migration = await getMigrationModule();
+            const results = await migration.migrateFilters(filterArray, (current, total) => {
+                status.textContent = contentLang.noticeProgress(current, total);
+            });
+            const count = (targetStatus) =>
+                results.filter((result) => result.status === targetStatus).length;
+            const failedResults = results.filter(
+                (result) => result.status === migration.migrationStatus.failed
+            );
+            if (failedResults.length > 0) {
+                console.warn("[migration] failed shops:", failedResults);
+            }
+            status.textContent = contentLang.noticeResult(
+                count(migration.migrationStatus.migrated),
+                count(migration.migrationStatus.skipped),
+                count(migration.migrationStatus.failed),
+                count(migration.migrationStatus.limit)
+            );
+            const listLink = document.createElement("a");
+            listLink.className = "bb-migration-notice__link";
+            listLink.href = "https://accounts.booth.pm/hidden_shops";
+            listLink.target = "_blank";
+            listLink.rel = "noopener";
+            listLink.textContent = contentLang.noticeCheckList;
+            status.appendChild(document.createElement("br"));
+            status.appendChild(listLink);
+            migrateButton.style.display = "none";
+        } catch (error) {
+            console.warn("[migration] error:", error);
+            if (error.status === 401 || error.status === 403) {
+                // 未ログインの場合は、ログイン後に再度お知らせを表示できるようにする
+                const constants = await getNoticeConstantsModule();
+                await unmarkNoticeShown(constants.noticeIds.hiddenShopsMigration);
+                status.textContent = contentLang.noticeNeedLogin;
+            } else {
+                status.textContent = contentLang.noticeError;
+            }
+            migrateButton.disabled = false;
+        }
+    });
+}
+
 async function main() {
     const searchSettings = await getSearchSettingsModule();
     const filterModule = await getFilterDataModule();
@@ -537,6 +742,8 @@ async function main() {
     blockRecommendShop(filterModule, extended_settings);
     // 動的に追加されるアイテムカードを監視
     observeItemCards(searchSettings);
+    // トップページのお知らせ表示
+    showNotices(filterModule, extended_settings);
 }
 
 main();
