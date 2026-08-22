@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "__MSG_Name__",
     "default_locale": "ja",
-    "version": "0.6.8",
+    "version": "0.6.9",
     "description": "__MSG_Description__",
     "icons": {
         "128": "icon/icon-128.png",
@@ -12,6 +12,13 @@
         "storage",
         "unlimitedStorage"
     ],
+    "host_permissions": [
+        "*://*.booth.pm/*"
+    ],
+    "background": {
+        "service_worker": "js/background.js",
+        "type": "module"
+    },
     "options_ui": {
         "page": "/src/option/option.html",
         "open_in_tab": true
@@ -118,6 +125,24 @@
             "js": [
                 "js/order.js"
             ]
+        },
+        {
+            "matches": [
+                "*://accounts.booth.pm/library*"
+            ],
+            "js": [
+                "js/library.js"
+            ],
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "*://accounts.booth.pm/dashboard*"
+            ],
+            "js": [
+                "js/dashboard.js"
+            ],
+            "run_at": "document_end"
         }
     ],
     "web_accessible_resources": [
@@ -139,7 +164,9 @@
                 "js/module/item.js",
                 "js/module/settings_data.js",
                 "js/module/extended_settings.js",
-                "js/module/search_settings.js"
+                "js/module/search_settings.js",
+                "js/module/hidden_shops_migration.js",
+                "js/module/notice_constants.js"
             ],
             "matches": [
                 "*://*.booth.pm/*"

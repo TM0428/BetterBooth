@@ -28,11 +28,30 @@ Boothの検索では、毎回検索条件がクリアされてしまうため、
 ショップのオーナーが商品情報を削除しても、商品データを保存しておくことでいつでも確認できるようにする機能です。<br>
 利用するためには、設定からonにする必要があります。
 
+## Support
+
+この拡張機能を気に入っていただけたら、Buy Me a Coffeeで開発を支援していただけると嬉しいです☕
+
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/428_tm)
+
 ## Project Setup
 
 ```sh
 npm install
 ```
+
+### Development (UI Preview)
+
+```sh
+npm run dev
+```
+
+開発サーバーが起動したら、ブラウザで以下のURLを開くことで、拡張機能として読み込まずに各ページをプレビューできます。
+
+- 保存したアイテム一覧(オプションページ): `http://localhost:5173/src/option/option.html#/`
+- ポップアップ(設定画面): `http://localhost:5173/src/popup/popup.html`
+
+開発サーバー上では `chrome.storage` が存在しないため、`src/option/dev_chrome_mock.js` がサンプルデータ入りのモックを自動で適用します(`import.meta.env.DEV` ガード付きのため、本番ビルドには含まれません)。
 
 ### Compile and Minify for Production
 

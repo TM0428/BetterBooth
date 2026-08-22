@@ -29,18 +29,18 @@ const LightTheme = {
         onError: "#FFFFFF",
         errorContainer: "#FFDAD6",
         onErrorContainer: "#410002",
-        background: "#FFF8F7",
-        onBackground: "#231919",
-        surface: "#FFF8F7",
-        onSurface: "#231919",
-        surfaceVariant: "#F4DDDB",
-        onSurfaceVariant: "#534342",
-        outline: "#857371",
-        outlineVariant: "#D8C2C0",
+        background: "#FAF9F9",
+        onBackground: "#1C1B1B",
+        surface: "#FFFFFF",
+        onSurface: "#1C1B1B",
+        surfaceVariant: "#F1EEEE",
+        onSurfaceVariant: "#4C4646",
+        outline: "#7D7676",
+        outlineVariant: "#DEDADA",
         shadow: "#000000",
         scrim: "#000000",
-        inverseSurface: "#382E2D",
-        inverseOnSurface: "#FFEDEB",
+        inverseSurface: "#323030",
+        inverseOnSurface: "#F4F0F0",
         inversePrimary: "#FFB3AF",
         primaryFixed: "#FFDAD7",
         onPrimaryFixed: "#3B080A",
@@ -54,13 +54,13 @@ const LightTheme = {
         onTertiaryFixed: "#271900",
         tertiaryFixedDim: "#E2C28C",
         onTertiaryFixedVariant: "#594319",
-        surfaceDim: "#E8D6D4",
-        surfaceBright: "#FFF8F7",
+        surfaceDim: "#E5E2E2",
+        surfaceBright: "#FFFFFF",
         surfaceContainerLowest: "#FFFFFF",
-        surfaceContainerLow: "#FFF0EF",
-        surfaceContainer: "#FCEAE8",
-        surfaceContainerHigh: "#F6E4E2",
-        surfaceContainerHighest: "#F1DEDD"
+        surfaceContainerLow: "#FFFFFF",
+        surfaceContainer: "#F4F1F1",
+        surfaceContainerHigh: "#EEEBEB",
+        surfaceContainerHighest: "#E8E5E5"
     }
 };
 
@@ -84,14 +84,14 @@ const DarkTheme = {
         onError: "#690005",
         errorContainer: "#93000A",
         onErrorContainer: "#FFDAD6",
-        background: "#1A1111",
-        onBackground: "#F1DEDD",
-        surface: "#1A1111",
-        onSurface: "#F1DEDD",
-        surfaceVariant: "#534342",
-        onSurfaceVariant: "#D8C2C0",
-        outline: "#A08C8B",
-        outlineVariant: "#534342",
+        background: "#141313",
+        onBackground: "#E7E3E3",
+        surface: "#141313",
+        onSurface: "#E7E3E3",
+        surfaceVariant: "#4C4646",
+        onSurfaceVariant: "#D0CBCB",
+        outline: "#999292",
+        outlineVariant: "#4C4646",
         shadow: "#000000",
         scrim: "#000000",
         inverseSurface: "#F1DEDD",
@@ -109,13 +109,13 @@ const DarkTheme = {
         onTertiaryFixed: "#271900",
         tertiaryFixedDim: "#E2C28C",
         onTertiaryFixedVariant: "#594319",
-        surfaceDim: "#1A1111",
-        surfaceBright: "#423736",
-        surfaceContainerLowest: "#140C0C",
-        surfaceContainerLow: "#231919",
-        surfaceContainer: "#271D1D",
-        surfaceContainerHigh: "#322827",
-        surfaceContainerHighest: "#3D3231"
+        surfaceDim: "#141313",
+        surfaceBright: "#3B3939",
+        surfaceContainerLowest: "#0F0E0E",
+        surfaceContainerLow: "#1C1B1B",
+        surfaceContainer: "#201F1F",
+        surfaceContainerHigh: "#2B2929",
+        surfaceContainerHighest: "#363434"
     }
 };
 
@@ -140,4 +140,11 @@ const vuetify = createVuetify({
     }
 });
 
-createApp(App).use(vuetify).use(router).use(i18n).mount("#app");
+async function bootstrap() {
+    // dev サーバーでの単体プレビュー時のみ chrome.storage をモックする(本番ビルドでは除去される)
+    if (import.meta.env.DEV && !window.chrome?.storage) {
+        await import("./dev_chrome_mock.js");
+    }
+    createApp(App).use(vuetify).use(router).use(i18n).mount("#app");
+}
+bootstrap();

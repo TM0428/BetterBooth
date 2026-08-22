@@ -23,5 +23,7 @@
     "saveItemOption": "Save item data",
     "linkToHelp": "What is \"Save item\"?",
     "savePurchaseItem": "Save information on purchased products automatically",
-    "gotoItemPage": "Item List"
+    "gotoItemPage": "Item List",
+    "nativeBlockSyncLabel": "Sync blocks with BOOTH's official hidden shops",
+    "migrateToOfficialButton": "Migrate to BOOTH's official hidden shops"
 }

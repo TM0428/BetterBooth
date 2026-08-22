@@ -11,17 +11,25 @@ async function getSettingsModule() {
     const src = chrome.runtime.getURL("./js/module/settings_data.js");
     return await import(src);
 }
+async function getMigrationModule() {
+    const src = chrome.runtime.getURL("./js/module/hidden_shops_migration.js");
+    return await import(src);
+}
 
 const filterJa = {
     confirmBlockFront: "ショップ「",
     confirmBlockBack: "」をブロックしますか？",
     errorBlockShop:
-        "ショップの保存数が上限に達しています。設定からFilterの保存方法を変更してください。"
+        "ショップの保存数が上限に達しています。設定からFilterの保存方法を変更してください。",
+    errorNativeSync:
+        "BOOTH本体の非表示リストへの反映に失敗しました。BOOTHにログインしているか確認してください。"
 };
 const filterEn = {
     confirmBlockFront: 'Will you block the shop "',
     confirmBlockBack: '"?',
-    errorBlockShop: "The number of shops saved has reached the limit. Please change the settings."
+    errorBlockShop: "The number of shops saved has reached the limit. Please change the settings.",
+    errorNativeSync:
+        "Failed to update BOOTH's official hidden shop list. Please check that you are signed in to BOOTH."
 };
 var filterLang = filterJa;
 if (window.navigator.language !== "ja" && window.navigator.language !== "ja-JP") {
@@ -125,6 +133,18 @@ function attachBlockButton(liElement, extended_settings, filterData) {
                 filterReload(aElement.href);
             } catch (error) {
                 alert(filterLang.errorBlockShop);
+                return;
+            }
+            // 設定が有効な場合はBOOTH本体の非表示リストにも反映する
+            if (extended_settings.getNativeBlockSync) {
+                try {
+                    const migration = await getMigrationModule();
+                    const uuid = await migration.resolveShopUuid(aElement.href);
+                    await migration.hideShop(uuid);
+                } catch (error) {
+                    console.warn("[search_item_filter] native block sync failed:", error);
+                    alert(filterLang.errorNativeSync);
+                }
             }
         }
     });

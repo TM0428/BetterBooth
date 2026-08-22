@@ -64,6 +64,25 @@
                         <v-list-item-content>
                             <v-row class="align-center">
                                 <v-col :cols="8" class="text-body-2">
+                                    <div>{{ $t("nativeBlockSyncLabel") }}</div>
+                                </v-col>
+                                <v-col :cols="4">
+                                    <v-checkbox
+                                        class="d-flex justify-end"
+                                        hide-details
+                                        color="primary"
+                                        base-color="on-surface-variant"
+                                        v-model="extended_settings.native_block_sync"
+                                        @update:modelValue="saveExtendedData()"
+                                    />
+                                </v-col>
+                            </v-row>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item height="64">
+                        <v-list-item-content>
+                            <v-row class="align-center">
+                                <v-col :cols="8" class="text-body-2">
                                     <div>{{ $t("saveItemOption") }}</div>
                                     <a
                                         target="_blank"
@@ -161,7 +180,8 @@ export default {
                 save_item: false,
                 save_purchase: false,
                 auto_reload: false,
-                filter_mode: mode.sync
+                filter_mode: mode.sync,
+                native_block_sync: false
             },
             notificationTimer: null,
             exnotifText: "",
@@ -244,6 +264,7 @@ export default {
         this.extended_settings.save_purchase = extended_settings.save_purchase || false;
         this.extended_settings.auto_reload = extended_settings.auto_reload || false;
         this.extended_settings.filter_mode = extended_settings.getFilterMode || mode.sync;
+        this.extended_settings.native_block_sync = extended_settings.native_block_sync || false;
 
         if (!extended_settings.language) {
             this.extended_settings.language = userLocale;
