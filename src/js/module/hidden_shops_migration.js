@@ -30,7 +30,7 @@ export const migrationStatus = {
 export function normalizeShopUrl(url) {
     if (typeof url !== "string") return null;
     const trimmed = url.trim();
-    if (!/^https?:\/\/[a-z0-9-]+\.booth\.pm\/?$/i.test(trimmed)) return null;
+    if (!/^https:\/\/[a-z0-9-]+\.booth\.pm\/?$/i.test(trimmed)) return null;
     return trimmed.endsWith("/") ? trimmed : trimmed + "/";
 }
 
